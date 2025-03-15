@@ -10,8 +10,5 @@ Este repositorio contiene el código fuente, la base de datos y el backend de CT
 - Administración de voluntarios
 - Reporte y seguimiento de avistamientos de perros en el metro
 
-### 📂 Estructura
-  /src        # Código fuente 
-  /database   # Scripts y migraciones
-  /config     # Configuración
-  /tests      # Pruebas
+### Estructura
+pendiente...
