@@ -3,11 +3,7 @@
 
 Este repositorio contiene el código fuente, la base de datos y el backend de CTC Digital, una plataforma web que moderniza la gestión de adopciones, donaciones y reportes de rescate de perros en el Centro de Transferencia Canina (CTC) del Metro de la CDMX.
 
-### 🛠️ Tecnologías
-Backend: 
-Base de datos: 
-
-### 🚀 Funcionalidades
+### Funcionalidades
 - Gestión de solicitudes de adopción
 - Programación de visitas domiciliarias
 - Registro y control de donaciones
@@ -15,7 +11,7 @@ Base de datos:
 - Reporte y seguimiento de avistamientos de perros en el metro
 
 ### 📂 Estructura
-  /src       # Código fuente  
-  /database   # Scripts y migraciones  
-  /config     # Configuración  
+  /src        # Código fuente 
+  /database   # Scripts y migraciones
+  /config     # Configuración
   /tests      # Pruebas
