@@ -11,4 +11,37 @@ Este repositorio contiene el código fuente, la base de datos y el backend de CT
 - Reporte y seguimiento de avistamientos de perros en el metro
 
 ### Estructura
-pendiente...
+```
+/ProyectoADS_CTCDigital/
+│
+├── index.html                # Página principal
+│
+├── recursos/                 # Archivos multimedia
+│   ├── images/               # Imágenes
+│   ├── videos/               # Videos
+│   └── documents/            # Otros documentos como PDFs
+│
+├── src/
+│   ├── adoptame.html         # Página de animales en adopción
+│   ├── formsAdoptame.html    # Formulario para adoptar
+│   ├── adoptados.html        # Página con mascotas ya adoptadas
+│   ├── donaciones.html       # Información y formulario de donaciones
+│   ├── reportes.html         # Reporte de avistamientos
+│   ├── sobreNosotros.html    # Información sobre el CTC
+│   │
+│   ├── css/                  # Hojas de estilo
+│   │   └── styleGeneral.css  # Estilos generales
+│   │
+│   ├── js/                   # Scripts básicos de frontend
+│   │   └── funciones.js      # Funciones de funcionalidad básicas
+│   │
+│   └── backend/              # Lógica del servidor en C#
+│       ├── Controllers/      # Controladores de rutas y lógica 
+│       ├── Models/           # Modelos para la base de datos
+│       └── Program.cs        # Entrada principal de la aplicación C#
+│
+├── database/                 
+│   └── dbCTC.sql             # Base de datos
+│
+└── README.md                 # Información general del proyecto
+```
