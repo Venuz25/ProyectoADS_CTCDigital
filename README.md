@@ -30,12 +30,12 @@ Este repositorio contiene el código fuente, la base de datos y el backend de CT
 │   ├── js/                   # Scripts básicos de frontend
 │   │   └── funciones.js      # Funciones de funcionalidad básicas
 │   │
-│   └── backend/              # Lógica del servidor en C#
-│       ├── Controllers/      # Controladores de rutas y lógica 
-│       ├── Models/           # Modelos para la base de datos
-│       └── Program.cs        # Entrada principal de la aplicación C#
-|
-|   ├── recursos/             # Archivos multimedia
+│   ├── backend/              # Lógica del servidor en C#
+│   |   ├── Controllers/      # Controladores de rutas y lógica 
+│   |   ├── Models/           # Modelos para la base de datos
+│   |   └── Program.cs        # Entrada principal de la aplicación C#
+|   |
+|   └── recursos/             # Archivos multimedia
 │       ├── images/           # Imágenes
 │       ├── videos/           # Videos
 │       └── documents/        # Otros documentos como PDFs
