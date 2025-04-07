@@ -16,11 +16,6 @@ Este repositorio contiene el código fuente, la base de datos y el backend de CT
 │
 ├── index.html                # Página principal
 │
-├── recursos/                 # Archivos multimedia
-│   ├── images/               # Imágenes
-│   ├── videos/               # Videos
-│   └── documents/            # Otros documentos como PDFs
-│
 ├── src/
 │   ├── adoptame.html         # Página de animales en adopción
 │   ├── formsAdoptame.html    # Formulario para adoptar
@@ -39,6 +34,11 @@ Este repositorio contiene el código fuente, la base de datos y el backend de CT
 │       ├── Controllers/      # Controladores de rutas y lógica 
 │       ├── Models/           # Modelos para la base de datos
 │       └── Program.cs        # Entrada principal de la aplicación C#
+|
+|   ├── recursos/             # Archivos multimedia
+│       ├── images/           # Imágenes
+│       ├── videos/           # Videos
+│       └── documents/        # Otros documentos como PDFs
 │
 ├── database/                 
 │   └── dbCTC.sql             # Base de datos
