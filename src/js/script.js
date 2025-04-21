@@ -1,28 +1,55 @@
-const images = document.querySelectorAll('.carrusel-image');
-const dots = document.querySelectorAll('.dot');
-const leftArrow = document.querySelector('.arrow.left');
-const rightArrow = document.querySelector('.arrow.right');
+document.addEventListener("DOMContentLoaded", function () {
+  // Carga dinámica del header y slider
+  fetch("/src/componentes/header.html")
+  .then(response => response.text())
+  .then(data => {
+    document.body.insertAdjacentHTML('afterbegin', data);
 
-let current = 0;
+    setTimeout(() => {
+      const navLinks = document.querySelectorAll('.nav-link');
+      const slider = document.querySelector('.slider');
+      const path = window.location.pathname;
 
-function showSlide(index) {
-  images.forEach(img => img.classList.remove('active'));
-  dots.forEach(dot => dot.classList.remove('active'));
-  images[index].classList.add('active');
-  dots[index].classList.add('active');
-  current = index;
-}
+      let activeIndex = 0;
+      let activeColor = "#e74c3c";
 
-leftArrow.addEventListener('click', () => {
-  const newIndex = (current - 1 + images.length) % images.length;
-  showSlide(newIndex);
-});
+      navLinks.forEach((link, index) => {
+        const href = new URL(link.href).pathname;
 
-rightArrow.addEventListener('click', () => {
-  const newIndex = (current + 1) % images.length;
-  showSlide(newIndex);
-});
+        if (path === href || path.endsWith(href)) {
+          link.classList.add('active');
+          activeIndex = index;
+          activeColor = link.dataset.color || "#e74c3c";
+        }
 
-dots.forEach((dot, index) => {
-  dot.addEventListener('click', () => showSlide(index));
+        // Hover
+        link.addEventListener('mouseenter', () => {
+          if (slider) {
+            slider.style.left = `${index * 16.666}%`;
+            slider.style.backgroundColor = link.dataset.color || "#e74c3c";
+          }
+        });
+
+        // Salida de hover
+        link.addEventListener('mouseleave', () => {
+          if (slider) {
+            slider.style.left = `${activeIndex * 16.666}%`;
+            slider.style.backgroundColor = activeColor;
+          }
+        });
+      });
+
+      if (slider) {
+        slider.style.left = `${activeIndex * 16.666}%`;
+        slider.style.backgroundColor = activeColor;
+      }
+    }, 100);
+  });
+
+  // carga dinámica del footer
+  fetch("/src/componentes/footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer-container").innerHTML = data;
+    });
 });

@@ -1,98 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <title>CTC Digital</title>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="src/recursos/Icono.jpg" type="image/png" sizes="32x32" />
-  <link rel="stylesheet" href="src/css/style.css" />
-</head>
-<body>
-  <header>
-    <nav>
-      <h1><img src="src/recursos/Icono.jpg" width="38px"> CTC DIGITAL</h1>
-      <!-- Menu de navegación-->
-      <ul class="nav-links">
-        <li class="active">CTC</li>
-        <li>¡ADÓPTAME!</li>
-        <li>ADOPTADOS</li>
-        <li>DONACIONES</li>
-        <li>REPORTA</li>
-        <li>SOBRE NOSOTROS</li>
-      </ul>
-      <!-- Por si se le va a agregar algún icono -->
-      <div class="iconos"></div>
-    </nav>
-  </header>
-<!--Carrusel de imagenes-->
-  <section class="carrusel">
-    <button class="arrow left">❮</button>
-    <div class="image-box">
-      <img src="https://i.ytimg.com/vi/4MP2XN4EHfI/hqdefault.jpg" class="carrusel-image active" alt="Imagen 1">
-      <img src="https://cdn-3.expansion.mx/dims4/default/d8fa31c/2147483647/strip/true/crop/1200x630+0+0/resize/1200x630!/format/jpg/quality/80/?url=https%3A%2F%2Fcdn-3.expansion.mx%2Fd5%2Fc0%2Fbc79a00b4054bbfdfb5b23ff08c1%2Fsuspension-y-reanudacion-de-actividades-sat.jpg" class="carrusel-image" alt="Imagen 2">
-      <img src="https://preview.redd.it/opini%C3%B3n-sincera-sobre-el-lema-adopta-no-compres-v0-jltc0kbjt7ce1.jpg?width=1280&format=pjpg&auto=webp&s=922e8c7378f57068fc9efdb3fc1b444232a50835" class="carrusel-image" alt="Imagen 3">
-      <img src="https://static.guiaongs.org/wp-content/uploads/2016/07/Adopta.jpg" class="carrusel-image" alt="Imagen 4">
-    </div>
-    <button class="arrow right">❯</button>
-    <!-- Indicadored del carrusel-->
-    <div class="dots">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-    </div>
-  </section>
-   <!-- Contenido destacado-->
-  <!-- Feature 1 -->
-  <section class="feature">
-   <div class="text">
-     <h2>Feature 1</h2>
-     <p>
-       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-       eiusmod tempor incididunt ut labore et dolore magna aliqua...
-     </p>
-   </div>
-   <div class="image-feature"></div>
- </section>
+  <head>
+    <!-- ========== META ETIQUETAS ========== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
- <!-- Feature 2 -->
- <section class="feature reverse">
-   <div class="image-feature"></div>
-   <div class="text">
-     <h2>Feature 2</h2>
-     <p>
-       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-       eiusmod tempor incididunt ut labore et dolore magna aliqua...
-     </p>
-   </div>
- </section>
+    <!-- ========== INFORMACIÓN DE LA PÁGINA ========== -->
+    <title>CTC Digital</title>
+    <link rel="icon" href="/src/recursos/Icono.jpg" type="image/png" sizes="32x32" />
 
- <!-- Feature 3 -->
- <section class="feature">
-   <div class="text">
-     <h2>Feature 3</h2>
-     <p>
-       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-       eiusmod tempor incididunt ut labore et dolore magna aliqua...
-     </p>
-   </div>
-   <div class="image-feature"></div>
- </section>
+    <!--========== ESTILOS ==========-->
+    <link rel="stylesheet" href="/src/css/index.css" />
 
- <!-- Feature 4 -->
- <section class="feature reverse">
-   <div class="image-feature"></div>
-   <div class="text">
-     <h2>Feature 4</h2>
-     <p>
-       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-       eiusmod tempor incididunt ut labore et dolore magna aliqua...
-     </p>
-   </div>
- </section>
+    <!--Generales-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
 
- <!-- Script del carrusel -->
- <script src="src/js/script.js"></script>
+  <body>
+    <!-- Contenedor del header -->
+    <div id="header-container"></div>
 
-</body>
+    <!-- ========== CARRUSEL DE IMÁGENES DESTACADAS ========== -->
+    <section class="carrusel">
+      <!-- Flechas de navegación -->
+      <button class="arrow left">❮</button>
+
+      <!-- Contenedor de imágenes -->
+      <div class="image-box">
+        <img src="https://i.ytimg.com/vi/4MP2XN4EHfI/hqdefault.jpg" class="carrusel-image active" alt="Imagen 1" />
+        <img src="#" class="carrusel-image" alt="Imagen 2" />
+        <img src="#" class="carrusel-image" alt="Imagen 3" />
+        <img src="#" class="carrusel-image" alt="Imagen 4" />
+      </div>
+
+      <!-- Flechas de navegación -->
+      <button class="arrow right">❯</button>
+
+      <!-- Indicadores de imagen activa -->
+      <div class="dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+
+    <!-- ========== SECCIONES DESTACADAS DEL CTC ========== -->
+    <!-- Feature 1 -->
+    <section class="feature">
+      <div class="text">
+        <h2>Feature 1</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </p>
+      </div>
+      <div class="image-feature"></div>
+    </section>
+
+    <!-- Feature 2 (invertido) -->
+    <section class="feature reverse">
+      <div class="image-feature"></div>
+      <div class="text">
+        <h2>Feature 2</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </p>
+      </div>
+    </section>
+
+    <!-- Feature 3 -->
+    <section class="feature">
+      <div class="text">
+        <h2>Feature 3</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </p>
+      </div>
+      <div class="image-feature"></div>
+    </section>
+
+    <!-- Feature 4 (invertido) -->
+    <section class="feature reverse">
+      <div class="image-feature"></div>
+      <div class="text">
+        <h2>Feature 4</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <div id="footer-container"></div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="/src/js/index.js"></script>
+
+    <!-- Script generales-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/src/js/script.js"></script>
+
+  </body>
 </html>
