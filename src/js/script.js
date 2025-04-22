@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Carga dinámica del header y slider
-  fetch("/src/componentes/header.html")
+  fetch("/ProyectoADS_CTCDigital/src/componentes/header.html")
   .then(response => response.text())
   .then(data => {
     document.body.insertAdjacentHTML('afterbegin', data);
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // carga dinámica del footer
-  fetch("/src/componentes/footer.html")
+  fetch("/ProyectoADS_CTCDigital/src/componentes/footer.html")
     .then(response => response.text())
     .then(data => {
       document.getElementById("footer-container").innerHTML = data;
