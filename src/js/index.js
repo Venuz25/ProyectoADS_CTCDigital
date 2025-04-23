@@ -106,10 +106,32 @@ function mostrarDonadores(donadores) {
   setInterval(actualizarDonadores, 15000); // cada 15 segundos
 }
 
+// NOTICIAS - Cargar modales desde archivo externo ------------------------------
+function cargarModalesNoticias() {
+  fetch('/ProyectoADS_CTCDigital/src/componentes/noticias.html')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('No se pudieron cargar los modales');
+      }
+      return response.text();
+    })
+    .then(html => {
+      const contenedorModales = document.getElementById('modalesNoticias');
+      if (contenedorModales) {
+        contenedorModales.innerHTML = html;
+      } else {
+        console.warn('No se encontró el contenedor para los modales de noticias.');
+      }
+    })
+    .catch(error => {
+      console.error('Error al cargar los modales de noticias:', error);
+    });
+}
 
 
 // Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   showSlide(0);
   cargarEstadisticas();
+  cargarModalesNoticias(); 
 });
