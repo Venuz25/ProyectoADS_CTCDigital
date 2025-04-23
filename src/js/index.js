@@ -1,8 +1,4 @@
-// =======================
-// Carrusel de imágenes
-// =======================
-
-// Elementos del carrusel
+// CARRUSEL -------------------------------------------------
 const items = document.querySelectorAll('.carrusel-item');
 const dots = document.querySelectorAll('.dot');
 const leftArrow = document.querySelector('.arrow.left');
@@ -37,13 +33,9 @@ dots.forEach((dot, index) => {
 });
 
 
-// =======================
-// Carga de estadísticas (adopciones y rescates)
-// =======================
-
-// Esta función obtiene datos desde una API en C#
+// ADOPCIONES Y RESCATADOS --------------------------------------
 function cargarEstadisticas() {
-  fetch('http://localhost:3306/api/mascotas/estadisticas')
+  fetch('/ProyectoADS_CTCDigital/src/backend/index.php')
     .then(response => {
       if (!response.ok) {
         throw new Error('No se pudo obtener los datos');
@@ -51,20 +43,73 @@ function cargarEstadisticas() {
       return response.json();
     })
     .then(data => {
-      // Mostrar en los elementos HTML correspondientes
       const adopcionesSpan = document.getElementById('numAdopciones');
       const rescatesSpan = document.getElementById('numRescates');
 
       if (adopcionesSpan) adopcionesSpan.textContent = data.adoptados;
       if (rescatesSpan) rescatesSpan.textContent = data.total;
+      if (data.donadores && data.donadores.length > 0) {
+        mostrarDonadores(data.donadores);
+      }
     })
     .catch(error => {
       console.error('Error al cargar las estadísticas:', error);
     });
 }
 
+// DONADORES ----------------------------------------------------
+function mostrarDonadores(donadores) {
+  const lista = document.querySelector('.list-unstyled');
+  let indice = 0;
+
+  function actualizarDonadores() {
+    lista.innerHTML = '';
+
+    const maxAMostrar = 3;
+    for (let i = 0; i < maxAMostrar; i++) {
+      const donador = donadores[(indice + i) % donadores.length];
+
+      const li = document.createElement('li');
+      li.classList.add('donador');
+
+      const div = document.createElement('div');
+      div.className = 'd-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 border-top';
+
+      const img = document.createElement('img');
+      img.src = '/ProyectoADS_CTCDigital/recursos/Index/donadores/' + donador.img;
+      img.alt = `Donador ${i + 1}`;
+      img.style.backgroundColor = donador.color || '#3371ac';
+      img.style.borderRadius = '50%';
+      img.style.width = '80px';
+      img.style.height = '80px';
+      img.style.objectFit = 'cover';
+      img.style.padding = '5px';
+
+      const info = document.createElement('div');
+      info.className = 'col-lg-8';
+      info.innerHTML = `
+        <h6 class="mb-0">${donador.usuario}</h6>
+        <small class="text-body-secondary">${donador.tipo}</small><br>
+        ${donador.descripcion ? `<small class="text-body-secondary">${donador.descripcion}</small>` : ''}
+      `;
+
+      div.appendChild(img);
+      div.appendChild(info);
+      li.appendChild(div);
+      lista.appendChild(li);
+    }
+
+    indice = (indice + maxAMostrar) % donadores.length;
+  }
+
+  actualizarDonadores();
+  setInterval(actualizarDonadores, 15000); // cada 15 segundos
+}
+
+
+
 // Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
+  showSlide(0);
   cargarEstadisticas();
-  showSlide(0); // Muestra el primer slide al inicio
 });

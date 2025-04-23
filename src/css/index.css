@@ -47,11 +47,15 @@
   font-size: 1.2rem;
   font-family: "Gabarito", sans-serif;
   max-width: 80%;
+  z-index: 5;
 }
 
 .video-wrapper {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }
 
 .video-wrapper iframe {
@@ -143,3 +147,34 @@
   margin: 0 auto;
   font-size: 1.2em;
 }
+
+.contenedor{
+  background-color: #ffff;
+}
+
+/*donadores*/
+.donador {
+  height: auto;
+}
+
+.donador img {
+  width: 80px; 
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%; 
+  padding: 5px;
+  display: block;
+}
+
+/*noticias*/
+#noticias {
+  height: auto;
+  margin: 0 auto;
+  padding: 25px 5% 0px 5%;
+  background-color: #AEC3B0;
+}
+
+.tarjeta {
+  background-color: #fff;
+}
+
