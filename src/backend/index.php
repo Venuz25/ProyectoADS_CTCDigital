@@ -8,7 +8,7 @@
 
     // Adopciones
     $sqlAdoptados = "SELECT COUNT(*) as totalAdoptados FROM mascota WHERE estadoAdopcion = 'Adoptado'";
-    $resultAdoptados = $conexion->query($sqlAdoptados);
+    $resultAdoptados = $conn->query($sqlAdoptados);
     if ($resultAdoptados) {
         $fila = $resultAdoptados->fetch_assoc();
         $adopciones = $fila['totalAdoptados'];
@@ -16,20 +16,32 @@
 
     // Rescates
     $sqlTotal = "SELECT COUNT(*) as totalMascotas FROM mascota";
-    $resultTotal = $conexion->query($sqlTotal);
+    $resultTotal = $conn->query($sqlTotal);
     if ($resultTotal) {
         $fila = $resultTotal->fetch_assoc();
         $rescates = $fila['totalMascotas'];
     }
 
     // Donadores con usuario
-    $sqlDonadores = "SELECT usuario, tipo, descripcion, img, color FROM donacion WHERE usuario IS NOT NULL";
-    $resultDonadores = $conexion->query($sqlDonadores);
+    $sqlDonadores = "
+    SELECT 
+        ud.usuario, 
+        d.tipo, 
+        d.descripcion, 
+        ud.img, 
+        ud.color
+    FROM 
+        donacion d
+    INNER JOIN 
+        userDonador ud ON d.idDonacion = ud.idDonador
+    ";
+    $resultDonadores = $conn->query($sqlDonadores);
     if ($resultDonadores && $resultDonadores->num_rows > 0) {
         while ($fila = $resultDonadores->fetch_assoc()) {
             $donadores[] = $fila;
         }
     }
+
 
     echo json_encode([
         "adoptados" => $adopciones,
@@ -37,5 +49,5 @@
         "donadores" => $donadores
     ]);
 
-    $conexion->close();
+    $conn->close();
 ?>

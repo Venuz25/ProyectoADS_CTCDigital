@@ -10,7 +10,7 @@
     <link rel="icon" href="/ProyectoADS_CTCDigital/recursos/Icono.jpg" type="image/png" sizes="32x32" />
 
     <!--========== ESTILOS ==========-->
-    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/index.css" />
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/adoptame.css" />
 
     <!--Generales-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,10 +23,101 @@
     <header>
       <div id="header-container"></div>
     </header>
-    
 
+    <!-- ========== ENCABEZADO ========= -->
+    <section id="encabezado" class="text-center">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-bold">¡Adopta un lomito!</h1>
+          <p class="lead text-body-secondary">
+            En el <strong>Centro de Transferencia Canina del Metro CDMX</strong> tenemos muchos corazones nobles esperando un hogar lleno de amor. 🏠❤️ <br>
+            Esta galería muestra a nuestros amigos peludos listos para cambiar tu vida con su cariño incondicional.
+          </p>
+          <p>
+            <a href="/ProyectoADS_CTCDigital/src/formsAdoptame.html" class="btn btn-warning my-2">Formulario de Adopción</a>
+            <a class="btn btn-light my-2" data-bs-toggle="modal" data-bs-target="#modalRequisitos">Requisitos para Adoptar</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== GALERÍA DE MASCOTAS ========== -->
+    
+    <div class="album py-5 bg-body-tertiary">
+      <div class="container">
+        
+        <!-- Tarjeta de adopción -->
+        <div id="contenedorAdopciones" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
+          
+      </div>
+    </div>
+        
+     
+    <!-- ============= MODAL INFO MASCOTAS ============== -->
+    <div class="modal fade" id="modalInfoMascota" tabindex="-1" aria-labelledby="modalInfoMascotaLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-warning-subtle">
+            <h5 class="modal-title fw-bold" id="modalInfoMascotaLabel">Información del Perrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body" id="contenidoModalMascota">
+            <!-- Se rellena con JS -->
+          </div>
+          <div class="modal-footer bg-warning-subtle">
+            <a id="btnAdoptar" href="#" class="btn btn-outline-dark">¡Quiero Adoptarlo!</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== MODAL REQUISITOS ========== -->
+  <div class="modal fade" id="modalRequisitos" tabindex="-1" aria-labelledby="modalRequisitosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary-subtle">
+          <h5 class="modal-title fw-bold" id="modalRequisitosLabel">Requisitos para el Proceso de Adopción</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">
+            Para garantizar el bienestar de nuestras mascotas y asegurar una adopción responsable, es indispensable cumplir con los siguientes requisitos:
+          </p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>1. Ser mayor de edad:</strong> El adoptante deberá presentar una identificación oficial vigente que acredite la mayoría de edad (18 años o más).
+            </li>
+            <li class="list-group-item">
+              <strong>2. Completar el formulario de adopción:</strong> Este documento incluye información básica sobre el adoptante, su entorno familiar y su experiencia con animales.
+            </li>
+            <li class="list-group-item">
+              <strong>3. Contar con las condiciones adecuadas para el cuidado:</strong> Es importante demostrar que se dispone del espacio, tiempo y recursos necesarios para brindar atención, alimentación y ejercicio al animal.
+            </li>
+            <li class="list-group-item">
+              <strong>4. Asumir un compromiso de por vida:</strong> El adoptante deberá comprometerse a brindar un hogar permanente, evitando abandonos o negligencia.
+            </li>
+            <li class="list-group-item">
+              <strong>5. Aceptar visitas o seguimiento posterior a la adopción:</strong> Con el fin de asegurar el bienestar continuo del animal, se podrán realizar visitas o llamadas de seguimiento por parte del equipo responsable.
+            </li>
+            <li class="list-group-item">
+              <strong>6. Vivir en CDMX o zona metropolitana:</strong> Es necesario residir en la Ciudad de México o en áreas cercanas para facilitar el proceso de adopción y seguimiento.
+            </li>
+            <li class="list-group-item">
+              <strong>7. Consentir la firma del contrato de adopción:</strong> Este documento formaliza el compromiso del adoptante con las responsabilidades adquiridas y el cuidado del animal.
+            </li>
+          </ul>
+          <p class="mt-4">
+            El objetivo de estos requisitos es asegurar que cada mascota sea adoptada por una persona comprometida y en un entorno seguro, amoroso y responsable.
+          </p>
+        </div>
+        <div class="modal-footer bg-primary-subtle">
+        </div>
+      </div>
+    </div>
+  </div>
 
     <!-- ========== SCRIPTS ========== -->
+    <script src="/ProyectoADS_CTCDigital/src/js/adoptame.js"></script>
 
     <!-- Generales-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
