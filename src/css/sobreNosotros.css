@@ -34,6 +34,10 @@
 }
 
 /*principal*/
+#pricipal{
+  background-color: white;
+}
+
 #principal img {
     height: 100%;
     object-fit: cover;
@@ -99,7 +103,7 @@
   position: relative;
   white-space: nowrap;
   max-width: 80%;
-  height: 600px;
+  height: 800px;
   padding: 0 10px;
   margin: 0 auto;
   display: grid;
@@ -130,8 +134,7 @@
 .timeline .info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 20px 40px;
+  padding: 150px 30px;
   color: white;
   background: #01565b;
   white-space: normal;
@@ -170,11 +173,14 @@
 
 .timeline ol {
   font-size: 0;
+  height: 100%;
   padding: 250px 0;
   transition: all 1s;
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   scrollbar-color: #cdf3f5 #01565b;
+  padding: 100px 0;
+  align-content: center;
 }
 
 .timeline ol li {
@@ -185,6 +191,22 @@
   height: 5px;
   background: white;
   scroll-snap-align: start;
+}
+
+.timeline ol li div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  min-height: 200px; 
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.timeline ol li div img {
+  border-radius: 10px;
 }
 
 .timeline ol li:last-child {

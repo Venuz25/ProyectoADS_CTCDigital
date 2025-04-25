@@ -25,5 +25,5 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   
-    setInterval(detectarImagenCentral, 100);
+    setInterval(detectarImagenCentral, 1000);
   });
