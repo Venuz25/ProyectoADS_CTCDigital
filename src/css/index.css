@@ -8,6 +8,11 @@ html{
   overflow-x: hidden;
 }
 
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 /* Carrusel de imágenes */
 .carrusel {
   position: relative;
@@ -162,14 +167,26 @@ html{
 }
 
 /*Datos*/
+.container-xxl {
+  position: relative;
+}
+
+.position-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 6rem;
+  align-self: flex-start;
+}
+
 #datos{
   padding: 15px 5%;
   margin: 0 auto;
   font-size: 1.2em;
+  z-index: 100;
 }
 
 .contenedor{
-  background-color: #ffff;
+  background-color: #ffffff;
 }
 
 /*donadores*/
