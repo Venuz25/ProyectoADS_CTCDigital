@@ -3,9 +3,11 @@
 }
 
 html{
+  padding-top: 80px;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 html, body {
