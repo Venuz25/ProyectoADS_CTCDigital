@@ -122,7 +122,6 @@
     transform: rotate(180deg);
   }
   
-  /* Oculta el select original */
   #linea {
     display: none;
   }

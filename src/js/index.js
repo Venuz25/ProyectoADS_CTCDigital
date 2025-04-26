@@ -103,7 +103,7 @@ function mostrarDonadores(donadores) {
   }
 
   actualizarDonadores();
-  setInterval(actualizarDonadores, 15000); // cada 15 segundos
+  setInterval(actualizarDonadores, 5000); // cada 5 segundos
 }
 
 // NOTICIAS - Cargar modales desde archivo externo ------------------------------

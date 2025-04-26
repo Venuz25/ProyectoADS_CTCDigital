@@ -10,7 +10,8 @@
     <link rel="icon" href="/ProyectoADS_CTCDigital/recursos/Icono.jpg" type="image/png" sizes="32x32" />
 
     <!--========== ESTILOS ==========-->
-    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/index.css" />
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/donaciones.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
     <!--Generales-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,9 +25,139 @@
       <div id="header-container"></div>
     </header>
     
+    <!-- ========== CONTENIDO ========== -->
+    <main class="container">
+      <div class="donation-container">
+        <!-- Barra de progreso -->
+        <div class="progress-bar">
+          <div class="progress" id="donation-progress" style="width: 20%;"></div>
+        </div>
 
+        <!-- Sección 1: Introducción -->
+        <div class="form-section active" id="section-1">
+          <h1 class="text-center mb-4"><i class="fas fa-hand-holding-heart"></i></h2> 
+          <h2 class="text-center mb-4">¡Haz tu donación!</h2>
+          
+          <div class="intro-card animate__animated animate__fadeInUp">
+            <h4><i class="fas fa-info-circle me-2"></i>Tu donación nos ayuda a proteger vidas</h4>
+            <p>En el Metro CDMX, trabajamos día a día para darle las mejores condiciones de vida a nuestros peluditos, pero una ayuda nunca viene mal. Sus donaciones nos ayudan a:</p>
+            <ul>
+              <li>Mantener nuestros programas de rescate</li>
+              <li>Proveer cuidados médicos a los animales</li>
+              <li>Mejorar nuestras instalaciones</li>
+              <li>Educar sobre el cuidado animal</li>
+            </ul>
+            <p class="fw-bold">Cada donación, sin importar su tamaño, marca una gran diferencia.</p>
+          </div>         
+          <div class="text-center mt-4">
+            <button class="btn btn-primary btn-lg btn-next" onclick="nextSection(1)">
+              <i class="fas fa-heart me-2"></i>¡Quiero donar!
+            </button>
+          </div>
+        </div>
+
+        <!-- Sección 2: Datos del donante -->
+        <div class="form-section" id="section-2">
+          <h3><i class="fas fa-user"></i> Tus datos</h3>
+          <form id="donor-form">
+            <div class="mb-3">
+              <label class="form-label">Nombre completo</label>
+              <input type="text" class="form-control" id="nombreDonante" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Correo electrónico</label>
+              <input type="email" class="form-control" id="correo" required>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-outline-secondary" onclick="prevSection(2)">
+                <i class="fas fa-arrow-left me-2"></i>Regresar
+              </button>
+              <button type="button" class="btn btn-primary btn-next" onclick="validateDonorForm()">
+                Siguiente<i class="fas fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sección 3: Datos de donación -->
+        <div class="form-section" id="section-3">
+          <h3><i class="fas fa-donate"></i> Detalles de la donación</h3>
+          <form id="donation-form">
+            <div class="mb-3">
+              <label class="form-label">Tipo de donación</label>
+              <select class="form-select" id="tipoDonacion" required>
+                <option value="" selected disabled>Seleccione un tipo</option>
+                <option value="monetaria">Monetaria</option>
+                <option value="en especie">En especie</option>
+                <option value="voluntariado">Voluntariado</option>
+              </select>
+            </div>
+
+            <div id="donation-details"></div>
+
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="checkbox" id="publicarDonacion">
+              <label class="form-check-label" for="publicarDonacion">Mostrar mi donación públicamente</label>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-outline-secondary" onclick="prevSection(3)">
+                <i class="fas fa-arrow-left me-2"></i>Regresar
+              </button>
+              <button type="button" class="btn btn-primary btn-next" id="btnDonacionSubmit">
+                <i class="fas fa-paper-plane me-2"></i>Finalizar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sección 4: Personalización -->
+        <div class="form-section" id="section-4">
+          <h3><i class="fas fa-palette"></i> Personaliza tu donación</h3>
+          <form id="customization-form">
+            <div class="mb-3">
+              <label class="form-label">Nombre público</label>
+              <input type="text" class="form-control" id="usuario" required>
+              <div class="invalid-feedback">Por favor ingresa un nombre público</div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Selecciona un avatar <span class="text-danger">*</span></label>
+              <div class="avatar-grid" id="avatar-grid"></div>
+              <div id="avatar-error" class="invalid-feedback d-none">Debes seleccionar un avatar</div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Color de fondo</label>
+              <input type="color" class="form-control-color" id="colorFondo" value="#ffffff" required>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-outline-secondary" onclick="prevSection(4)">
+                <i class="fas fa-arrow-left me-2"></i>Regresar
+              </button>
+              <button type="button" class="btn btn-primary btn-next" onclick="validateCustomization()">
+                <i class="fas fa-paper-plane me-2"></i>Finalizar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sección 5: Agradecimiento -->
+        <div class="form-section" id="section-5">
+          <div class="thank-you text-center">
+            <i class="fas fa-heart fa-4x text-success mb-4"></i>
+            <h2>¡Gracias por tu generosidad!</h2>
+            <p class="lead">Tu donación está haciendo la diferencia en la vida de muchos animales.</p>
+            <p>Recibirás un correo de confirmación con los detalles de tu contribución.</p>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <!-- ========== SCRIPTS ========== -->
+    <script src="/ProyectoADS_CTCDigital/src/js/donaciones.js"></script>
 
     <!-- Generales-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
