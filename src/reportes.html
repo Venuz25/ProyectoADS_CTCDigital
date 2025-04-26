@@ -10,7 +10,8 @@
     <link rel="icon" href="/ProyectoADS_CTCDigital/recursos/Icono.jpg" type="image/png" sizes="32x32" />
 
     <!--========== ESTILOS ==========-->
-    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/index.css" />
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/reportes.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
     <!--Generales-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,9 +25,155 @@
       <div id="header-container"></div>
     </header>
     
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="form-container animate__animated animate__fadeIn">
 
+            <!-- Barra de progreso -->
+            <div class="progress-bar">
+              <div class="progress" id="form-progress" style="width: 25%;"></div>
+            </div>
+            
+            <!-- Sección 1: Portada/Introducción -->
+            <div class="form-section active" id="section-1">
+              <div class="text-center">
+                <i class="fas fa-paw animal-icon"></i>
+                <h2 class="mb-4">Reporte de Animales en el Metro CDMX</h2>
+              </div>
+              
+              <div class="intro-card animate__animated animate__fadeInUp">
+                <h4><i class="fas fa-info-circle me-2"></i>Tu reporte ayuda a salvar vidas</h4>
+                <p>En el Metro CDMX, nos preocupamos por el bienestar de todos los seres vivos. Los reportes de animales en las instalaciones nos ayudan a:</p>
+                <ul>
+                  <li>Identificar animales que puedan estar en peligro</li>
+                  <li>Coordinar rescates con organizaciones especializadas</li>
+                  <li>Mejorar las condiciones de vida de estos animalitos</li>
+                  <li>Prevenir accidentes para los usuarios y los animales</li>
+                </ul>
+                <p class="fw-bold">Por favor, asegúrate de que la información que proporciones sea verídica y precisa.</p>
+              </div>
+              
+              <div class="text-center mt-4">
+                <button class="btn btn-primary btn-lg btn-next" onclick="nextSection(1)">
+                  <i class="fas fa-clipboard-list me-2"></i>Hacer un reporte
+                </button>
+              </div>
+            </div>
+            
+            <!-- Sección 2: Datos del reportante -->
+            <div class="form-section" id="section-2">
+              <h3 class="mb-4"><i class="fas fa-user me-2"></i>Datos del Reportante</h3>
+              
+              <form id="reporter-form">
+                <div class="mb-3">
+                  <label for="nombreReportante" class="form-label">Nombre completo</label>
+                  <input type="text" class="form-control" id="nombreReportante" 
+                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+                         title="Por favor ingresa solo letras" 
+                         required>
+                  <div class="invalid-feedback">
+                    Por favor ingresa un nombre válido (solo letras).
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="correo" class="form-label">Correo electrónico</label>
+                  <input type="email" class="form-control" id="correo" 
+                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
+                         required>
+                  <div class="invalid-feedback">
+                    Por favor ingresa un correo electrónico válido.
+                  </div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(2)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary btn-next" onclick="validateReporterForm()">
+                    Siguiente<i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 3: Datos del reporte -->
+            <div class="form-section" id="section-3">
+              <h3 class="mb-4"><i class="fas fa-file-alt me-2"></i>Datos del Reporte</h3>
+              
+              <form id="report-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Lugar</label>
+                  <div class="row station-select">
+                    <div class="col-md-6 mb-3">
+                      <label for="linea" class="form-label">Línea del Metro</label>
+                      <select class="form-select" id="linea" required>
+                        <option value="" selected disabled>Selecciona una línea</option>
+                        <option value="1">Línea 1 - Rosa (Observatorio - Pantitlán)</option>
+                        <option value="2">Línea 2 - Azul (Cuatro Caminos - Tasqueña)</option>
+                        <option value="3">Línea 3 - Verde Olivo (Indios Verdes - Universidad)</option>
+                        <option value="4">Línea 4 - Cian (Martín Carrera - Santa Anita)</option>
+                        <option value="5">Línea 5 - Amarillo (Politécnico - Pantitlán)</option>
+                        <option value="6">Línea 6 - Rojo (El Rosario - Martín Carrera)</option>
+                        <option value="7">Línea 7 - Naranja (El Rosario - Barranca del Muerto)</option>
+                        <option value="8">Línea 8 - Verde (Garibaldi - Constitución de 1917)</option>
+                        <option value="9">Línea 9 - Café (Tacubaya - Pantitlán)</option>
+                        <option value="A">Línea A - Morado (Pantitlán - La Paz)</option>
+                        <option value="B">Línea B - Verde y Gris (Buenavista - Ciudad Azteca)</option>
+                        <option value="12">Línea 12 - Oro (Mixcoac - Tláhuac)</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="estacion" class="form-label">Estación</label>
+                      <select class="form-select" id="estacion" disabled required>
+                        <option value="" selected disabled>Primero selecciona una línea</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="fechaHora" class="form-label">Fecha y hora del avistamiento *</label>
+                  <input type="datetime-local" class="form-control" id="fechaHora" required>
+                </div>
+                
+                <div class="mb-4">
+                  <label for="detalles" class="form-label">Detalles adicionales</label>
+                  <textarea class="form-control" id="detalles" rows="4" 
+                            placeholder="Descripción del animal, comportamiento, ubicación exacta, etc."></textarea>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(3)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary" onclick="validateReportForm()">
+                    <i class="fas fa-paper-plane me-2"></i>Finalizar reporte
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 4: Agradecimiento -->
+            <div class="form-section" id="section-4">
+              <div class="thank-you animate__animated animate__fadeIn">
+                <i class="fas fa-heart"></i>
+                <h2 class="mb-3">¡Gracias por tu reporte!</h2>
+                <p class="lead">Tu contribución ayuda a proteger a los animales en la CDMX.</p>
+                <p>Hemos recibido tu información y la compartiremos con el equipo de rescate correspondiente.</p>
+                <p>Si es necesario, podríamos contactarte para más detalles.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
 
     <!-- ========== SCRIPTS ========== -->
+    <script src="/ProyectoADS_CTCDigital/src/js/reportes.js"></script>
 
     <!-- Generales-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
