@@ -11,22 +11,184 @@
 
     <!--========== ESTILOS ==========-->
     <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
 
     <!--Generales-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/style.css" />    
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/style.css" />
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/formsAdoptame.css">
   </head>
 
-  <body>
+  <body class="bg-light">
+
     <!-- ========== HEADER ========== -->
     <header>
       <div id="header-container"></div>
     </header>
-    
+  
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
+    <main class="container my-5">
+      <div class="card formulario-card animate__animated animate__fadeIn mx-auto" style="max-width: 800px;">
+  
+        <!-- Barra de progreso -->
+        <div class="progress mb-4" role="progressbar" aria-label="Progreso" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar" style="width: 30%;"></div>
+        </div>
+  
+        <!-- Título del formulario -->
+        <div class="text-center mb-4">
+          <i class="fa-solid fa-paw icono-formulario"></i>
+          <h3 class="titulo-formulario mt-2">Formato de Adopción Canino</h3>
+        </div>
+  
+        <!-- Formulario -->
+        <form>
+  
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Nombre:</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="col">
+              <label class="form-label">Edad:</label>
+              <input type="number" class="form-control">
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Dirección:</label>
+            <input type="text" class="form-control">
+          </div>
+  
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Ocupación y Escolaridad:</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="col">
+              <label class="form-label">Delegación:</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+  
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Celular / Teléfonos:</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="col">
+              <label class="form-label">E-mail:</label>
+              <input type="email" class="form-control">
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Nombre del animalito que deseas adoptar:</label>
+            <input type="text" class="form-control">
+          </div>
+  
+          <!-- Preguntas abiertas -->
+          <div class="mb-3">
+            <label class="form-label">¿Por qué deseas adoptar?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Actualmente tienes otros animales?</label>
+            <input type="text" class="form-control">
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Anteriormente has tenido mascotas? ¿Cuáles?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Alguna mascota ha muerto por accidente o escapado?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Has adoptado antes algún perrito sin hogar?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Cómo te enteraste de la adopción del perrito?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Por qué deseas adoptar a este perrito en especial?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <!-- Opiniones y condiciones -->
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">¿Estás de acuerdo en que se haga una visita domiciliaria?</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="col">
+              <label class="form-label">¿Qué opinas de estas visitas?</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Todas las personas en tu casa están de acuerdo en adoptar?</label>
+            <input type="text" class="form-control">
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">¿Alguien en casa es alérgico a los animales?</label>
+            <input type="text" class="form-control">
+          </div>
+  
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">¿Hay niños en casa?</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="col">
+              <label class="form-label">¿Qué edades tienen?</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">En caso de vivir en lugar rentado, ¿tus arrendadores permiten animales?</label>
+            <input type="text" class="form-control">
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Si cambias de domicilio, ¿qué pasaría con el animalito?</label>
+            <textarea class="form-control" rows="2"></textarea>
+          </div>
+  
+          <!-- Botones -->
+          <div class="text-end mt-4">
+            <a href="/ProyectoADS_CTCDigital/src/adoptame.html" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left"></i> Regresar
+            </a>
+            <button type="submit" class="btn btn-primary">
+              Siguiente <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+  
+        </form>
+  
+      </div>
+    </main>
+  
+
 
 
     <!-- ========== SCRIPTS ========== -->
+    
+
 
     <!-- Generales-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

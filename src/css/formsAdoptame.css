@@ -1,0 +1,55 @@
+/* Fondo del body */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Card principal del formulario */
+.formulario-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+/* Barra de progreso personalizada */
+.progress-bar {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+}
+
+/* Título del formulario */
+.titulo-formulario {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Icono principal */
+.icono-formulario {
+    font-size: 2rem;
+    color: #0072ff;
+}
+
+/* Inputs y textarea */
+.form-control {
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Botones */
+.btn-primary {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.5rem;
+}
+
+.btn-outline-secondary {
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.5rem;
+}
+
+/* Footer separado */
+footer {
+    margin-top: 4rem;
+}
