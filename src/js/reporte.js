@@ -1,54 +1,54 @@
 //colores de las líneas del metro
 const coloresLineas = {
-    "1": "#F7226F",  // Rosa
-    "2": "#0054A6",  // Azul
-    "3": "#6DBA45",  // Verde olivo
-    "4": "#00A9E0",  // Cian
-    "5": "#FFD100",  // Amarillo
-    "6": "#E5451F",  // Rojo
-    "7": "#F7921E",  // Naranja
-    "8": "#00A261",  // Verde
-    "9": "#A67C52",  // Café
-    "A": "#8F4B9B",  // Morado
-    "B": "#7E878D",  // Verde y Gris
-    "12": "#D5A021"  // Oro
+    "L1": "#F7226F",  // Rosa
+    "L2": "#0054A6",  // Azul
+    "L3": "#6DBA45",  // Verde olivo
+    "L4": "#00A9E0",  // Cian
+    "L5": "#FFD100",  // Amarillo
+    "L6": "#E5451F",  // Rojo
+    "L7": "#F7921E",  // Naranja
+    "L8": "#00A261",  // Verde
+    "L9": "#A67C52",  // Café
+    "LA": "#8F4B9B",  // Morado
+    "LB": "#7E878D",  // Verde y Gris
+    "L12": "#D5A021"  // Oro
   };
 
 // Mapeo de líneas a estaciones
 const estacionesPorLinea = {
-    "1": ["Observatorio", "Tacubaya", "Juanacatlán", "Chapultepec", "Sevilla", "Insurgentes", "Cuauhtémoc", 
+    "L1": ["Observatorio", "Tacubaya", "Juanacatlán", "Chapultepec", "Sevilla", "Insurgentes", "Cuauhtémoc", 
           "Balderas", "Salto del Agua", "Isabel la Católica", "Pino Suárez", "Merced", "Candelaria", 
           "San Lázaro", "Moctezuma", "Balbuena", "Boulevard Puerto Aéreo", "Gómez Farías", "Zaragoza", "Pantitlán"],
-    "2": ["Cuatro Caminos", "Panteones", "Tacuba", "Cuitláhuac", "Popotla", "Colegio Militar", "Normal", 
+    "L2": ["Cuatro Caminos", "Panteones", "Tacuba", "Cuitláhuac", "Popotla", "Colegio Militar", "Normal", 
           "San Cosme", "Revolución", "Hidalgo", "Bellas Artes", "Allende", "Zócalo", "Pino Suárez", 
           "San Antonio Abad", "Chabacano", "Viaducto", "Xola", "Villa de Cortés", "Nativitas", 
           "Portales", "Ermita", "General Anaya", "Tasqueña"],
-    "3": ["Indios Verdes", "Deportivo 18 de Marzo", "Potrero", "La Raza", "Tlatelolco", "Guerrero", 
+    "L3": ["Indios Verdes", "Deportivo 18 de Marzo", "Potrero", "La Raza", "Tlatelolco", "Guerrero", 
           "Hidalgo", "Juárez", "Balderas", "Niños Héroes", "Hospital General", "Centro Médico", 
           "Etiopía", "Eugenia", "División del Norte", "Zapata", "Coyoacán", "Viveros", "Miguel Ángel de Quevedo", 
           "Copilco", "Universidad"],
-    "4": ["Martín Carrera", "Talismán", "Bondojito", "Consulado", "Canal del Norte", "Morelos", 
+    "L4": ["Martín Carrera", "Talismán", "Bondojito", "Consulado", "Canal del Norte", "Morelos", 
           "Candelaria", "Fray Servando", "Jamaica", "Santa Anita"],
-    "5": ["Politécnico", "Instituto del Petróleo", "Autobuses del Norte", "La Raza", "Misterios", 
+    "L5": ["Politécnico", "Instituto del Petróleo", "Autobuses del Norte", "La Raza", "Misterios", 
           "Valle Gómez", "Consulado", "Eduardo Molina", "Aragón", "Oceanía", "Terminal Aérea", "Hangares", 
           "Pantitlán"],
-    "6": ["El Rosario", "Tezozómoc", "UAM Azcapotzalco", "Ferrería", "Norte 45", "Vallejo", 
+    "L6": ["El Rosario", "Tezozómoc", "UAM Azcapotzalco", "Ferrería", "Norte 45", "Vallejo", 
           "Instituto del Petróleo", "Lindavista", "Deportivo 18 de Marzo", "La Villa-Basílica", "Martín Carrera"],
-    "7": ["El Rosario", "Aquiles Serdán", "Camarones", "Refinería", "Tacuba", "San Joaquín", 
+    "L7": ["El Rosario", "Aquiles Serdán", "Camarones", "Refinería", "Tacuba", "San Joaquín", 
           "Polanco", "Auditorio", "Constituyentes", "Tacubaya", "San Pedro de los Pinos", "San Antonio", 
           "Mixcoac", "Barranca del Muerto"],
-    "8": ["Garibaldi", "Bellas Artes", "San Juan de Letrán", "Salto del Agua", "Doctores", "Obrera", 
+    "L8": ["Garibaldi", "Bellas Artes", "San Juan de Letrán", "Salto del Agua", "Doctores", "Obrera", 
           "Chabacano", "La Viga", "Santa Anita", "Coyuya", "Iztacalco", "Apatlaco", "Aculco", 
           "Escuadrón 201", "Atlalilco", "Iztapalapa", "Cerro de la Estrella", "UAM-I", "Constitución de 1917"],
-    "9": ["Tacubaya", "Patriotismo", "Chilpancingo", "Centro Médico", "Lázaro Cárdenas", "Chabacano", 
+    "L9": ["Tacubaya", "Patriotismo", "Chilpancingo", "Centro Médico", "Lázaro Cárdenas", "Chabacano", 
           "Jamaica", "Mixiuhca", "Velódromo", "Ciudad Deportiva", "Puebla", "Pantitlán"],
-    "A": ["Pantitlán", "Agrícola Oriental", "Canal de San Juan", "Tepalcates", "Guelatao", "Peñón Viejo", 
+    "LA": ["Pantitlán", "Agrícola Oriental", "Canal de San Juan", "Tepalcates", "Guelatao", "Peñón Viejo", 
           "Acatitla", "Santa Marta", "Los Reyes", "La Paz"],
-    "B": ["Buenavista", "Guerrero", "Garibaldi", "Lagunilla", "Tepito", "Morelos", "San Lázaro", 
+    "LB": ["Buenavista", "Guerrero", "Garibaldi", "Lagunilla", "Tepito", "Morelos", "San Lázaro", 
           "Flores Magón", "Romero Rubio", "Oceanía", "Deportivo Oceanía", "Bosque de Aragón", "Villa de Aragón", 
           "Nezahualcóyotl", "Impulsora", "Río de los Remedios", "Muzquiz", "Ecatepec", "Olímpica", "Plaza Aragón", 
           "Ciudad Azteca"],
-    "12": ["Mixcoac", "Insurgentes Sur", "Hospital 20 de Noviembre", "Zapata", "Parque de los Venados", 
+    "L12": ["Mixcoac", "Insurgentes Sur", "Hospital 20 de Noviembre", "Zapata", "Parque de los Venados", 
            "Eje Central", "Ermita", "Mexicaltzingo", "Atlalilco", "Culhuacán", "San Andrés Tomatlán", 
            "Lomas Estrella", "Calle 11", "Periférico Oriente", "Tezonco", "Olivos", "Nopalera", "Zapotitlán", 
            "Tlaltenco", "Tláhuac"]
@@ -99,43 +99,6 @@ function nextSection(currentSection) {
 // Sección anterior
 function prevSection(currentSection) {
     showSection(currentSection - 1);
-}
-
-// Enviar el formulario de reportes
-function validateReportForm() {
-    const form = document.getElementById('report-form');
-    if (form.checkValidity()) {
-        // Recolectar datos
-        const formData = {
-            nombreReportante: document.getElementById('nombreReportante').value,
-            correo: document.getElementById('correo').value,
-            estacion: document.getElementById('estacion').value,
-            detalles: document.getElementById('detalles').value
-        };
-
-        fetch('/ProyectoADS_CTCDigital/src/backend/reporte.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                showSection(4);
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Ocurrió un error al enviar el reporte');
-        });
-        
-    } else {
-        form.classList.add('was-validated');
-    }
 }
 
 // Validación de formularios
@@ -196,4 +159,75 @@ document.addEventListener('DOMContentLoaded', function() {
         optionsContainer.classList.remove('visible');
       }
     });
+
+    // Delimita fecha y hora
+    const fechaInput = document.getElementById('fechaHora');
+    
+    // Obtener la fecha actual en formato compatible con input datetime-local
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    const maxDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    
+    fechaInput.max = maxDateTime;
 });
+
+// Enviar el formulario de reportes
+function validateReportForm() {
+  const reporterForm = document.getElementById('reporter-form');
+  const reportForm = document.getElementById('report-form');
+
+  if (reporterForm.checkValidity() && reportForm.checkValidity()) {
+      const formData = new FormData();
+
+      // Agregar datos del reportante
+      formData.append('nombreReportante', document.getElementById('nombreReportante').value);
+      formData.append('correo', document.getElementById('correo').value);
+
+      // Agregar datos del reporte
+      formData.append('linea', document.getElementById('linea').value);
+      formData.append('estacion', document.getElementById('estacion').value);
+      formData.append('fechaHora', document.getElementById('fechaHora').value);
+      formData.append('detalles', document.getElementById('detalles').value);
+
+      // Agregar archivos (evidencias)
+      const evidenciasInput = document.getElementById('evidencias');
+      for (let i = 0; i < evidenciasInput.files.length; i++) {
+          formData.append('evidencias[]', evidenciasInput.files[i]);
+      }
+
+      // Ahora enviamos
+      fetch('/ProyectoADS_CTCDigital/src/backend/reporte.php', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.text()) 
+      .then(text => {
+          console.log("Respuesta cruda del servidor:", text); 
+          try {
+              const data = JSON.parse(text); 
+              if (data.status === 'success') {
+                  showSection(4);
+              } else {
+                  alert('Error: ' + data.message);
+              }
+          } catch (e) {
+              console.error('Error al convertir JSON:', e);
+              alert('Respuesta inesperada del servidor: ' + text);
+          }
+      });
+
+  } else {
+      if (!reporterForm.checkValidity()) {
+          reporterForm.classList.add('was-validated');
+      }
+      if (!reportForm.checkValidity()) {
+          reportForm.classList.add('was-validated');
+      }
+  }
+}
+

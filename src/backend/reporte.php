@@ -1,70 +1,87 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-require_once "conexion.php";
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json; charset=UTF-8");
 
-// Verificar si se recibieron los datos
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents("php://input"), true);
+    require_once "conexion.php";
 
-    $nombre = $conn->real_escape_string($data['nombreReportante'] ?? '');
-    $correo = $conn->real_escape_string($data['correo'] ?? '');
-    $estacion = $conn->real_escape_string($data['estacion'] ?? '');
-    $descripcion = $conn->real_escape_string($data['detalles'] ?? '');
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Obtiene datos del formulario con FormData
+        $nombre = $conn->real_escape_string($_POST['nombreReportante'] ?? '');
+        $correo = $conn->real_escape_string($_POST['correo'] ?? '');
+        $linea = $conn->real_escape_string($_POST['linea'] ?? '');
+        $estacion = $conn->real_escape_string($_POST['estacion'] ?? '');
+        $descripcion = $conn->real_escape_string($_POST['detalles'] ?? '');
 
-    $estacionesPermitidas = [
-        'Acatitla','Aculco','Agrícola Oriental','Allende','Apatlaco','Aquiles Serdán','Aragón','Atlalilco','Auditorio','Autobuses del Norte','Azcapotzalco','Balbuena','Balderas','Barranca del Muerto','Bellas Artes','Bondojito','Bosque de Aragón','Boulevard Puerto Aéreo','Buenavista','Calle 11','Camarones','Canal del Norte','Canal de San Juan','Candelaria','Centro Médico','Cerro de la Estrella','Chabacano','Chapultepec','Chilpancingo','Ciudad Azteca','Ciudad Deportiva','Constitución de 1917','Constituyentes','Copilco','Coyuya','Cuatro Caminos','Culhuacán','Cuauhtémoc','Cuitláhuac','Deportivo 18 de Marzo','Deportivo Oceanía','División del Norte','Doctores','Eduardo Molina','El Rosario','Ermita','Escuadrón 201','Etiopía/Plaza de la Transparencia','Eugenia','Ferrería','Fray Servando','Garibaldi','General Anaya','Gómez Farías','Gran Canal','Guerrero','Guelatao','Hangares','Hidalgo','Hospital 20 de Noviembre','Hospital General','Impulsora','Indios Verdes','Insurgentes','Instituto del Petróleo','Iztacalco','Iztapalapa','Isabel la Católica','Jamaica','Juárez','Juanacatlán','La Raza','La Viga','Lagunilla','Lindavista','Lomas Estrella','Los Reyes','Martín Carrera','Merced','Mexicaltzingo','Miguel Ángel de Quevedo','Mixcoac','Mixiuhca','Moctezuma','Morelos','Museo','Nativitas','Nezahualcóyotl','Niños Héroes','Nopalera','Normal','Norte 45','Observatorio','Oceanía','Olímpica','Panteones','Pantitlán','Patriotismo','Peñón Viejo','Periférico Oriente','Pino Suárez','Plaza Aragón','Polanco','Politécnico','Popotla','Portales','Potrero','Refinería','Revolución','Ricardo Flores Magón','Río de los Remedios','Romero Rubio','Salto del Agua','San Andrés Tomatlán','San Antonio','San Antonio Abad','San Cosme','San Joaquín','San Juan de Letrán','San Lázaro','San Pedro de los Pinos','Santa Anita','Santa Marta','Sevilla','Shakespeare','Tacuba','Tacubaya','Talisman','Tasqueña','Tezonco','Tezozómoc','Tláhuac','Tlatelolco','Tlaltenco','Tlatilco','Tlazintla','Universidad','UAM-I','UAM-Azcapotzalco','Valle Gómez','Vallejo','Velódromo','Villa de Aragón','Villa de Cortés','Viaducto','Viveros','Xola','Zapata','Zaragoza','Zócalo'
-    ];
+        // Validaciones básicas
+        if (empty($nombre) || empty($correo) || empty($linea) || empty($estacion)) {
+            die(json_encode(['status' => 'error', 'message' => 'Todos los campos obligatorios deben ser llenados']));
+        }
 
-    // Validar campos obligatorios
-    if (empty($nombre) || empty($correo) || empty($estacion)) {
-        die(json_encode(['status' => 'error', 'message' => 'Todos los campos obligatorios deben ser llenados']));
-    }
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            die(json_encode(['status' => 'error', 'message' => 'Correo electrónico no válido']));
+        }
 
-    // Validación de email
-    if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-        die(json_encode(['status' => 'error', 'message' => 'Correo electrónico no válido']));
-    }
+        if (strlen($nombre) > 100 || strlen($correo) > 100) {
+            die(json_encode(['status' => 'error', 'message' => 'Los campos exceden la longitud permitida']));
+        }
 
-    // Limitar longitud de campos
-    if (strlen($nombre) > 100 || strlen($correo) > 100) {
-        die(json_encode(['status' => 'error', 'message' => 'Los campos exceden la longitud permitida']));
-    }
+        // Obtener ID de la estación
+        $queryEstacion = "SELECT idEstacion FROM estaciones WHERE nombre = ? AND linea = ?";
+        $stmtEstacion = $conn->prepare($queryEstacion);
+        $stmtEstacion->bind_param("ss", $estacion, $linea);
+        $stmtEstacion->execute();
+        $result = $stmtEstacion->get_result();
 
-    // Validar estación
-    if (!in_array($estacion, $estacionesPermitidas)) {
-        die(json_encode(['status' => 'error', 'message' => 'Estación no válida']));
-    }
+        if ($result->num_rows === 0) {
+            die(json_encode(['status' => 'error', 'message' => 'Estación no encontrada en la línea especificada']));
+        }
 
-    // Preparar la consulta SQL
-    $sql = "INSERT INTO reporte (
+        $row = $result->fetch_assoc();
+        $idEstacionRep = $row['idEstacion'];
+        $stmtEstacion->close();
+
+        // Insertar el reporte
+        $sql = "INSERT INTO reporte (
+            idEstacionRep,
             nombreReportante, 
             correo, 
-            estacion, 
             descripcion, 
-            fechaReporte
-        ) VALUES (?, ?, ?, ?, NOW())";
+            fechaReporte,
+            estadoReporte
+        ) VALUES (?, ?, ?, ?, NOW(), 'En proceso')";
 
-    // Crear statement preparado
-    $stmt = $conn->prepare($sql);
-    
-    if ($stmt === false) {
-        die(json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta']));
-    }
+        $stmt = $conn->prepare($sql);
+        if ($stmt === false) {
+            die(json_encode(['status' => 'error', 'message' => 'Error en la preparación del INSERT']));
+        }
 
-    // Vincular parámetros
-    $stmt->bind_param("ssss", $nombre, $correo, $estacion, $descripcion);
+        $stmt->bind_param("isss", $idEstacionRep, $nombre, $correo, $descripcion);
 
-    // Ejecutar la consulta
-    if ($stmt->execute()) {
-        echo json_encode(['status' => 'success', 'message' => 'Reporte guardado exitosamente']);
+        if ($stmt->execute()) {
+            $idReporte = $stmt->insert_id;
+
+            // Guardar archivos (si hay)
+            if (!empty($_FILES['evidencias']['name'][0])) {
+                $uploadDir = __DIR__ . "/../../reportes/$idReporte";
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                foreach ($_FILES['evidencias']['tmp_name'] as $key => $tmpName) {
+                    $fileName = basename($_FILES['evidencias']['name'][$key]);
+                    $targetPath = "$uploadDir/$fileName";
+                    move_uploaded_file($tmpName, $targetPath);
+                }
+            }
+
+            echo json_encode(['status' => 'success', 'message' => 'Reporte guardado exitosamente']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al guardar el reporte: ' . $stmt->error]);
+        }
+
+        $stmt->close();
+        $conn->close();
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Error al guardar el reporte: ' . $stmt->error]);
+        die(json_encode(['status' => 'error', 'message' => 'Método no permitido']));
     }
-
-    $stmt->close();
-    $conn->close();
-} else {
-    die(json_encode(['status' => 'error', 'message' => 'Método no permitido']));
-}
 ?>

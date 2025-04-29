@@ -25,15 +25,17 @@
     // Donadores con usuario
     $sqlDonadores = "
     SELECT 
-        ud.usuario, 
+        dv.usuario, 
         d.tipo, 
         d.descripcion, 
-        ud.img, 
-        ud.color
+        dv.img, 
+        dv.color
     FROM 
         donacion d
     INNER JOIN 
-        userDonador ud ON d.idDonacion = ud.idDonador
+        donacionVisual dv ON d.idDonacion = dv.idUser
+    WHERE 
+        d.estadoDonacion = 'Finalizada'
     ";
     $resultDonadores = $conn->query($sqlDonadores);
     if ($resultDonadores && $resultDonadores->num_rows > 0) {
@@ -41,7 +43,6 @@
             $donadores[] = $fila;
         }
     }
-
 
     echo json_encode([
         "adoptados" => $adopciones,

@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function mostrarModal(mascota) {
   const contenedor = document.getElementById('contenidoModalMascota');
   const basePath = `/ProyectoADS_CTCDigital/mascotas/${mascota.idMascota}/`;
-  const archivos = mascota.archivos || ["principal.jpg"]; // Simula lista devuelta por backend
+  const archivos = mascota.archivos || ["principal.jpg"];
 
   let carouselItems = "";
   archivos.forEach((archivo, index) => {
@@ -61,7 +61,7 @@ function mostrarModal(mascota) {
 
   contenedor.innerHTML = `
     <div id="carousel${mascota.idMascota}" class="carousel slide mb-4" data-bs-ride="carousel">
-      <div class="carousel-inner shadow rounded-4 w-100">
+      <div class="carousel-inner shadow rounded-4 overflow-hidden">
         ${carouselItems}
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carousel${mascota.idMascota}" data-bs-slide="prev">
@@ -72,22 +72,29 @@ function mostrarModal(mascota) {
       </button>
     </div>
 
+    <div class="text-end text-muted mb-3 me-3" style="font-size: 0.9rem;">
+      <strong>Fecha de ingreso:</strong> ${mascota.fechaIngreso}
+    </div>
+
     <div class="px-3">
-      <h4 class="fw-bold mb-3">${mascota.nombre}</h4>
-      <ul class="list-unstyled text-muted small">
-        <li><strong>Estación:</strong> ${mascota.estacionMetro}</li>
-        <li><strong>Fecha de ingreso:</strong> ${mascota.fechaIngreso}</li>
-        <li><strong>Edad:</strong> ${mascota.edad}</li>
-        <li><strong>Sexo:</strong> ${mascota.sexo}</li>
-        <li><strong>Raza:</strong> ${mascota.raza}</li>
-        <li><strong>Tamaño:</strong> ${mascota.tamaño}</li>
-        <li><strong>Estado de salud:</strong> ${mascota.estadoSalud}</li>
-        <li><strong>Características físicas:</strong> ${mascota.caractFisica}</li>
-        <li><strong>Descripción:</strong> ${mascota.descripcion}</li>
+      <h2 class="fw-bold text-info mb-1">${mascota.nombre}</h2>
+      <h5 class="text-secondary mb-3">${mascota.especie}</h5>
+      <hr class="my-3">
+
+      <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item"><strong>Estación:</strong> ${mascota.estacionMetro}</li>
+        <li class="list-group-item"><strong>Edad:</strong> ${mascota.edad} años</li>
+        <li class="list-group-item"><strong>Sexo:</strong> ${mascota.sexo}</li>
+        <li class="list-group-item"><strong>Raza:</strong> ${mascota.raza}</li>
+        <li class="list-group-item"><strong>Tamaño:</strong> ${mascota.tamaño}</li>
+        <li class="list-group-item"><strong>Estado de salud:</strong> ${mascota.estadoSalud}</li>
+        <li class="list-group-item"><strong>Características físicas:</strong> ${mascota.caractFisica}</li>
+        <li class="list-group-item"><strong>Descripción:</strong> ${mascota.descripcion}</li>
       </ul>
     </div>
   `;
 
+  
   document.getElementById('btnAdoptar').href = "/ProyectoADS_CTCDigital/src/formsAdoptame.html";
   new bootstrap.Modal(document.getElementById('modalInfoMascota')).show();
 }
