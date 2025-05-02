@@ -40,46 +40,62 @@
         $idEstacionRep = $row['idEstacion'];
         $stmtEstacion->close();
 
-        // Insertar el reporte
-        $sql = "INSERT INTO reporte (
-            idEstacionRep,
-            nombreReportante, 
-            correo, 
-            descripcion, 
-            fechaReporte,
-            estadoReporte
-        ) VALUES (?, ?, ?, ?, NOW(), 'En proceso')";
-
-        $stmt = $conn->prepare($sql);
-        if ($stmt === false) {
-            die(json_encode(['status' => 'error', 'message' => 'Error en la preparación del INSERT']));
+        // Insertar el reportante en la tabla reportante
+        $sqlReportante = "INSERT INTO reportante (nombre, correo) VALUES (?, ?)";
+        $stmtReportante = $conn->prepare($sqlReportante);
+        if ($stmtReportante === false) {
+            die(json_encode(['status' => 'error', 'message' => 'Error en la preparación del INSERT para el reportante']));
         }
 
-        $stmt->bind_param("isss", $idEstacionRep, $nombre, $correo, $descripcion);
+        $stmtReportante->bind_param("ss", $nombre, $correo);
+        if ($stmtReportante->execute()) {
+            // Obtener el ID del reportante insertado
+            $idReportante = $stmtReportante->insert_id;
+            $stmtReportante->close();
 
-        if ($stmt->execute()) {
-            $idReporte = $stmt->insert_id;
+            // Insertar el reporte con el ID del reportante
+            $sqlReporte = "INSERT INTO reporte (
+                idEstacionRep,
+                idReportante, 
+                descripcion, 
+                fechaReporte,
+                estadoReporte
+            ) VALUES (?, ?, ?, NOW(), 'En proceso')";
 
-            // Guardar archivos (si hay)
-            if (!empty($_FILES['evidencias']['name'][0])) {
-                $uploadDir = __DIR__ . "/../../reportes/$idReporte";
-                if (!file_exists($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-
-                foreach ($_FILES['evidencias']['tmp_name'] as $key => $tmpName) {
-                    $fileName = basename($_FILES['evidencias']['name'][$key]);
-                    $targetPath = "$uploadDir/$fileName";
-                    move_uploaded_file($tmpName, $targetPath);
-                }
+            $stmtReporte = $conn->prepare($sqlReporte);
+            if ($stmtReporte === false) {
+                die(json_encode(['status' => 'error', 'message' => 'Error en la preparación del INSERT para el reporte']));
             }
 
-            echo json_encode(['status' => 'success', 'message' => 'Reporte guardado exitosamente']);
+            $stmtReporte->bind_param("iis", $idEstacionRep, $idReportante, $descripcion);
+
+            if ($stmtReporte->execute()) {
+                $idReporte = $stmtReporte->insert_id;
+
+                // Guardar archivos (si hay)
+                if (!empty($_FILES['evidencias']['name'][0])) {
+                    $uploadDir = __DIR__ . "/../../reportes/$idReporte";
+                    if (!file_exists($uploadDir)) {
+                        mkdir($uploadDir, 0777, true);
+                    }
+
+                    foreach ($_FILES['evidencias']['tmp_name'] as $key => $tmpName) {
+                        $fileName = basename($_FILES['evidencias']['name'][$key]);
+                        $targetPath = "$uploadDir/$fileName";
+                        move_uploaded_file($tmpName, $targetPath);
+                    }
+                }
+
+                echo json_encode(['status' => 'success', 'message' => 'Reporte guardado exitosamente']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Error al guardar el reporte: ' . $stmtReporte->error]);
+            }
+
+            $stmtReporte->close();
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al guardar el reporte: ' . $stmt->error]);
+            echo json_encode(['status' => 'error', 'message' => 'Error al guardar el reportante: ' . $stmtReportante->error]);
         }
 
-        $stmt->close();
         $conn->close();
     } else {
         die(json_encode(['status' => 'error', 'message' => 'Método no permitido']));
