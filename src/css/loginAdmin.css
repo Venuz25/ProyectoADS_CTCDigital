@@ -1,0 +1,104 @@
+:root {
+    --primary-orange: #FFA630;
+    --soft-orange: #FFBF69;
+    --light-yellow: #FFE45E;
+    --soft-yellow: #FFED85;
+    --dark-blue: #2E5077;
+    --light-blue: #5DA9E9;
+    --soft-gray: #F8F9FA;
+}
+
+.login-container {
+    max-width: 450px;
+    margin-top: 8vh;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    transition: all 0.5s ease;
+    margin: 0 auto;
+}
+
+.login-container:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+.login-header {
+    background: linear-gradient(135deg, var(--primary-orange), var(--light-yellow));
+    color: white;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-header h2 {
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.login-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    animation: pulse 8s infinite linear;
+    z-index: 1;
+}
+
+.login-body {
+    padding: 30px;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 0.25rem rgba(255, 166, 48, 0.25);
+}
+
+.input-group-text {
+    background-color: white;
+    border-right: none;
+    color: var(--primary-orange);
+}
+
+.form-floating>label {
+    color: #6c757d;
+}
+
+.btn-login {
+    background: linear-gradient(135deg, var(--primary-orange), var(--light-yellow));
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, var(--soft-orange), var(--soft-yellow));
+}
+
+.logo-admin {
+    width: 150px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}

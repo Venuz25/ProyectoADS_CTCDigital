@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- ========== META ETIQUETAS ========== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ========== INFORMACIÓN DE LA PÁGINA ========== -->
+    <title>Administración</title>
+    <link rel="icon" href="/ProyectoADS_CTCDigital/recursos/Icono.jpg" type="image/png" sizes="32x32" />
+
+    <!--========== ESTILOS ==========-->
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/admin.css" />
+
+    <!--Generales-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/style.css" />    
+  </head>
+
+  <body>
+    <!-- ========== HEADER ========== -->
+    <header>
+      <div id="header-container"></div>
+    </header>
+    
+    <!-- ========== CONTENIDO ========== -->
+    <main>
+        <div class="container-fluid py-4">
+            <div class="folder-container">
+                <!-- Solapas de navegación -->
+                <div class="folder-tabs">
+                    <div class="folder-tab active" data-tab="mascotas">
+                        <i class="fas fa-paw"></i> Mascotas
+                    </div>
+                    <div class="folder-tab" data-tab="solicitudes">
+                        <i class="fas fa-file-alt"></i> Solicitudes
+                    </div>
+                    <div class="folder-tab" data-tab="reportes">
+                        <i class="fas fa-flag"></i> Reportes
+                    </div>
+                    <div class="folder-tab" data-tab="donaciones">
+                        <i class="fas fa-hand-holding-heart"></i> Donaciones
+                    </div>
+                    <div class="folder-tab" data-tab="administradores">
+                        <i class="fas fa-users-cog"></i> Administradores
+                    </div>
+                </div>
+    
+                <!-- Contenido de la pestaña Mascotas -->
+                <div id="mascotas" class="tab-content active">
+                    <div class="row">
+                        <div class="col-md-10 mx-auto mb-4">
+                            <h2 class="mb-4"><i class="fas fa-paw me-2"></i>Mascotas</h2>
+                        </div>
+                        <div class="col-md-2 mx-auto mb-4">
+                            <button class="btn btn-success btn-crear-registro">
+                                <i class="fas fa-plus-circle me-2"></i> Nueva Mascota
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mb-4">
+                        <i class="fas fa-bone me-2"></i>Esta sección muestra la lista de mascotas registradas en el sistema.
+                    </div>
+                    
+                    <!-- Filtros -->
+                    <div class="filter-section mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">Estado de adopción</label>
+                                    <select class="form-select" id="filtroEstado">
+                                        <option value="all">Todos</option>
+                                        <option value="available">Disponible</option>
+                                        <option value="adopted">Adoptado</option>
+                                        <option value="process">En proceso</option>
+                                        <option value="unavailable">No disponible</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">Fecha de ingreso</label>
+                                    <div class="d-flex">
+                                        <select class="form-select me-2" id="filtroFecha">
+                                            <option value="desc">Más recientes primero</option>
+                                            <option value="asc">Más antiguos primero</option>
+                                        </select>
+                                        <button class="btn btn-primary" id="aplicarFiltros">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabla de mascotas -->
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Estado de Adopción</th>
+                                    <th>Fecha ingreso</th>
+                                    <th>Estación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaMascotas">
+                                <td colspan="6" class="text-center py-4">Se cargarán las mascotas aquí</td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    
+                <!-- Pestaña Solicitudes -->
+                <div id="solicitudes" class="tab-content">
+                    <h2 class="mb-4"><i class="fas fa-file-alt me-2"></i>Solicitudes</h2>
+
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-pencil me-2"></i>Esta sección muestra la lista de solicitudes de adopción registradas en el sistema.
+                    </div>
+                    
+                    <!-- Filtros -->
+                    <div class="filter-section mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">Estado de solicitud</label>
+                                    <select class="form-select">
+                                        <option value="all">Todos</option>
+                                        <option value="pending">Pendiente</option>
+                                        <option value="approved">Aprobada</option>
+                                        <option value="rejected">Rechazada</option>
+                                        <option value="process">En proceso</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">Fecha de solicitud</label>
+                                    <div class="d-flex">
+                                        <select class="form-select me-2">
+                                            <option value="desc">Más recientes primero</option>
+                                            <option value="asc">Más antiguos primero</option>
+                                        </select>
+                                        <button class="btn btn-primary">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabla de solicitudes -->
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Adoptante</th>
+                                    <th>Mascota</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Contenido dinámico aquí -->
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">Se cargarán las solicitudes aquí</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pestaña Reportes -->
+                <div id="reportes" class="tab-content">
+                    <h2 class="mb-4"><i class="fas fa-flag me-2"></i>Reportes</h2>
+
+                    <div class="alert alert-danger mb-4">
+                        <i class="fas fa-circle-exclamation me-2"></i>Esta sección muestra la lista de reportes de mascotas registrados en el sistema.
+                    </div>
+                    
+                    <!-- Filtros -->
+                    <div class="filter-section mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">Estado del reporte</label>
+                                    <select class="form-select">
+                                        <option value="all">Todos</option>
+                                        <option value="pending">Pendiente</option>
+                                        <option value="process">En proceso</option>
+                                        <option value="located">Localizada</option>
+                                        <option value="discarded">Descartada</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">Fecha del reporte</label>
+                                    <div class="d-flex">
+                                        <select class="form-select me-2">
+                                            <option value="desc">Más recientes primero</option>
+                                            <option value="asc">Más antiguos primero</option>
+                                        </select>
+                                        <button class="btn btn-primary">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabla de reportes -->
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Reportante</th>
+                                    <th>Mascota</th>
+                                    <th>Estación</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Contenido dinámico aquí -->
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">Se cargarán los reportes aquí</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pestaña Donaciones -->
+                <div id="donaciones" class="tab-content">
+                    <h2 class="mb-4"><i class="fas fa-hand-holding-heart me-2"></i>Donaciones</h2>
+
+                    <div class="alert alert-primary mb-4">
+                        <i class="fas fa-wallet me-2"></i>Esta sección muestra la lista de donaciones registradas en el sistema.
+                    </div>
+                    
+                    <!-- Filtros -->
+                    <div class="filter-section mb-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="filter-group">
+                                    <label class="filter-label">Estado</label>
+                                    <select class="form-select">
+                                        <option value="all">Todos</option>
+                                        <option value="pending">Pendiente</option>
+                                        <option value="completed">Finalizada</option>
+                                        <option value="canceled">Cancelada</option>
+                                        <option value="process">En proceso</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="filter-group">
+                                    <label class="filter-label">Tipo de donación</label>
+                                    <select class="form-select">
+                                        <option value="all">Todos</option>
+                                        <option value="monetary">Monetaria</option>
+                                        <option value="kind">En especie</option>
+                                        <option value="volunteer">Voluntariado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="filter-group">
+                                    <label class="filter-label">Ordenar por fecha</label>
+                                    <div class="d-flex">
+                                        <select class="form-select me-2">
+                                            <option value="desc">Más recientes primero</option>
+                                            <option value="asc">Más antiguos primero</option>
+                                        </select>
+                                        <button class="btn btn-primary">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabla de donaciones -->
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Donante</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Contenido dinámico aquí -->
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">Se cargarán las donaciones aquí</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pestaña Administradores -->
+                <div id="administradores" class="tab-content">
+                    <div class="row">
+                        <div class="col-md-10 mx-auto mb-4">
+                            <h2 class="mb-4"><i class="fas fa-paw me-2"></i>Administradores</h2>
+                        </div>
+                        <div class="col-md-2 mx-auto mb-4">
+                            <button class="btn btn-success btn-crear-registro">
+                                <i class="fas fa-plus-circle me-2"></i> Nuevo Administrador
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>Esta sección muestra la lista de administradores del sistema.
+                    </div>
+                    
+                    <!-- Tabla de administradores -->
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Contraseña</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Contenido dinámico aquí -->
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">Se cargarán los administradores aquí</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Modal para detalles -->
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Detalles de Mascota</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Contenido dinámico -->
+                        <div id="modalContent">
+                            <div class="text-center py-4">
+                                <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                <p>Cargando información detallada...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para eliminar un registro -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
+                    <p class="fw-bold" id="mascotaAEliminar"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="/ProyectoADS_CTCDigital/src/js/admin.js"></script>
+
+    <!-- Generales-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/ProyectoADS_CTCDigital/src/js/script.js"></script>
+  </body>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div id="footer-container"></div>
+  </footer>
+</html>

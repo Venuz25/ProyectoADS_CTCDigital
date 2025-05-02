@@ -366,12 +366,6 @@
 }
 
 /*redes*/
-.container {
-  margin: 100px auto;
-  max-width: 500px;
-  padding: 0 15px;
-}
-
 .accordion {
   display: flex;
   flex-wrap: nowrap;
