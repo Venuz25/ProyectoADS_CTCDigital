@@ -72,10 +72,10 @@
                                     <label class="filter-label">Estado de adopción</label>
                                     <select class="form-select" id="filtroEstado">
                                         <option value="all">Todos</option>
-                                        <option value="available">Disponible</option>
-                                        <option value="adopted">Adoptado</option>
-                                        <option value="process">En proceso</option>
-                                        <option value="unavailable">No disponible</option>
+                                        <option value="disponible">Disponible</option>
+                                        <option value="adoptado">Adoptado</option>
+                                        <option value="en proceso">En proceso</option>
+                                        <option value="no disponible">No disponible</option>
                                     </select>
                                 </div>
                             </div>
@@ -84,6 +84,7 @@
                                     <label class="filter-label">Fecha de ingreso</label>
                                     <div class="d-flex">
                                         <select class="form-select me-2" id="filtroFecha">
+                                            <option value="sf">Sin importancia</option>
                                             <option value="desc">Más recientes primero</option>
                                             <option value="asc">Más antiguos primero</option>
                                         </select>
@@ -128,12 +129,12 @@
                             <div class="col-md-6">
                                 <div class="filter-group">
                                     <label class="filter-label">Estado de solicitud</label>
-                                    <select class="form-select">
+                                    <select class="form-select" id="filtroEstadoSolicitud">
                                         <option value="all">Todos</option>
-                                        <option value="pending">Pendiente</option>
-                                        <option value="approved">Aprobada</option>
-                                        <option value="rejected">Rechazada</option>
-                                        <option value="process">En proceso</option>
+                                        <option value="pendiente">Pendiente</option>
+                                        <option value="aprobada">Aprobada</option>
+                                        <option value="rechazada">Rechazada</option>
+                                        <option value="en proceso">En proceso</option>
                                     </select>
                                 </div>
                             </div>
@@ -141,11 +142,12 @@
                                 <div class="filter-group">
                                     <label class="filter-label">Fecha de solicitud</label>
                                     <div class="d-flex">
-                                        <select class="form-select me-2">
+                                        <select class="form-select me-2" id="filtroFechaSolicitud">
+                                            <option value="sf">Sin importancia</option>
                                             <option value="desc">Más recientes primero</option>
                                             <option value="asc">Más antiguos primero</option>
                                         </select>
-                                        <button class="btn btn-primary">Aplicar</button>
+                                        <button class="btn btn-primary" id="aplicarFiltrosSolicitud">Aplicar</button>
                                     </div>
                                 </div>
                             </div>
@@ -165,11 +167,8 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tablaSolicitudes">
                                 <!-- Contenido dinámico aquí -->
-                                <tr>
-                                    <td colspan="6" class="text-center py-4">Se cargarán las solicitudes aquí</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -189,12 +188,12 @@
                             <div class="col-md-6">
                                 <div class="filter-group">
                                     <label class="filter-label">Estado del reporte</label>
-                                    <select class="form-select">
+                                    <select class="form-select" id="filtroEstadoReporte">
                                         <option value="all">Todos</option>
-                                        <option value="pending">Pendiente</option>
-                                        <option value="process">En proceso</option>
-                                        <option value="located">Localizada</option>
-                                        <option value="discarded">Descartada</option>
+                                        <option value="pendiente">Pendiente</option>
+                                        <option value="en proceso">En proceso</option>
+                                        <option value="localizada">Localizada</option>
+                                        <option value="descartada">Descartada</option>
                                     </select>
                                 </div>
                             </div>
@@ -202,11 +201,12 @@
                                 <div class="filter-group">
                                     <label class="filter-label">Fecha del reporte</label>
                                     <div class="d-flex">
-                                        <select class="form-select me-2">
+                                        <select class="form-select me-2" id="filtroFechaReporte">
+                                            <option value="sf">Sin importancia</option>
                                             <option value="desc">Más recientes primero</option>
                                             <option value="asc">Más antiguos primero</option>
                                         </select>
-                                        <button class="btn btn-primary">Aplicar</button>
+                                        <button class="btn btn-primary" id="aplicarFiltrosReporte">Aplicar</button>
                                     </div>
                                 </div>
                             </div>
@@ -220,18 +220,14 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Reportante</th>
-                                    <th>Mascota</th>
                                     <th>Estación</th>
                                     <th>Estado</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tablaReportes">
                                 <!-- Contenido dinámico aquí -->
-                                <tr>
-                                    <td colspan="6" class="text-center py-4">Se cargarán los reportes aquí</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -248,38 +244,51 @@
                     <!-- Filtros -->
                     <div class="filter-section mb-4">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="filter-group">
                                     <label class="filter-label">Estado</label>
-                                    <select class="form-select">
+                                    <select class="form-select" id="filtroEstadoDonacion">
                                         <option value="all">Todos</option>
-                                        <option value="pending">Pendiente</option>
-                                        <option value="completed">Finalizada</option>
-                                        <option value="canceled">Cancelada</option>
-                                        <option value="process">En proceso</option>
+                                        <option value="pendiente">Pendiente</option>
+                                        <option value="finalizada">Finalizada</option>
+                                        <option value="cancelada">Cancelada</option>
+                                        <option value="en proceso">En proceso</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="filter-group">
                                     <label class="filter-label">Tipo de donación</label>
-                                    <select class="form-select">
+                                    <select class="form-select" id="filtroTipoDonacion">
                                         <option value="all">Todos</option>
-                                        <option value="monetary">Monetaria</option>
-                                        <option value="kind">En especie</option>
-                                        <option value="volunteer">Voluntariado</option>
+                                        <option value="monetaria">Monetaria</option>
+                                        <option value="en especie">En especie</option>
+                                        <option value="voluntariado">Voluntariado</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="filter-group">
-                                    <label class="filter-label">Ordenar por fecha</label>
+                                    <label class="filter-label">Ordenar por fecha de donacion</label>
                                     <div class="d-flex">
-                                        <select class="form-select me-2">
+                                        <select class="form-select me-2" id="filtroFechaDonacion">
+                                            <option value="sf">Sin importancia</option>
                                             <option value="desc">Más recientes primero</option>
                                             <option value="asc">Más antiguos primero</option>
                                         </select>
-                                        <button class="btn btn-primary">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="filter-group">
+                                    <label class="filter-label">Ordenar por fecha prevista</label>
+                                    <div class="d-flex">
+                                        <select class="form-select me-2" id="filtroFechaPrevista">
+                                            <option value="sf">Sin importancia</option>
+                                            <option value="desc">Más recientes primero</option>
+                                            <option value="asc">Más antiguos primero</option>
+                                        </select>
+                                        <button class="btn btn-primary" id="aplicarFiltrosDonacion">Aplicar</button>
                                     </div>
                                 </div>
                             </div>
@@ -295,15 +304,13 @@
                                     <th>Donante</th>
                                     <th>Tipo</th>
                                     <th>Estado</th>
-                                    <th>Fecha</th>
+                                    <th>Fecha Donacion</th>
+                                    <th>Fecha Prevista</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tablaDonaciones">
                                 <!-- Contenido dinámico aquí -->
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">Se cargarán las donaciones aquí</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -337,43 +344,40 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tablaAdmin">
                                 <!-- Contenido dinámico aquí -->
-                                <tr>
-                                    <td colspan="5" class="text-center py-4">Se cargarán los administradores aquí</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    
-        <!-- Modal para detalles -->
-        <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title">Detalles de Mascota</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Contenido dinámico -->
-                        <div id="modalContent">
-                            <div class="text-center py-4">
-                                <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
-                                <p>Cargando información detallada...</p>
-                            </div>
+    </main>
+
+    <!-- Modal para detalles -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Detalles de Mascota</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido dinámico -->
+                    <div id="modalContent">
+                        <div class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                            <p>Cargando información detallada...</p>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary">Editar</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Editar</button>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <!-- Modal para eliminar un registro -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
@@ -381,11 +385,10 @@
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
-                    <p class="fw-bold" id="mascotaAEliminar"></p>
+                    <p class="fw-bold" id="confirmEliminar"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

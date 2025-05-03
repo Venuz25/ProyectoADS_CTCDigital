@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-05-2025 a las 06:44:17
+-- Tiempo de generación: 03-05-2025 a las 22:39:36
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -559,7 +559,8 @@ INSERT INTO `reportante` (`idReportante`, `nombre`, `correo`) VALUES
 (7, 'Frida Khalo', 'frida.khalo@gmail.com'),
 (8, 'Vox', 'veez@hellmail.com'),
 (9, 'Angel', 'angel@gmail.com'),
-(10, 'hola', 'hola@gmail.com');
+(10, 'hola', 'hola@gmail.com'),
+(11, 'Batman', 'sr.Noche@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -570,7 +571,6 @@ INSERT INTO `reportante` (`idReportante`, `nombre`, `correo`) VALUES
 CREATE TABLE `reporte` (
   `idReporte` int(11) NOT NULL,
   `idReportante` int(11) DEFAULT NULL,
-  `idMascota` int(11) DEFAULT NULL,
   `idEstacionRep` int(11) DEFAULT NULL,
   `estadoReporte` enum('Pendiente','En proceso','Localizada','Descartado') NOT NULL DEFAULT 'Pendiente',
   `fechaReporte` datetime NOT NULL,
@@ -581,17 +581,39 @@ CREATE TABLE `reporte` (
 -- Volcado de datos para la tabla `reporte`
 --
 
-INSERT INTO `reporte` (`idReporte`, `idReportante`, `idMascota`, `idEstacionRep`, `estadoReporte`, `fechaReporte`, `descripcion`) VALUES
-(1, 1, 2, 710, 'Localizada', '2024-03-10 00:00:00', 'Gata siamesa con collar azul, asustada cerca de torniquetes'),
-(2, 2, NULL, 214, 'En proceso', '2024-04-15 00:00:00', 'Perro mestizo café con manchas blancas, buscando comida en andén'),
-(3, 3, 4, 104, 'Localizada', '2024-02-28 00:00:00', 'Perro atrapado en vias'),
-(4, 4, NULL, 120, 'En proceso', '2024-04-20 00:00:00', '3 cachorros mestizos en zona de taquillas'),
-(5, 5, 6, 407, 'Localizada', '2024-01-05 00:00:00', 'Chihuahua con pata lastimada, resguardado en oficinas'),
-(6, 6, 14, 1406, 'Descartado', '2024-12-09 00:00:00', 'Confundió una estatua con perro dorado - falso positivo'),
-(7, 7, NULL, 504, 'En proceso', '2025-04-25 23:45:03', 'Una gata con sus crías merodeando por la parte superior de los andenes.'),
-(8, 8, NULL, 513, 'En proceso', '2025-04-28 23:03:21', 'Perrito en vías'),
-(9, 9, NULL, 120, 'En proceso', '2025-04-28 23:05:40', 'Perrito en vías'),
-(10, 10, NULL, 1410, 'En proceso', '2025-04-28 23:24:26', 'Gato atrapado en una cañería');
+INSERT INTO `reporte` (`idReporte`, `idReportante`, `idEstacionRep`, `estadoReporte`, `fechaReporte`, `descripcion`) VALUES
+(1, 1, 710, 'Localizada', '2024-03-10 00:00:00', 'Gata siamesa con collar azul, asustada cerca de torniquetes'),
+(2, 2, 214, 'En proceso', '2024-04-15 00:00:00', 'Perro mestizo café con manchas blancas, buscando comida en andén'),
+(3, 3, 104, 'Localizada', '2024-02-28 00:00:00', 'Perro atrapado en vias'),
+(4, 4, 120, 'En proceso', '2024-04-20 00:00:00', '3 cachorros mestizos en zona de taquillas'),
+(5, 5, 407, 'Localizada', '2024-01-05 00:00:00', 'Chihuahua con pata lastimada, resguardado en oficinas'),
+(6, 6, 1406, 'Descartado', '2024-12-09 00:00:00', 'Confundió una estatua con perro dorado - falso positivo'),
+(7, 7, 504, 'En proceso', '2025-04-25 23:45:03', 'Una gata con sus crías merodeando por la parte superior de los andenes.'),
+(8, 8, 513, 'En proceso', '2025-04-28 23:03:21', 'Perrito en vías'),
+(9, 9, 120, 'En proceso', '2025-04-28 23:05:40', 'Perrito en vías'),
+(10, 10, 1410, 'En proceso', '2025-04-28 23:24:26', 'Gato atrapado en una cañería'),
+(11, 11, 302, 'En proceso', '2025-05-01 23:06:40', 'Perro pequeño paseando por los pasillos del trasborde.');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reportemascota`
+--
+
+CREATE TABLE `reportemascota` (
+  `idReporte` int(11) NOT NULL,
+  `idMascota` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `reportemascota`
+--
+
+INSERT INTO `reportemascota` (`idReporte`, `idMascota`) VALUES
+(1, 2),
+(3, 4),
+(5, 6),
+(6, 14);
 
 -- --------------------------------------------------------
 
@@ -736,9 +758,15 @@ ALTER TABLE `reportante`
 --
 ALTER TABLE `reporte`
   ADD PRIMARY KEY (`idReporte`),
-  ADD KEY `fk_mascota_reporte` (`idMascota`),
   ADD KEY `fk_reporte_estacion` (`idEstacionRep`),
   ADD KEY `fk_reportante` (`idReportante`);
+
+--
+-- Indices de la tabla `reportemascota`
+--
+ALTER TABLE `reportemascota`
+  ADD PRIMARY KEY (`idReporte`,`idMascota`),
+  ADD KEY `idMascota` (`idMascota`);
 
 --
 -- Indices de la tabla `solicitud`
@@ -811,13 +839,13 @@ ALTER TABLE `raza`
 -- AUTO_INCREMENT de la tabla `reportante`
 --
 ALTER TABLE `reportante`
-  MODIFY `idReportante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idReportante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `reporte`
 --
 ALTER TABLE `reporte`
-  MODIFY `idReporte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idReporte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
@@ -864,9 +892,15 @@ ALTER TABLE `raza`
 -- Filtros para la tabla `reporte`
 --
 ALTER TABLE `reporte`
-  ADD CONSTRAINT `fk_mascota_reporte` FOREIGN KEY (`idMascota`) REFERENCES `mascota` (`idMascota`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_reportante` FOREIGN KEY (`idReportante`) REFERENCES `reportante` (`idReportante`),
+  ADD CONSTRAINT `fk_reportante` FOREIGN KEY (`idReportante`) REFERENCES `reportante` (`idReportante`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_reporte_estacion` FOREIGN KEY (`idEstacionRep`) REFERENCES `estaciones` (`idEstacion`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `reportemascota`
+--
+ALTER TABLE `reportemascota`
+  ADD CONSTRAINT `reportemascota_ibfk_1` FOREIGN KEY (`idReporte`) REFERENCES `reporte` (`idReporte`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reportemascota_ibfk_2` FOREIGN KEY (`idMascota`) REFERENCES `mascota` (`idMascota`);
 
 --
 -- Filtros para la tabla `solicitud`

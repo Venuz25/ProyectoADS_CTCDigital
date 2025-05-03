@@ -1,0 +1,356 @@
+-- Base de datos: `ctc`
+--
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `contraseña` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `adoptante`
+--
+
+CREATE TABLE `adoptante` (
+  `idAdoptante` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `documentos` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `detallesmascota`
+--
+
+CREATE TABLE `detallesmascota` (
+  `idMascota` int(11) NOT NULL,
+  `edad` int(11) DEFAULT NULL,
+  `sexo` enum('Macho','Hembra') DEFAULT NULL,
+  `tamaño` enum('Pequeño','Mediano','Grande') DEFAULT NULL,
+  `caractFisica` varchar(255) DEFAULT NULL,
+  `estadoSalud` varchar(255) DEFAULT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `idRaza` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `donacion`
+--
+
+CREATE TABLE `donacion` (
+  `idDonacion` int(11) NOT NULL,
+  `idDonante` int(11) NOT NULL,
+  `estadoDonacion` enum('Pendiente','Finalizada','Cancelado','En proceso') NOT NULL DEFAULT 'Pendiente',
+  `tipo` enum('Monetaria','En especie','Voluntariado') NOT NULL,
+  `fechaDonacion` date NOT NULL,
+  `fechaPrevistaDon` date NOT NULL,
+  `monto` decimal(10,2) DEFAULT NULL,
+  `descripcion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `donacionvisual`
+--
+
+CREATE TABLE `donacionvisual` (
+  `idUser` int(11) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `img` text NOT NULL,
+  `color` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `donante`
+--
+
+CREATE TABLE `donante` (
+  `idDonante` int(11) NOT NULL,
+  `nombreDonante` varchar(255) NOT NULL,
+  `correo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `especie`
+--
+
+CREATE TABLE `especie` (
+  `idEspecie` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `estaciones`
+--
+
+CREATE TABLE `estaciones` (
+  `idEstacion` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `linea` varchar(10) NOT NULL,
+  `colorLinea` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `mascota`
+--
+
+CREATE TABLE `mascota` (
+  `idMascota` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `fechaIngreso` date NOT NULL,
+  `estadoAdopcion` enum('Disponible','Adoptado','En proceso','No Disponible') NOT NULL,
+  `idEstacionEncontrado` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `raza`
+--
+
+CREATE TABLE `raza` (
+  `idRaza` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `idEspecie` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `reportante`
+--
+
+CREATE TABLE `reportante` (
+  `idReportante` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `correo` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `reporte`
+--
+
+CREATE TABLE `reporte` (
+  `idReporte` int(11) NOT NULL,
+  `idReportante` int(11) DEFAULT NULL,
+  `idEstacionRep` int(11) DEFAULT NULL,
+  `estadoReporte` enum('Pendiente','En proceso','Localizada','Descartado') NOT NULL DEFAULT 'Pendiente',
+  `fechaReporte` datetime NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `reportemascota`
+--
+
+CREATE TABLE `reportemascota` (
+  `idReporte` int(11) NOT NULL,
+  `idMascota` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `solicitud`
+--
+
+CREATE TABLE `solicitud` (
+  `idSolicitud` int(11) NOT NULL,
+  `idMascota` int(11) DEFAULT NULL,
+  `idAdoptante` int(11) DEFAULT NULL,
+  `fechaSolicitud` date NOT NULL,
+  `estadoAdopcion` enum('En proceso','Pendiente','Aprobada','Rechazada') DEFAULT 'Pendiente',
+  `comentarios` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `visitadom`
+--
+
+CREATE TABLE `visitadom` (
+  `idSolicitud` int(11) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `ubicacion` text NOT NULL,
+  `estadoVisita` enum('Pendiente','Realizada','Cancelada','Reprogramada') NOT NULL,
+  `fechaVisita` datetime NOT NULL,
+  `notas` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+------------------------------------------------------------
+-- Índices para tablas volcadas
+--
+-- Indices de la tabla `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+--
+-- Indices de la tabla `adoptante`
+--
+ALTER TABLE `adoptante`
+  ADD PRIMARY KEY (`idAdoptante`);
+--
+-- Indices de la tabla `detallesmascota`
+--
+ALTER TABLE `detallesmascota`
+  ADD PRIMARY KEY (`idMascota`),
+  ADD KEY `detallesmascota_ibfk_2` (`idRaza`);
+--
+-- Indices de la tabla `donacion`
+--
+ALTER TABLE `donacion`
+  ADD PRIMARY KEY (`idDonacion`),
+  ADD KEY `donacion_ibfk_1` (`idDonante`);
+--
+-- Indices de la tabla `donacionvisual`
+--
+ALTER TABLE `donacionvisual`
+  ADD KEY `donacionvisual_ibfk_1` (`idUser`);
+--
+-- Indices de la tabla `donante`
+--
+ALTER TABLE `donante`
+  ADD PRIMARY KEY (`idDonante`);
+--
+-- Indices de la tabla `especie`
+--
+ALTER TABLE `especie`
+  ADD PRIMARY KEY (`idEspecie`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
+--
+-- Indices de la tabla `estaciones`
+--
+ALTER TABLE `estaciones`
+  ADD PRIMARY KEY (`idEstacion`),
+  ADD UNIQUE KEY `nombre` (`nombre`,`linea`);
+--
+-- Indices de la tabla `mascota`
+--
+ALTER TABLE `mascota`
+  ADD PRIMARY KEY (`idMascota`),
+  ADD KEY `fk_mascota_estacion` (`idEstacionEncontrado`);
+--
+-- Indices de la tabla `raza`
+--
+ALTER TABLE `raza`
+  ADD PRIMARY KEY (`idRaza`),
+  ADD KEY `raza_ibfk_1` (`idEspecie`);
+--
+-- Indices de la tabla `reportante`
+--
+ALTER TABLE `reportante`
+  ADD PRIMARY KEY (`idReportante`);
+--
+-- Indices de la tabla `reporte`
+--
+ALTER TABLE `reporte`
+  ADD PRIMARY KEY (`idReporte`),
+  ADD KEY `fk_reporte_estacion` (`idEstacionRep`),
+  ADD KEY `fk_reportante` (`idReportante`);
+--
+-- Indices de la tabla `reportemascota`
+--
+ALTER TABLE `reportemascota`
+  ADD PRIMARY KEY (`idReporte`,`idMascota`),
+  ADD KEY `idMascota` (`idMascota`);
+--
+-- Indices de la tabla `solicitud`
+--
+ALTER TABLE `solicitud`
+  ADD PRIMARY KEY (`idSolicitud`),
+  ADD KEY `idMascota` (`idMascota`),
+  ADD KEY `idAdoptante` (`idAdoptante`);
+--
+-- Indices de la tabla `visitadom`
+--
+ALTER TABLE `visitadom`
+  ADD PRIMARY KEY (`idSolicitud`),
+  ADD KEY `idSolicitud` (`idSolicitud`);
+
+
+-----------------------------------------------------------------------------
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `detallesmascota`
+--
+ALTER TABLE `detallesmascota`
+  ADD CONSTRAINT `detallesmascota_ibfk_1` FOREIGN KEY (`idMascota`) REFERENCES `mascota` (`idMascota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detallesmascota_ibfk_2` FOREIGN KEY (`idRaza`) REFERENCES `raza` (`idRaza`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `donacion`
+--
+ALTER TABLE `donacion`
+  ADD CONSTRAINT `donacion_ibfk_1` FOREIGN KEY (`idDonante`) REFERENCES `donante` (`idDonante`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `donacionvisual`
+--
+ALTER TABLE `donacionvisual`
+  ADD CONSTRAINT `donacionvisual_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `donacion` (`idDonacion`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `mascota`
+--
+ALTER TABLE `mascota`
+  ADD CONSTRAINT `fk_mascota_estacion` FOREIGN KEY (`idEstacionEncontrado`) REFERENCES `estaciones` (`idEstacion`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `raza`
+--
+ALTER TABLE `raza`
+  ADD CONSTRAINT `raza_ibfk_1` FOREIGN KEY (`idEspecie`) REFERENCES `especie` (`idEspecie`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `reporte`
+--
+ALTER TABLE `reporte`
+  ADD CONSTRAINT `fk_reportante` FOREIGN KEY (`idReportante`) REFERENCES `reportante` (`idReportante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_reporte_estacion` FOREIGN KEY (`idEstacionRep`) REFERENCES `estaciones` (`idEstacion`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `reportemascota`
+--
+ALTER TABLE `reportemascota`
+  ADD CONSTRAINT `reportemascota_ibfk_1` FOREIGN KEY (`idReporte`) REFERENCES `reporte` (`idReporte`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reportemascota_ibfk_2` FOREIGN KEY (`idMascota`) REFERENCES `mascota` (`idMascota`);
+
+--
+-- Filtros para la tabla `solicitud`
+--
+ALTER TABLE `solicitud`
+  ADD CONSTRAINT `solicitud_ibfk_1` FOREIGN KEY (`idMascota`) REFERENCES `mascota` (`idMascota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`idAdoptante`) REFERENCES `adoptante` (`idAdoptante`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `visitadom`
+--
+ALTER TABLE `visitadom`
+  ADD CONSTRAINT `visitadom_ibfk_1` FOREIGN KEY (`idSolicitud`) REFERENCES `solicitud` (`idSolicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+--
+-- Eventos
+--
+CREATE DEFINER=`root`@`localhost` EVENT `actualizar_estado_donacion` ON SCHEDULE EVERY 1 DAY STARTS '2025-04-28 19:57:25' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE donacion
+  SET estadoDonacion = 'Cancelado'
+  WHERE fechaDonacion <= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+    AND estadoDonacion = 'Pendiente'$$
+
+DELIMITER ;
+COMMIT;
