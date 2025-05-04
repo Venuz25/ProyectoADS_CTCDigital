@@ -1,3 +1,207 @@
+//========== ESTILO LINEAS METRO==========
+{
+    //colores de las líneas del metro
+    const coloresLineas = {
+        "L1": "#F7226F",  // Rosa
+        "L2": "#0054A6",  // Azul
+        "L3": "#6DBA45",  // Verde olivo
+        "L4": "#00A9E0",  // Cian
+        "L5": "#FFD100",  // Amarillo
+        "L6": "#E5451F",  // Rojo
+        "L7": "#F7921E",  // Naranja
+        "L8": "#00A261",  // Verde
+        "L9": "#A67C52",  // Café
+        "LA": "#8F4B9B",  // Morado
+        "LB": "#7E878D",  // Verde y Gris
+        "L12": "#D5A021"  // Oro
+    };
+
+    // Mapeo de líneas a estaciones
+    const estacionesPorLinea = {
+        "L1": ["Observatorio", "Tacubaya", "Juanacatlán", "Chapultepec", "Sevilla", "Insurgentes", "Cuauhtémoc", 
+            "Balderas", "Salto del Agua", "Isabel la Católica", "Pino Suárez", "Merced", "Candelaria", 
+            "San Lázaro", "Moctezuma", "Balbuena", "Boulevard Puerto Aéreo", "Gómez Farías", "Zaragoza", "Pantitlán"],
+        "L2": ["Cuatro Caminos", "Panteones", "Tacuba", "Cuitláhuac", "Popotla", "Colegio Militar", "Normal", 
+            "San Cosme", "Revolución", "Hidalgo", "Bellas Artes", "Allende", "Zócalo", "Pino Suárez", 
+            "San Antonio Abad", "Chabacano", "Viaducto", "Xola", "Villa de Cortés", "Nativitas", 
+            "Portales", "Ermita", "General Anaya", "Tasqueña"],
+        "L3": ["Indios Verdes", "Deportivo 18 de Marzo", "Potrero", "La Raza", "Tlatelolco", "Guerrero", 
+            "Hidalgo", "Juárez", "Balderas", "Niños Héroes", "Hospital General", "Centro Médico", 
+            "Etiopía", "Eugenia", "División del Norte", "Zapata", "Coyoacán", "Viveros", "Miguel Ángel de Quevedo", 
+            "Copilco", "Universidad"],
+        "L4": ["Martín Carrera", "Talismán", "Bondojito", "Consulado", "Canal del Norte", "Morelos", 
+            "Candelaria", "Fray Servando", "Jamaica", "Santa Anita"],
+        "L5": ["Politécnico", "Instituto del Petróleo", "Autobuses del Norte", "La Raza", "Misterios", 
+            "Valle Gómez", "Consulado", "Eduardo Molina", "Aragón", "Oceanía", "Terminal Aérea", "Hangares", 
+            "Pantitlán"],
+        "L6": ["El Rosario", "Tezozómoc", "UAM Azcapotzalco", "Ferrería", "Norte 45", "Vallejo", 
+            "Instituto del Petróleo", "Lindavista", "Deportivo 18 de Marzo", "La Villa-Basílica", "Martín Carrera"],
+        "L7": ["El Rosario", "Aquiles Serdán", "Camarones", "Refinería", "Tacuba", "San Joaquín", 
+            "Polanco", "Auditorio", "Constituyentes", "Tacubaya", "San Pedro de los Pinos", "San Antonio", 
+            "Mixcoac", "Barranca del Muerto"],
+        "L8": ["Garibaldi", "Bellas Artes", "San Juan de Letrán", "Salto del Agua", "Doctores", "Obrera", 
+            "Chabacano", "La Viga", "Santa Anita", "Coyuya", "Iztacalco", "Apatlaco", "Aculco", 
+            "Escuadrón 201", "Atlalilco", "Iztapalapa", "Cerro de la Estrella", "UAM-I", "Constitución de 1917"],
+        "L9": ["Tacubaya", "Patriotismo", "Chilpancingo", "Centro Médico", "Lázaro Cárdenas", "Chabacano", 
+            "Jamaica", "Mixiuhca", "Velódromo", "Ciudad Deportiva", "Puebla", "Pantitlán"],
+        "LA": ["Pantitlán", "Agrícola Oriental", "Canal de San Juan", "Tepalcates", "Guelatao", "Peñón Viejo", 
+            "Acatitla", "Santa Marta", "Los Reyes", "La Paz"],
+        "LB": ["Buenavista", "Guerrero", "Garibaldi", "Lagunilla", "Tepito", "Morelos", "San Lázaro", 
+            "Flores Magón", "Romero Rubio", "Oceanía", "Deportivo Oceanía", "Bosque de Aragón", "Villa de Aragón", 
+            "Nezahualcóyotl", "Impulsora", "Río de los Remedios", "Muzquiz", "Ecatepec", "Olímpica", "Plaza Aragón", 
+            "Ciudad Azteca"],
+        "L12": ["Mixcoac", "Insurgentes Sur", "Hospital 20 de Noviembre", "Zapata", "Parque de los Venados", 
+            "Eje Central", "Ermita", "Mexicaltzingo", "Atlalilco", "Culhuacán", "San Andrés Tomatlán", 
+            "Lomas Estrella", "Calle 11", "Periférico Oriente", "Tezonco", "Olivos", "Nopalera", "Zapotitlán", 
+            "Tlaltenco", "Tláhuac"],
+    };
+    
+    // Manejar el cambio de línea para actualizar estaciones
+    document.getElementById('linea').addEventListener('change', function() {
+        const lineaSeleccionada = this.value;
+        const estacionSelect = document.getElementById('estacion');
+        
+        if (lineaSeleccionada) {
+            document.querySelector('.select-header').style.setProperty('--line-color', coloresLineas[lineaSeleccionada]);
+            
+            estacionSelect.innerHTML = '<option value="" selected disabled>Selecciona una estación</option>';
+            estacionesPorLinea[lineaSeleccionada].forEach(estacion => {
+            const option = document.createElement('option');
+            option.value = estacion;
+            option.textContent = estacion;
+            estacionSelect.appendChild(option);
+            });
+            estacionSelect.disabled = false;
+        } else {
+            estacionSelect.innerHTML = '<option value="" selected disabled>Primero selecciona una línea</option>';
+            estacionSelect.disabled = true;
+        }
+    });
+
+    // Dibujar el select personalizado
+    document.addEventListener('DOMContentLoaded', function() {
+        const lineaSelect = document.getElementById('linea');
+        
+        const customSelect = document.createElement('div');
+        customSelect.className = 'custom-select';
+        customSelect.innerHTML = `
+        <div class="select-header">
+            <span class="selected-value"><i class="fas fa-subway me-2 py-1"></i>Línea</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="select-options"></div>
+        `;
+        
+        lineaSelect.parentNode.insertBefore(customSelect, lineaSelect.nextSibling);
+        
+        const optionsContainer = customSelect.querySelector('.select-options');
+        Array.from(lineaSelect.options).forEach(option => {
+        if (option.value) {
+            const div = document.createElement('div');
+            div.className = 'custom-option';
+            div.textContent = option.text;
+            div.dataset.value = option.value;
+            div.style.setProperty('--line-color', coloresLineas[option.value]);
+            optionsContainer.appendChild(div);
+        }
+        });
+    
+        customSelect.querySelector('.select-header').addEventListener('click', function() {
+        optionsContainer.classList.toggle('visible');
+        });
+    
+        optionsContainer.querySelectorAll('.custom-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const value = this.dataset.value;
+            lineaSelect.value = value;
+            customSelect.querySelector('.selected-value').textContent = this.textContent;
+            optionsContainer.classList.remove('visible');
+            
+            document.getElementById('linea').dispatchEvent(new Event('change'));
+        });
+        });
+    
+        document.addEventListener('click', function(e) {
+        if (!customSelect.contains(e.target)) {
+            optionsContainer.classList.remove('visible');
+        }
+        });
+    });
+}
+
+//========== CARGAR RAZAS ==========
+{
+    fetch("/ProyectoADS_CTCDigital/src/backend/admin/getRazas.php")
+    .then(res => res.json())
+    .then(data => {
+        const selectRaza = document.querySelector("#selectRaza");
+        const selectEspecieNueva = document.querySelector("#selectEspecieNueva");
+
+        // Cargar razas
+        data.razas.forEach(r => {
+            const option = document.createElement("option");
+            option.value = r.idRaza;
+            option.textContent = `${r.especie === "Gato" ? "🐱" : r.especie === "Perro" ? "🐶" : ""} ${r.raza}`;
+            selectRaza.appendChild(option);
+        });
+
+        // Cargar especies
+        data.especies.forEach(e => {
+            const option = document.createElement("option");
+            option.value = e.idEspecie;
+            option.textContent = e.nombre;
+            selectEspecieNueva.appendChild(option);
+        });
+    });
+
+    // Manejo de la visibilidad del input para nueva raza
+    document.addEventListener("DOMContentLoaded", () => {
+        const selectRaza = document.getElementById("selectRaza");
+        const inputRazaNueva = document.getElementById("inputRazaNueva");
+
+        // Escuchar cambios en el select
+        selectRaza.addEventListener("change", () => {
+            if (selectRaza.value === "nuevaRaza") {
+                // Mostrar el input si se selecciona "Nueva raza"
+                razaContainer.style.display = 'block';
+            } else {
+                // Ocultar el input si se selecciona cualquier otra opción
+                razaContainer.style.display = 'none';
+                inputRazaNueva.value = "";
+            }
+        });
+    });
+
+    document.querySelector("#btnCrearMascota").addEventListener("click", () => {
+        const selectRaza = document.querySelector("#selectRaza");
+        let razaFinal;
+
+        if (selectRaza.value === "nuevaRaza") {
+            razaFinal = document.querySelector("#inputRazaNueva").value.trim();
+        } else {
+            razaFinal = selectRaza.value;
+        }
+
+        if (razaFinal === "") {
+            alert("Por favor, ingresa una raza válida.");
+            return;
+        }
+    });
+}
+
+//========== OCULTAR CONTRASEÑA ADMINISTRADOR ==========
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('adminPassword');
+    const icon = this.querySelector('i');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const tabs = document.querySelectorAll('.folder-tab');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -356,12 +560,83 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== AGREGAR ELEMENTOS ==========
     {
+        //crear administrador
+        document.getElementById("btnCrearAdmin").addEventListener("click", () => {
+            const form = document.getElementById("formAdmin");
+            if (!form.checkValidity()) return form.reportValidity();
+        
+            const formData = new FormData(form);
+            formData.append("tipo", "admin");
+        
+            fetch("/ProyectoADS_CTCDigital/src/backend/admin/createDatos.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Administrador registrado");
+                    form.reset();
+                    bootstrap.Modal.getInstance(document.getElementById("modalAdmin")).hide();
+            
+                    // Actualizar la tabla de administradores
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            administradoresOriginal = data.administradores;
+                            cargarAdmin(administradoresOriginal);
+                        })
+                        .catch(err => console.error('Error al actualizar datos:', err));
+                } else {
+                    alert("Error al registrar administrador");
+                }
+            });            
+        });        
+        
+        //crear mascota
+        document.getElementById("btnCrearMascota").addEventListener("click", () => {
+            const form = document.getElementById("formMascota");
+            if (!form.checkValidity()) return form.reportValidity();
+            
+            const formData = new FormData(form);
+            formData.append("tipo", "mascota");
+            
+            formData.append('linea', document.getElementById('linea').value);
 
-
-
-
-
-
+            // Mostrar todos los campos en consola para depuración
+            for (let pair of formData.entries()) {
+                console.log(`${pair[0]}:`, pair[1]);
+            }
+        
+            if (document.getElementById("selectRaza").value === "nuevaRaza") {
+                formData.append("raza", "nuevaRaza");
+                formData.append("razaNueva", document.getElementById("inputRazaNueva").value.trim());
+            }
+        
+            fetch("/ProyectoADS_CTCDigital/src/backend/admin/createDatos.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Mascota registrada correctamente");
+                    form.reset();
+                    bootstrap.Modal.getInstance(document.getElementById("modalMascota")).hide();
+            
+                    // Actualizar la tabla de mascotas
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            mascotasOriginal = data.mascotas;
+                            cargarMascotas(mascotasOriginal);
+                        })
+                        .catch(err => console.error('Error al actualizar datos:', err));
+                } else {
+                    alert("Error al registrar mascota");
+                }
+            });            
+        });          
     }
     
 

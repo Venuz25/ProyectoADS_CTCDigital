@@ -47,14 +47,14 @@
                     </div>
                 </div>
     
-                <!-- Contenido de la pestaña Mascotas -->
+                <!-- Pestaña Mascotas -->
                 <div id="mascotas" class="tab-content active">
                     <div class="row">
                         <div class="col-md-10 mx-auto mb-4">
                             <h2 class="mb-4"><i class="fas fa-paw me-2"></i>Mascotas</h2>
                         </div>
                         <div class="col-md-2 mx-auto mb-4">
-                            <button class="btn btn-success btn-crear-registro">
+                            <button class="btn btn-success btn-crear-registro" data-bs-toggle="modal" data-bs-target="#modalMascota">
                                 <i class="fas fa-plus-circle me-2"></i> Nueva Mascota
                             </button>
                         </div>
@@ -323,7 +323,7 @@
                             <h2 class="mb-4"><i class="fas fa-paw me-2"></i>Administradores</h2>
                         </div>
                         <div class="col-md-2 mx-auto mb-4">
-                            <button class="btn btn-success btn-crear-registro">
+                            <button class="btn btn-success btn-crear-registro" data-bs-toggle="modal" data-bs-target="#modalAdmin">
                                 <i class="fas fa-plus-circle me-2"></i> Nuevo Administrador
                             </button>
                         </div>
@@ -394,6 +394,238 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Administrador -->
+    <div class="modal fade" id="modalAdmin" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <!-- Encabezado con gradiente y sombra -->
+                <div class="modal-header bg-primary text-white rounded-top-3">
+                    <div class="d-flex align-items-center">
+                        <h5 class="modal-title mb-0 text-center">Nuevo Administrador</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Cuerpo del modal con mejor espaciado -->
+                <div class="modal-body py-4">
+                    <form id="formAdmin" class="needs-validation" novalidate>
+                        <!-- Campo Usuario -->
+                        <div class="mb-4">
+                            <label for="adminUsuario" class="form-label fw-semibold">
+                                <i class="fas fa-user-circle me-2"></i>Usuario
+                            </label>
+                            <input type="text" class="form-control form-control-lg shadow-sm" id="adminUsuario" name="usuario" required>
+                            <div class="invalid-feedback">Por favor ingresa un nombre de usuario</div>
+                        </div>
+                        
+                        <!-- Campo Contraseña -->
+                        <div class="mb-4">
+                            <label for="adminPassword" class="form-label fw-semibold">
+                                <i class="fas fa-lock me-2"></i>Contraseña
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-lg shadow-sm" id="adminPassword" name="contraseña" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">Por favor ingresa una contraseña</div>
+                            <div class="form-text mt-1">Mínimo 8 caracteres con números y letras</div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Pie de modal -->
+                <div class="modal-footer border-0 bg-light rounded-bottom-3">
+                    <button type="button" class="btn btn-outline-secondary px-4 rounded-pill" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4 rounded-pill shadow-sm" id="btnCrearAdmin">
+                        <i class="fas fa-user-plus me-2"></i>Crear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mascota -->
+    <div class="modal fade" id="modalMascota" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <!-- Encabezado con gradiente verde -->
+                <div class="modal-header bg-success text-white rounded-top-3">
+                    <div class="d-flex align-items-center">
+                        <h5 class="modal-title mb-0">Nueva Mascota</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Cuerpo del modal -->
+                <div class="modal-body py-4">
+                    <form id="formMascota" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <!-- Primera fila -->
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control shadow-sm" id="nombreMascota" name="nombre" placeholder=" " required>
+                                    <label for="nombreMascota"><i class="fas fa-tag me-2"></i>Nombre</label>
+                                    <div class="invalid-feedback">Por favor ingresa el nombre</div>
+                                </div>
+                            </div>
+
+                            <!-- Segunda fila -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select shadow-sm" name="estadoAdopcion" required>
+                                        <option value="No disponible" selected>No disponible</option>
+                                        <option value="Disponible">Disponible</option>
+                                        <option value="En proceso">En proceso</option>
+                                        <option value="Adoptado">Adoptado</option>
+                                    </select>
+                                    <label><i class="fas fa-heart me-2"></i>Estado de Adopción</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control shadow-sm" id="fechaIngreso" name="fechaIngreso" required>
+                                    <label for="fechaIngreso"><i class="far fa-calendar-alt me-2"></i>Fecha de Ingreso</label>
+                                </div>
+                            </div>
+    
+                            <!-- Selectores de Línea y Estación -->
+                            <div class="col-md-6 mb-3">
+                                <select class="form-select" id="linea" required>
+                                    <option value="" selected disabled><i class="fas fa-subway me-2 py-1"></i>Línea</option>
+                                    <option value="L1">Línea 1</option>
+                                    <option value="L2">Línea 2</option>
+                                    <option value="L3">Línea 3</option>
+                                    <option value="L4">Línea 4</option>
+                                    <option value="L5">Línea 5</option>
+                                    <option value="L6">Línea 6</option>
+                                    <option value="L7">Línea 7</option>
+                                    <option value="L8">Línea 8</option>
+                                    <option value="L9">Línea 9</option>
+                                    <option value="LA">Línea A</option>
+                                    <option value="LB">Línea B</option>
+                                    <option value="L12">Línea 12</option>
+                                </select>
+                            </div>
+    
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select shadow-sm" id="estacion" name="estacion" disabled required>
+                                        <option value="" selected disabled>Primero selecciona una línea</option>
+                                    </select>
+                                    <label for="estacion"><i class="fas fa-map-marker-alt me-2"></i>Estación</label>
+                                </div>
+                            </div>
+    
+                            <!-- Estado de Edad y Sexo -->    
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select shadow-sm" name="sexo" required>
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        <option value="Macho">Macho</option>
+                                        <option value="Hembra">Hembra</option>
+                                    </select>
+                                    <label><i class="fas fa-venus-mars me-2"></i>Sexo</label>
+                                </div>
+                            </div>
+    
+                            <!-- Raza y Tamaño -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control shadow-sm" name="edad" placeholder=" " required>
+                                    <label><i class="fas fa-birthday-cake me-2"></i>Edad (años)</label>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select shadow-sm" name="tamano" required>
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        <option value="Pequeño">Pequeño</option>
+                                        <option value="Mediano">Mediano</option>
+                                        <option value="Grande">Grande</option>
+                                    </select>
+                                    <label><i class="fas fa-ruler-combined me-2"></i>Tamaño</label>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select shadow-sm" name="raza" id="selectRaza" required>
+                                        <option value="" selected disabled>Selecciona una raza</option>
+                                        <option value="nuevaRaza">Nueva raza</option>
+                                    </select>
+                                    <label><i class="fas fa-dog me-2"></i>Raza</label>
+                                </div>
+                                <!-- si es nueva raza -->
+                                <div style="display: none;" id="razaContainer">
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                        <input type="text" id="inputRazaNueva" name="razaNueva" class="form-control" placeholder="Escribe una nueva raza">
+                                    </div>
+                                    <div class="form-floating">
+                                        <select class="form-select shadow-sm" name="especie" id="selectEspecieNueva">
+                                            <option value="" disabled selected>Selecciona especie</option>
+                                        </select>
+                                        <label><i class="fas fa-paw me-2"></i>Especie</label>
+                                    </div>
+                                </div>                                
+                            </div>
+    
+                            <!-- Características Físicas -->
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control shadow-sm" name="caractFisica" placeholder=" ">
+                                    <label><i class="fas fa-paint-brush me-2"></i>Características Físicas</label>
+                                </div>
+                            </div>
+    
+                            <!-- Estado de Salud -->
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control shadow-sm" name="estadoSalud" placeholder=" ">
+                                    <label><i class="fas fa-heartbeat me-2"></i>Estado de Salud</label>
+                                </div>
+                            </div>
+    
+                            <!-- Descripción -->
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control shadow-sm" name="descripcion" placeholder=" " style="height: 100px"></textarea>
+                                    <label><i class="fas fa-align-left me-2"></i>Descripción</label>
+                                </div>
+                            </div>
+    
+                            <!-- Subida de archivos -->
+                            <div class="col-md-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><i class="fas fa-images me-2"></i>Multimedia </h6>
+                                        <input type="file" class="form-control" name="imagenes[]" id="imagenesMascota" accept="image/*,video/*" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Pie de modal -->
+                <div class="modal-footer border-0 bg-light rounded-bottom-3">
+                    <button type="button" class="btn btn-outline-secondary px-4 rounded-pill" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success px-4 rounded-pill shadow-sm" id="btnCrearMascota">
+                        <i class="fas fa-save me-2"></i>Registrar Mascota
+                    </button>
                 </div>
             </div>
         </div>

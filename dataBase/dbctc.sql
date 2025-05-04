@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-05-2025 a las 22:39:36
+-- Tiempo de generación: 04-05-2025 a las 09:56:19
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -30,16 +30,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `usuario` varchar(100) NOT NULL,
-  `contraseña` varchar(100) NOT NULL
+  `contraseña` varchar(100) NOT NULL,
+  `ultimaConn` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `admin`
 --
 
-INSERT INTO `admin` (`id`, `usuario`, `contraseña`) VALUES
-(1, 'admin', 'admin1234'),
-(2, 'admin2', 'admin5678');
+INSERT INTO `admin` (`id`, `usuario`, `contraseña`, `ultimaConn`) VALUES
+(1, 'admin', 'admin1234', '2025-05-04 03:28:17'),
+(2, 'admin2', 'admin5678', '2025-05-04 02:07:12'),
+(4, 'venuz', 'aagb2574', NULL);
 
 -- --------------------------------------------------------
 
@@ -65,11 +67,8 @@ INSERT INTO `adoptante` (`idAdoptante`, `nombre`, `telefono`, `correo`, `documen
 (3, 'María Hernández Sánchez', '5553344556', 'maria.hdz@outlook.com', ''),
 (4, 'Jorge Ramírez Pérez', '5556677889', 'jorge.ramirez@empresa.com', ''),
 (5, 'Laura González Díaz', '5551122334', 'laura.gonzalez@mail.com', ''),
-(6, 'Fernando Torres Méndez', '5555544332', 'fernando.tm@correo.com', ''),
 (7, 'Sofía Castro Reyes', '5557766558', 'sofia.castro@outlook.com', ''),
-(8, 'Miguel Ángel Ortega', '5558899001', 'miguel.ortega@mail.com', ''),
-(9, 'Valeria Silva Cruz', '5554433221', 'valeria.sc@correo.com', ''),
-(10, 'Diego Navarro Ríos', '5550099887', 'diego.navarro@mail.com', '');
+(9, 'Valeria Silva Cruz', '5554433221', 'valeria.sc@correo.com', '');
 
 -- --------------------------------------------------------
 
@@ -81,38 +80,36 @@ CREATE TABLE `detallesmascota` (
   `idMascota` int(11) NOT NULL,
   `edad` int(11) DEFAULT NULL,
   `sexo` enum('Macho','Hembra') DEFAULT NULL,
+  `idRaza` int(11) DEFAULT NULL,
   `tamaño` enum('Pequeño','Mediano','Grande') DEFAULT NULL,
   `caractFisica` varchar(255) DEFAULT NULL,
   `estadoSalud` varchar(255) DEFAULT NULL,
-  `descripcion` varchar(255) DEFAULT NULL,
-  `idRaza` int(11) DEFAULT NULL
+  `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `detallesmascota`
 --
 
-INSERT INTO `detallesmascota` (`idMascota`, `edad`, `sexo`, `tamaño`, `caractFisica`, `estadoSalud`, `descripcion`, `idRaza`) VALUES
-(1, 2, 'Macho', 'Mediano', 'Mancha blanca en el pecho', 'Saludable', 'Juguetón y bueno con niños', 1),
-(2, 3, 'Hembra', 'Pequeño', 'Ojos azules intensos', 'Alergia al polen', 'Gata tranquila y cariñosa', 19),
-(3, 1, 'Macho', 'Pequeño', 'Pelaje atigrado', 'Vacunado completo', 'Energético y curioso', 18),
-(4, 4, 'Hembra', 'Pequeño', 'Pelaje blanco y largo', 'Artritis leve', 'Adora pasear y nadar', 2),
-(5, 2, 'Macho', 'Grande', 'Orejas erguidas', 'Saludable', 'Excelente guardián', 3),
-(6, 5, 'Hembra', 'Pequeño', 'Cabeza en forma de manzana', 'Problemas dentales', 'Le encanta estar en brazos', 4),
-(7, 4, 'Macho', 'Mediano', 'Mandíbula cuadrada', 'Saludable', 'Amigable con otros perros', 5),
-(8, 2, 'Hembra', 'Pequeño', 'Pelaje blanco largo', 'Ojos sensibles', 'Dócil y tranquila', 6),
-(9, 1, 'Macho', 'Pequeño', 'Cara arrugada', 'Ronca al dormir', 'Compañero ideal para departamentos', 7),
-(10, 3, 'Hembra', 'Mediano', 'Orejas largas y sedosas', 'Otitis crónica', 'Adora jugar con pelotas', 8),
-(11, 4, 'Hembra', 'Grande', 'Manchas negras', 'Problemas de piel', 'Necesita ejercicio diario', 9),
-(12, 2, 'Hembra', 'Grande', 'Ojos heterocromos', 'Resistente al frío', 'Aullador profesional', 10),
-(13, 5, 'Macho', 'Mediano', 'Cola siempre en movimiento', 'Sobrepeso leve', 'Expert en seguir olores', 11),
-(14, 6, 'Macho', 'Mediano', 'Patas cortas y orejas largas', 'Artritis', 'Tranquilo y dormilón', 1),
-(15, 1, 'Hembra', 'Grande', 'Pelaje sedoso', 'Saludable', 'Apta para terapia emocional', 12),
-(16, 3, 'Macho', 'Pequeño', 'Orejas de murciélago', 'Ronquidos fuertes', 'Personalidad cómica', 13),
-(17, 4, 'Hembra', 'Mediano', 'Barba característica', 'Problemas oculares', 'Inteligente y alerta', 14),
-(18, 2, 'Macho', 'Grande', 'Cuerpo atlético', 'Saludable', 'Necesita entrenamiento constante', 15),
-(19, 7, 'Hembra', 'Pequeño', 'Pelaje rizado', 'Alergia a picaduras', 'Ideal para dueños primerizos', 16),
-(20, 1, 'Macho', 'Mediano', 'Piel desnuda', 'Protección solar necesaria', 'Típico perro mexicano', 17);
+INSERT INTO `detallesmascota` (`idMascota`, `edad`, `sexo`, `idRaza`, `tamaño`, `caractFisica`, `estadoSalud`, `descripcion`) VALUES
+(1, 2, 'Macho', 1, 'Mediano', 'Mancha blanca en el pecho', 'Saludable', 'Juguetón y bueno con niños'),
+(2, 3, 'Hembra', 19, 'Pequeño', 'Ojos azules intensos', 'Alergia al polen', 'Gata tranquila y cariñosa'),
+(3, 1, 'Macho', 18, 'Pequeño', 'Pelaje atigrado', 'Vacunado completo', 'Energético y curioso'),
+(4, 4, 'Hembra', 2, 'Pequeño', 'Pelaje blanco y largo', 'Artritis leve', 'Adora pasear y nadar'),
+(5, 2, 'Macho', 3, 'Grande', 'Orejas erguidas', 'Saludable', 'Excelente guardián'),
+(6, 5, 'Hembra', 4, 'Pequeño', 'Cabeza en forma de manzana', 'Problemas dentales', 'Le encanta estar en brazos'),
+(7, 4, 'Macho', 5, 'Mediano', 'Mandíbula cuadrada', 'Saludable', 'Amigable con otros perros'),
+(8, 2, 'Hembra', 6, 'Pequeño', 'Pelaje blanco largo', 'Ojos sensibles', 'Dócil y tranquila'),
+(9, 1, 'Macho', 7, 'Pequeño', 'Cara arrugada', 'Ronca al dormir', 'Compañero ideal para departamentos'),
+(10, 3, 'Hembra', 8, 'Mediano', 'Orejas largas y sedosas', 'Otitis crónica', 'Adora jugar con pelotas'),
+(11, 4, 'Hembra', 9, 'Grande', 'Manchas negras', 'Problemas de piel', 'Necesita ejercicio diario'),
+(12, 2, 'Hembra', 10, 'Grande', 'Ojos heterocromos', 'Resistente al frío', 'Aullador profesional'),
+(13, 5, 'Macho', 11, 'Mediano', 'Cola siempre en movimiento', 'Sobrepeso leve', 'Expert en seguir olores'),
+(14, 6, 'Macho', 1, 'Mediano', 'Patas cortas y orejas largas', 'Artritis', 'Tranquilo y dormilón'),
+(15, 1, 'Hembra', 12, 'Grande', 'Pelaje sedoso', 'Saludable', 'Apta para terapia emocional'),
+(16, 7, 'Macho', 1, 'Grande', 'Pelo amarillento, orejas puntiagudas y ojos claros.', 'Heridas pequeñas y peso bajo.', 'Perrito tranquilo y cariñoso, le gusta dormir mucho.'),
+(17, 3, 'Hembra', NULL, 'Mediano', 'Gato pelo corto, color negro con ojos amarillos', 'Completamente sano', 'Gata tranquila y distante.'),
+(21, 10, 'Hembra', 22, 'Mediano', 'Color mostaza, con grandes orejas y patas largas.', 'Rasguños causados por peleas con otros gatos.', 'Gata mayor que le gustan los espacios tranquilos y con poca gente. Se suele estresar facil.');
 
 -- --------------------------------------------------------
 
@@ -154,8 +151,7 @@ INSERT INTO `donacion` (`idDonacion`, `idDonante`, `estadoDonacion`, `tipo`, `fe
 (16, 16, 'Pendiente', 'Monetaria', '2025-04-26', '2025-04-27', NULL, 'Donación para alimentar a los animalitos del centro.'),
 (17, 17, 'Pendiente', 'En especie', '2025-04-26', '2025-04-27', NULL, 'Donación de muchos juguetes para que el respeto al derecho ajeno de los perritos sea la paz.'),
 (18, 18, 'Pendiente', 'Voluntariado', '2025-04-26', '2025-04-28', NULL, 'Ir a entretener a los perritos por que es un nye.'),
-(19, 19, 'Pendiente', 'En especie', '2025-04-26', '2025-04-30', NULL, '90000kg de croquetas para que mis plebes no pasen hambre'),
-(20, 20, 'Pendiente', 'Monetaria', '2025-05-01', '0000-00-00', NULL, 'Donación para comprarles todos los accesorios que requieren los animalitos.');
+(19, 19, 'Pendiente', 'En especie', '2025-04-26', '2025-04-30', NULL, '90000kg de croquetas para que mis plebes no pasen hambre');
 
 -- --------------------------------------------------------
 
@@ -186,8 +182,7 @@ INSERT INTO `donacionvisual` (`idUser`, `usuario`, `img`, `color`) VALUES
 (14, 'petfriend', '6.png', '#00BCD4'),
 (15, 'anon.donor', '5.png', '#607D8B'),
 (16, 'Venuz', '18.png', '#b094ff'),
-(19, 'Mariposa de Barrio', '19.png', '#003975'),
-(20, 'Gaga', '19.png', '#9d2020');
+(19, 'Mariposa de Barrio', '19.png', '#003975');
 
 -- --------------------------------------------------------
 
@@ -224,8 +219,7 @@ INSERT INTO `donante` (`idDonante`, `nombreDonante`, `correo`) VALUES
 (16, 'Areli Guevara', 'arealeguevadillo@gmail.com'),
 (17, 'Benito Juarez', 'el.viento.a.juarez@gmail.com'),
 (18, 'Cepillin', 'nye@gmail.com'),
-(19, 'Jenny Rivera', 'mariposa.barrio@gmail.com'),
-(20, 'Lady Gaga', 'little.monster@yahoo.com');
+(19, 'Jenny Rivera', 'mariposa.barrio@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -475,26 +469,25 @@ CREATE TABLE `mascota` (
 --
 
 INSERT INTO `mascota` (`idMascota`, `nombre`, `fechaIngreso`, `estadoAdopcion`, `idEstacionEncontrado`) VALUES
-(1, 'Panchito', '2025-04-23', 'Disponible', 1301),
-(2, 'Tacubaya', '2025-04-23', 'Disponible', 710),
-(3, 'Mixco', '2025-04-23', 'Adoptado', 1201),
-(4, 'Chapulín', '2025-04-23', 'Disponible', 104),
-(5, 'Aragón', '2025-04-23', 'Disponible', 509),
-(6, 'Candy', '2025-04-23', 'Adoptado', 407),
-(7, 'Balderas', '2025-04-23', 'Disponible', 108),
-(8, 'Tasquita', '2025-04-23', 'No Disponible', 220),
-(9, 'Zarago', '2025-04-23', 'Disponible', 119),
-(10, 'Rosita', '2025-04-23', 'Disponible', 701),
-(11, 'Vicky', '2025-04-23', 'No Disponible', 808),
-(12, 'Luna', '2025-04-23', 'Disponible', 608),
-(13, 'Chabacano', '2025-04-23', 'Disponible', 216),
-(14, 'Morel', '2025-04-23', 'Disponible', 1406),
-(15, 'Güera', '2025-04-23', 'En proceso', 1305),
-(16, 'Pino', '2025-04-23', 'Disponible', 214),
-(17, 'Ocean', '2025-04-23', 'Adoptado', 510),
-(18, 'Hidalgo', '2025-04-23', 'Disponible', 210),
-(19, 'Tlatel', '2025-04-23', 'Disponible', 305),
-(20, 'Xolito', '2025-04-23', 'Disponible', 218);
+(1, 'Panchito', '2023-01-05', 'Disponible', 1301),
+(2, 'Tacubaya', '2023-02-04', 'Disponible', 710),
+(3, 'Mixco', '2023-02-18', 'Adoptado', 1201),
+(4, 'Chapulín', '2023-05-17', 'Disponible', 104),
+(5, 'Aragón', '2023-07-23', 'Disponible', 509),
+(6, 'Candy', '2023-10-02', 'Adoptado', 407),
+(7, 'Balderas', '2023-12-24', 'Disponible', 108),
+(8, 'Tasquita', '2024-03-24', 'No Disponible', 220),
+(9, 'Zarago', '2024-03-25', 'Disponible', 119),
+(10, 'Rosita', '2024-07-09', 'Disponible', 701),
+(11, 'Vicky', '2024-09-26', 'No Disponible', 808),
+(12, 'Luna', '2024-11-23', 'Disponible', 608),
+(13, 'Chabacano', '2024-12-30', 'Disponible', 216),
+(14, 'Morel', '2024-12-31', 'Disponible', 1406),
+(15, 'Güera', '2024-12-31', 'En proceso', 1305),
+(16, 'Zapato', '2025-05-04', 'No Disponible', 316),
+(17, 'Óleo', '2025-05-13', 'No Disponible', 802),
+(18, 'Don Porfirio', '2025-05-12', 'No Disponible', 209),
+(21, 'Consuelo', '2025-05-11', 'No Disponible', 404);
 
 -- --------------------------------------------------------
 
@@ -531,7 +524,10 @@ INSERT INTO `raza` (`idRaza`, `nombre`, `idEspecie`) VALUES
 (16, 'Caniche', 1),
 (17, 'Xoloitzcuintle', 1),
 (18, 'Criollo', 2),
-(19, 'Siamés', 2);
+(19, 'Siamés', 2),
+(20, 'Bombay', 2),
+(21, 'Beauceron', 1),
+(22, 'Abisinio', 2);
 
 -- --------------------------------------------------------
 
@@ -623,10 +619,10 @@ INSERT INTO `reportemascota` (`idReporte`, `idMascota`) VALUES
 
 CREATE TABLE `solicitud` (
   `idSolicitud` int(11) NOT NULL,
-  `idMascota` int(11) DEFAULT NULL,
-  `idAdoptante` int(11) DEFAULT NULL,
+  `idMascota` int(11) NOT NULL,
+  `idAdoptante` int(11) NOT NULL,
   `fechaSolicitud` date NOT NULL,
-  `estadoAdopcion` enum('En proceso','Pendiente','Aprobada','Rechazada') DEFAULT 'Pendiente',
+  `estadoAdopcion` enum('En proceso','Pendiente','Aprobada','Rechazada') NOT NULL DEFAULT 'Pendiente',
   `comentarios` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -640,11 +636,8 @@ INSERT INTO `solicitud` (`idSolicitud`, `idMascota`, `idAdoptante`, `fechaSolici
 (3, 15, 2, '2024-02-20', 'Aprobada', 'Adopción para terapia asistida'),
 (4, 5, 4, '2024-01-25', 'Rechazada', 'Espacio insuficiente para perro grande'),
 (5, 9, 5, '2024-03-10', 'Rechazada', 'Alergias a perros de pelo corto'),
-(6, 18, 6, '2024-04-05', 'Rechazada', 'Horarios incompatibles para cuidados'),
 (7, 12, 7, '2024-04-18', 'Pendiente', 'En revisión de documentación'),
-(8, 20, 8, '2024-04-20', 'Pendiente', 'Visita domiciliaria programada'),
-(9, 3, 9, '2024-04-22', 'Pendiente', 'Esperando respuesta del adoptante'),
-(10, 16, 10, '2024-04-23', 'Pendiente', 'Proceso de entrevista en curso');
+(9, 3, 9, '2024-04-22', 'Pendiente', 'Esperando respuesta del adoptante');
 
 -- --------------------------------------------------------
 
@@ -671,11 +664,8 @@ INSERT INTO `visitadom` (`idSolicitud`, `direccion`, `ubicacion`, `estadoVisita`
 (3, 'Av. Hidalgo 45, Centro Histórico', '19.4326° N, 99.1332° W', 'Realizada', '2024-02-25 16:30:00', 'Familia con experiencia en terapia asistida'),
 (4, 'Calle Jardín 89, Coyoacán', '19.3467° N, 99.1612° W', 'Realizada', '2024-04-05 17:00:00', 'Casa con área verde ideal'),
 (5, 'Av. Universidad 999, Copilco', '19.3278° N, 99.1802° W', 'Pendiente', '2024-05-02 11:30:00', 'Primera visita programada'),
-(6, 'Calle Pino 67, Del Valle', '19.3725° N, 99.1753° W', 'Cancelada', '2024-03-18 09:00:00', 'Adoptante desistió'),
 (7, 'Calle Sol 22, Aragón', '19.4714° N, 99.0754° W', 'Reprogramada', '2024-05-05 12:00:00', 'Se pospuso por lluvia'),
-(8, 'Av. Cuitláhuac 334, Azcapotzalco', '19.4876° N, 99.1865° W', 'Cancelada', '2024-04-12 13:30:00', 'Problemas de agenda'),
-(9, 'Av. Reforma 1500, Juárez', '19.4285° N, 99.1608° W', 'Pendiente', '2024-04-30 15:00:00', 'Esperando confirmación'),
-(10, 'Calle Xochimilco 55, Tláhuac', '19.2563° N, 99.0057° W', 'Reprogramada', '2024-05-10 10:00:00', 'Cambio por emergencia médica');
+(9, 'Av. Reforma 1500, Juárez', '19.4285° N, 99.1608° W', 'Pendiente', '2024-04-30 15:00:00', 'Esperando confirmación');
 
 --
 -- Índices para tablas volcadas
@@ -791,7 +781,7 @@ ALTER TABLE `visitadom`
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `adoptante`
@@ -827,13 +817,13 @@ ALTER TABLE `estaciones`
 -- AUTO_INCREMENT de la tabla `mascota`
 --
 ALTER TABLE `mascota`
-  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `raza`
 --
 ALTER TABLE `raza`
-  MODIFY `idRaza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idRaza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `reportante`
