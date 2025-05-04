@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${a.id}</td>
                         <td>${a.usuario}</td>
                         <td>${a.contraseña}</td>
+                        <td>${a.ultimaConn}</td>
                         <td>
                             <button class="btn btn-danger btn-sm delete-btn" data-id="${a.id}">
                                 <i class="fas fa-trash-alt"></i>
@@ -271,79 +272,98 @@ document.addEventListener('DOMContentLoaded', function() {
             cargarDonaciones(filtradas);
         });
         
+        //filtros de administradores
+        document.getElementById("aplicarFiltrosAdmin").addEventListener("click", function () {
+            const orden = document.getElementById("filtroConexion").value;
         
+            let filtradas = [...administradoresOriginal];
+        
+            if (orden !== "sf") {
+                if (orden === "asc") {
+                    filtradas.sort((a, b) => new Date(a.ultimaConn) - new Date(b.ultimaConn));
+                } else if (orden === "desc") {
+                    filtradas.sort((a, b) => new Date(b.ultimaConn) - new Date(a.ultimaConn));
+                }
+            }
+            cargarAdmin(filtradas);
+        });
     }
     
     // ========== ELIMINAR ELEMENTOS ==========
-    let idEliminar = null;
-    let tipoEliminar = null;
+    {
+        let idEliminar = null;
+        let tipoEliminar = null;
 
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.delete-btn');
-        if (btn) {
-            idEliminar = btn.getAttribute('data-id');
-            
-            // Detecta a qué tabla pertenece
-            const fila = btn.closest('tr');
-            if (fila.closest('#tablaMascotas')) tipoEliminar = 'mascota';
-            else if (fila.closest('#tablaSolicitudes')) tipoEliminar = 'solicitud';
-            else if (fila.closest('#tablaReportes')) tipoEliminar = 'reporte';
-            else if (fila.closest('#tablaDonaciones')) tipoEliminar = 'donacion';
-            else if (fila.closest('#tablaAdmin')) tipoEliminar = 'admin';
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.delete-btn');
+            if (btn) {
+                idEliminar = btn.getAttribute('data-id');
+                
+                // Detecta a qué tabla pertenece
+                const fila = btn.closest('tr');
+                if (fila.closest('#tablaMascotas')) tipoEliminar = 'mascota';
+                else if (fila.closest('#tablaSolicitudes')) tipoEliminar = 'solicitud';
+                else if (fila.closest('#tablaReportes')) tipoEliminar = 'reporte';
+                else if (fila.closest('#tablaDonaciones')) tipoEliminar = 'donacion';
+                else if (fila.closest('#tablaAdmin')) tipoEliminar = 'admin';
 
-            // Muestra el modal
-            const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-
-            if (tipoEliminar === 'mascota') {
-                document.getElementById('confirmEliminar').innerText = `ID: ${idEliminar} (Mascota)`;
-            } else if (tipoEliminar === 'solicitud') {
-                document.getElementById('confirmEliminar').innerText = `ID: ${idEliminar} (Solicitud)`;
-            } else if (tipoEliminar === 'reporte') {
-                document.getElementById('confirmEliminar').innerText = `ID: ${idEliminar} (Reporte)`;
+                // Muestra el modal
+                const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+                modal.show();
             }
-            modal.show();
-        }
-    });
-
-    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-        if (!idEliminar || !tipoEliminar) return;
-
-        fetch('/ProyectoADS_CTCDigital/src/backend/admin/deleteDatos.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id=${encodeURIComponent(idEliminar)}&tipo=${encodeURIComponent(tipoEliminar)}`
-        })        
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                // Filtra del arreglo local
-                if (tipoEliminar === 'mascota') {
-                    mascotasOriginal = mascotasOriginal.filter(m => m.idMascota !== idEliminar);
-                    cargarMascotas(mascotasOriginal);
-                } else if (tipoEliminar === 'solicitud') {
-                    solicitudesOriginal = solicitudesOriginal.filter(s => s.idSolicitud !== idEliminar);
-                    cargarSolicitudes(solicitudesOriginal);
-                } else if (tipoEliminar === 'reporte') {
-                    reportesOriginal = reportesOriginal.filter(r => r.idReporte !== idEliminar);
-                    cargarReportes(reportesOriginal);
-                } else if (tipoEliminar === 'donacion') {
-                    donacionesOriginal = donacionesOriginal.filter(d => d.idDonacion !== idEliminar);
-                    cargarDonaciones(donacionesOriginal);
-                } else if (tipoEliminar === 'admin') {
-                    administradoresOriginal = administradoresOriginal.filter(a => a.id !== idEliminar);
-                    cargarAdmin(administradoresOriginal);
-                }
-
-                bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
-            } else {
-                alert('Error al eliminar: ' + data.message);
-            }
-        })
-        .catch(err => {
-            console.error('Error al eliminar:', err);
-            alert('Ocurrió un error al intentar eliminar el registro.');
         });
-    });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (!idEliminar || !tipoEliminar) return;
+
+            fetch('/ProyectoADS_CTCDigital/src/backend/admin/deleteDatos.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${encodeURIComponent(idEliminar)}&tipo=${encodeURIComponent(tipoEliminar)}`
+            })        
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Filtra del arreglo local
+                    if (tipoEliminar === 'mascota') {
+                        mascotasOriginal = mascotasOriginal.filter(m => m.idMascota !== idEliminar);
+                        cargarMascotas(mascotasOriginal);
+                    } else if (tipoEliminar === 'solicitud') {
+                        solicitudesOriginal = solicitudesOriginal.filter(s => s.idSolicitud !== idEliminar);
+                        cargarSolicitudes(solicitudesOriginal);
+                    } else if (tipoEliminar === 'reporte') {
+                        reportesOriginal = reportesOriginal.filter(r => r.idReporte !== idEliminar);
+                        cargarReportes(reportesOriginal);
+                    } else if (tipoEliminar === 'donacion') {
+                        donacionesOriginal = donacionesOriginal.filter(d => d.idDonacion !== idEliminar);
+                        cargarDonaciones(donacionesOriginal);
+                    } else if (tipoEliminar === 'admin') {
+                        administradoresOriginal = administradoresOriginal.filter(a => a.id !== idEliminar);
+                        cargarAdmin(administradoresOriginal);
+                    }
+
+                    bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+                } else {
+                    alert('Error al eliminar: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error al eliminar:', err);
+                alert('Ocurrió un error al intentar eliminar el registro.');
+            });
+        });
+    }
+
+    // ========== AGREGAR ELEMENTOS ==========
+    {
+
+
+
+
+
+
+    }
+    
 
 
 

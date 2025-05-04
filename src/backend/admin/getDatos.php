@@ -67,7 +67,7 @@
     // ---------- 5. Administradores ----------
     $adminQuery = "
     SELECT 
-        id, usuario, contraseña 
+        id, usuario, contraseña, ultimaConn
     FROM admin 
     ORDER BY id
     ";

@@ -332,6 +332,25 @@
                     <div class="alert alert-info mb-4">
                         <i class="fas fa-info-circle me-2"></i>Esta sección muestra la lista de administradores del sistema.
                     </div>
+
+                    <!-- Filtros -->
+                    <div class="filter-section mb-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="filter-group">
+                                    <label class="filter-label">Fecha de la última conexión</label>
+                                    <div class="d-flex">
+                                        <select class="form-select me-2" id="filtroConexion">
+                                            <option value="sf">Sin importancia</option>
+                                            <option value="desc">Más recientes primero</option>
+                                            <option value="asc">Más antiguos primero</option>
+                                        </select>
+                                        <button class="btn btn-primary" id="aplicarFiltrosAdmin">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- Tabla de administradores -->
                     <div class="table-responsive">
@@ -341,6 +360,7 @@
                                     <th>ID</th>
                                     <th>Usuario</th>
                                     <th>Contraseña</th>
+                                    <th>Ultima conexión</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -379,20 +399,27 @@
         </div>
     </div>
 
-    <!-- Modal para eliminar un registro -->
+    <!-- Modal para eliminar un registro-->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Confirmar Eliminación</h5>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body py-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-trash-alt fa-3x text-danger mb-3"></i>
+                        <p class="fs-5">¿Estás seguro de que deseas eliminar este registro?</p>
+                        <div class="alert alert-warning mt-3 d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle me-3 fs-5"></i>
+                            <p class="mb-0 fw-semibold">Esta acción no se puede deshacer y todos los datos relacionados se perderán permanentemente.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
-                    <p class="fw-bold" id="confirmEliminar"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                <div class="modal-footer border-0 bg-light rounded-bottom">
+                    <button type="button" class="btn btn-outline-secondary px-4 rounded-pill" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger px-4 rounded-pill shadow-sm" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt me-1"></i> Eliminar
+                    </button>
                 </div>
             </div>
         </div>

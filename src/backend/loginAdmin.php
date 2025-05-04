@@ -5,11 +5,10 @@ header("Content-Type: application/json; charset=UTF-8");
 session_start();
 require_once "conexion.php";
 
-// Obtener datos del POST
-$json = file_get_contents('php://input');
-$data = json_decode($json, true);
+// Obtener y decodificar los datos del POST
+$data = json_decode(file_get_contents('php://input'), true);
 
-// Validar datos recibidos
+// Validar datos
 if (empty($data['usuario']) || empty($data['contraseña'])) {
     http_response_code(400);
     echo json_encode([
@@ -19,18 +18,17 @@ if (empty($data['usuario']) || empty($data['contraseña'])) {
     exit;
 }
 
-$usuario = $conn->real_escape_string($data['usuario']);
+$usuario = $data['usuario'];
 $contraseña = $data['contraseña'];
 
 try {
-    // Consulta preparada para evitar inyección SQL
+    // Buscar al administrador
     $stmt = $conn->prepare("SELECT id, usuario, contraseña FROM admin WHERE usuario = ?");
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
-        // Si no se encuentra el usuario
         http_response_code(401);
         echo json_encode([
             'success' => false,
@@ -41,23 +39,27 @@ try {
 
     $admin = $result->fetch_assoc();
 
-    // Verificar contraseña
+    // Verificar contraseña (sin hash en este caso, se recomienda usar password_hash en producción)
     if ($contraseña === $admin['contraseña']) {
-        // Si las credenciales coinciden, iniciar sesión
+        // Actualizar última conexión
+        $fechaActual = date("Y-m-d H:i:s");
+        $updateStmt = $conn->prepare("UPDATE admin SET ultimaConn = ? WHERE id = ?");
+        $updateStmt->bind_param("si", $fechaActual, $admin['id']);
+        $updateStmt->execute();
+
+        // Iniciar sesión
         $_SESSION['admin_logged'] = true;
         $_SESSION['admin_id'] = $admin['id'];
         $_SESSION['admin_user'] = $admin['usuario'];
         $_SESSION['last_activity'] = time();
-        
-        // Regenerar ID de sesión
         session_regenerate_id(true);
-        
-        // Configurar cookie de sesión segura
+
+        // Cookie segura (opcional según tu contexto)
         setcookie(session_name(), session_id(), [
             'expires' => 0,
             'path' => '/',
-            'secure' => true, 
-            'httponly' => true, 
+            'secure' => true,
+            'httponly' => true,
             'samesite' => 'Strict'
         ]);
 
@@ -66,7 +68,6 @@ try {
             'message' => 'Inicio de sesión exitoso'
         ]);
     } else {
-        // Contraseña incorrecta
         http_response_code(401);
         echo json_encode([
             'success' => false,
@@ -74,7 +75,6 @@ try {
         ]);
     }
 } catch (Exception $e) {
-    // Error del servidor
     http_response_code(500);
     echo json_encode([
         'success' => false,
