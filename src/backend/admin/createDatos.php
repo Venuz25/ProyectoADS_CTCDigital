@@ -95,7 +95,6 @@
             }
 
             $idMascota = $stmtMascota->insert_id;
-            file_put_contents("debug_id.txt", "ID: $idMascota\n");
             $stmtMascota->close();
 
             // Insertar detalles
@@ -120,8 +119,6 @@
                 exit;
             }
 
-            file_put_contents("debug_files.txt", print_r($_FILES, true));
-
             // Guardar imágenes
             $uploadDir = realpath(__DIR__ . '/../../../') . "/mascotas/$idMascota";
 
@@ -134,11 +131,7 @@
                 $fileName = basename($name);
                 $targetPath = "$uploadDir/$fileName";
 
-                $log = "TMP: $tmpName\nTARGET: $targetPath\n";
-                file_put_contents("debug_upload.txt", $log, FILE_APPEND);
-
                 if (!move_uploaded_file($tmpName, $targetPath)) {
-                    file_put_contents("debug_upload.txt", "ERROR al mover: $fileName\n", FILE_APPEND);
                     echo json_encode(["success" => false, "message" => "Error al subir imagen: $fileName"]);
                     exit;
                 }

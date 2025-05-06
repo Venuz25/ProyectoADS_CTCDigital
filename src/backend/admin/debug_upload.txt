@@ -1,6 +1,0 @@
-TMP: C:\xampp\tmp\phpFECB.tmp
-TARGET: C:\xampp\htdocs\ProyectoADS_CTCDigital/mascotas/25/450_1000.jpeg
-TMP: C:\xampp\tmp\phpFECC.tmp
-TARGET: C:\xampp\htdocs\ProyectoADS_CTCDigital/mascotas/25/parvovirus-perros-sintomas-que-es-prevencion-1200x675.jpg
-TMP: C:\xampp\tmp\phpFECD.tmp
-TARGET: C:\xampp\htdocs\ProyectoADS_CTCDigital/mascotas/25/principal.jpeg

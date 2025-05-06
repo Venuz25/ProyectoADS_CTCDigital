@@ -63,20 +63,21 @@ window.addEventListener('DOMContentLoaded', () => {
                             <i class="fas fa-birthday-cake text-dark-subtle me-2" style="width: 20px;"></i>
                             <span>${mascota.edad} años</span>
                         </li>
-                        <li class="d-flex align-items-center mb-2">
+                        <li class="d-flex align-items-center">
                             <i class="fas fa-ruler-combined text-dark-subtle me-2" style="width: 20px;"></i>
                             <span class="text-capitalize">${mascota.tamaño}</span>
                         </li>
                     </ul>
+                    <hr class="my-1">   
                     
                     <!-- Botón de acción -->
-                    <div class="mt-auto pt-2 align-self-end">
-                        <button type="button" 
-                                class="btn bg-info-subtle btn-sm rounded-pill w-80 py-2 d-flex align-items-center justify-content-center"
-                                onclick='mostrarModal(${JSON.stringify(mascota)})'>
-                            <i class="fas fa-info-circle me-2"></i>
-                            Más información
-                        </button>
+                    <div class="mt-auto pt-2 align-self-end">              
+                      <button type="button" 
+                              class="btn bg-info-subtle btn-sm rounded-pill w-80 py-2 d-flex align-items-center justify-content-center"
+                              onclick='mostrarModal(${JSON.stringify(mascota)})'>
+                          <i class="fas fa-info-circle me-2"></i>
+                          Más información
+                      </button>
                     </div>
                 </div>
             </div>
