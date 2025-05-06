@@ -32,7 +32,32 @@
         GROUP BY m.idMascota
         ORDER BY m.idMascota
     ";
+    
     $mascotas = $conn->query($mascotasQuery)->fetch_all(MYSQLI_ASSOC);
+
+    // agregar las imagenes
+    foreach ($mascotas as &$mascota) {
+        $id = $mascota['idMascota'];
+        $rutaDirectorio = realpath(__DIR__ . '/../../../') . "/mascotas/$id";
+    
+        $imagenes = [];
+        if (is_dir($rutaDirectorio)) {
+            $archivos = scandir($rutaDirectorio);
+            foreach ($archivos as $archivo) {
+                if (in_array(strtolower(pathinfo($archivo, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp'])) {
+                    $imagenes[] = "/ProyectoADS_CTCDigital/mascotas/$id/$archivo";
+                }
+            }
+        }
+    
+        $mascota['imagenes'] = $imagenes;
+    }
+    unset($mascota);
+    foreach ($mascotas as &$mascota) {
+        $mascota['solicitudes'] = $mascota['solicitudes'] ? explode(',', $mascota['solicitudes']) : [];
+        $mascota['reportes'] = $mascota['reportes'] ? explode(',', $mascota['reportes']) : [];
+    }
+    unset($mascota);    
 
     // ---------- 2. Solicitudes ----------
     $solicitudesQuery = "
@@ -64,6 +89,12 @@
     ORDER BY r.idReporte
     ";
     $reportes = $conn->query($reportesQuery)->fetch_all(MYSQLI_ASSOC);
+
+    foreach ($reportes as &$reporte) {
+        $reporte['mascotas'] = $reporte['mascotas'] ? explode(',', $reporte['mascotas']) : [];
+        $reporte['nombresMascotas'] = $reporte['nombresMascotas'] ? explode(',', $reporte['nombresMascotas']) : [];
+    }
+    unset($reporte);    
 
     // ---------- 4. Donaciones ----------
     $donacionesQuery = "
