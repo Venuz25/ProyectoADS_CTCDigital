@@ -4,21 +4,33 @@
 
     // ---------- 1. Mascotas ----------
     $mascotasQuery = "
-    SELECT 
-        m.idMascota, m.nombre, m.fechaIngreso, m.estadoAdopcion,
-        e.nombre AS estacion,
-        e.linea AS linea,
-        dm.edad, dm.sexo, dm.tamaño, dm.caractFisica, dm.estadoSalud, dm.descripcion,
-        GROUP_CONCAT(DISTINCT s.idSolicitud) AS solicitudes,
-        GROUP_CONCAT(DISTINCT r.idReporte) AS reportes
-    FROM mascota m
-    LEFT JOIN detallesmascota dm ON m.idMascota = dm.idMascota
-    LEFT JOIN estaciones e ON m.idEstacionEncontrado = e.idEstacion
-    LEFT JOIN solicitud s ON m.idMascota = s.idMascota
-    LEFT JOIN reporteMascota rm ON m.idMascota = rm.idMascota
-    LEFT JOIN reporte r ON rm.idReporte = r.idReporte
-    GROUP BY m.idMascota
-    ORDER BY m.idMascota
+        SELECT 
+            m.idMascota, 
+            m.nombre, 
+            m.fechaIngreso, 
+            m.estadoAdopcion,
+            e.nombre AS estacion,
+            e.linea AS linea,
+            dm.edad, 
+            dm.sexo, 
+            dm.tamaño, 
+            dm.caractFisica, 
+            dm.estadoSalud, 
+            dm.descripcion,
+            rza.nombre AS raza,
+            esp.nombre AS especie,
+            GROUP_CONCAT(DISTINCT s.idSolicitud) AS solicitudes,
+            GROUP_CONCAT(DISTINCT r.idReporte) AS reportes
+        FROM mascota m
+        LEFT JOIN detallesmascota dm ON m.idMascota = dm.idMascota
+        LEFT JOIN estaciones e ON m.idEstacionEncontrado = e.idEstacion
+        LEFT JOIN raza rza ON dm.idRaza = rza.idRaza
+        LEFT JOIN especie esp ON rza.idEspecie = esp.idEspecie
+        LEFT JOIN solicitud s ON m.idMascota = s.idMascota
+        LEFT JOIN reporteMascota rm ON m.idMascota = rm.idMascota
+        LEFT JOIN reporte r ON rm.idReporte = r.idReporte
+        GROUP BY m.idMascota
+        ORDER BY m.idMascota
     ";
     $mascotas = $conn->query($mascotasQuery)->fetch_all(MYSQLI_ASSOC);
 
