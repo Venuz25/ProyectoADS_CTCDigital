@@ -202,6 +202,19 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     }
 });
 
+//========== INICIALIZAR POPOVER ==========
+document.addEventListener('DOMContentLoaded', function() {
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+            container: 'body',
+            html: true,
+            trigger: 'hover focus',
+            sanitize: false
+        });
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const tabs = document.querySelectorAll('.folder-tab');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -575,20 +588,42 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert("Administrador registrado");
                     form.reset();
                     bootstrap.Modal.getInstance(document.getElementById("modalAdmin")).hide();
-            
-                    // Actualizar la tabla de administradores
+                    
+                    mostrarNotificacion(
+                        'exito', 
+                        '¡Administrador registrado!', 
+                        'Registro exitoso', 
+                        'El administrador se ha añadido al sistema correctamente.'
+                    );
+                    
                     fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
                         .then(res => res.json())
                         .then(data => {
                             administradoresOriginal = data.administradores;
                             cargarAdmin(administradoresOriginal);
                         })
-                        .catch(err => console.error('Error al actualizar datos:', err));
+                        .catch(err => {
+                            console.error('Error al actualizar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error de actualización',
+                                'No se pudo actualizar la lista',
+                                'El administrador se registró pero no se pudo actualizar la vista.'
+                            );
+                        });
                 } else {
-                    alert("Error al registrar administrador");
+                    const mensajeError = data.error === 'duplicate_user' 
+                        ? 'El nombre de usuario ya está en uso' 
+                        : data.message || 'Error al registrar administrador';
+                    
+                    mostrarNotificacion(
+                        'error',
+                        'Error al registrar',
+                        'No se pudo registrar el administrador',
+                        mensajeError
+                    );
                 }
             });            
         });        
@@ -620,23 +655,124 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert("Mascota registrada correctamente");
                     form.reset();
                     bootstrap.Modal.getInstance(document.getElementById("modalMascota")).hide();
-            
-                    // Actualizar la tabla de mascotas
+                    
+                    mostrarNotificacion(
+                        'exito', 
+                        '¡Mascota registrada!', 
+                        'Registro exitoso', 
+                        'La mascota se ha añadido al sistema correctamente.'
+                    );
+                    
                     fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
                         .then(res => res.json())
                         .then(data => {
                             mascotasOriginal = data.mascotas;
                             cargarMascotas(mascotasOriginal);
                         })
-                        .catch(err => console.error('Error al actualizar datos:', err));
+                        .catch(err => {
+                            console.error('Error al actualizar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error de actualización',
+                                'No se pudo actualizar la lista',
+                                'La mascota se registró pero no se pudo actualizar la vista.'
+                            );
+                        });
+                    
+                        // Actualizar lista de razas
+                        fetch("/ProyectoADS_CTCDigital/src/backend/admin/getRazas.php")
+                        .then(res => res.json())
+                        .then(data => {
+                            const selectRaza = document.querySelector("#selectRaza");
+                            
+                            // Guardar la selección actual si existe
+                            const selectedValue = selectRaza.value;
+                            
+                            // Limpiar y reconstruir solo el select de razas
+                            selectRaza.innerHTML = '<option value="" selected disabled>Selecciona una raza</option>' +
+                                                '<option value="nuevaRaza">Nueva raza</option>';
+                            
+                            // Cargar solo las razas actualizadas
+                            data.razas.forEach(r => {
+                                const option = document.createElement("option");
+                                option.value = r.idRaza;
+                                option.textContent = `${r.especie === "Gato" ? "🐱" : r.especie === "Perro" ? "🐶" : ""} ${r.raza}`;
+                                selectRaza.appendChild(option);
+                            });
+                            
+                            // Restaurar la selección anterior si sigue existiendo
+                            if (selectedValue && Array.from(selectRaza.options).some(opt => opt.value === selectedValue)) {
+                                selectRaza.value = selectedValue;
+                            }
+                        })
+                        .catch(err => console.error('Error al actualizar razas:', err));
                 } else {
-                    alert("Error al registrar mascota");
+                    mostrarNotificacion(
+                        'error',
+                        'Error al registrar',
+                        'No se pudo registrar la mascota',
+                        data.message || 'Por favor verifica los datos e intenta nuevamente.'
+                    );
                 }
             });            
-        });          
+        });
+        
+        //modal de notificacion
+        function mostrarNotificacion(tipo, titulo, mensaje, detalle = '', autoCerrar = true) {
+            const modal = new bootstrap.Modal(document.getElementById('modalNotificacion'));
+            const header = document.getElementById('modalNotificacionHeader');
+            const icono = document.getElementById('modalNotificacionIcon');
+            const iconoGrande = document.getElementById('modalNotificacionIconoGrande');
+            const tituloEl = document.getElementById('modalNotificacionTitulo');
+            const mensajeEl = document.getElementById('modalNotificacionMensaje');
+            const detalleEl = document.getElementById('modalNotificacionDetalle');
+            const boton = document.getElementById('modalNotificacionBoton');
+            const botonIcono = document.getElementById('modalNotificacionBotonIcono');
+            const botonTexto = document.getElementById('modalNotificacionBotonTexto');
+        
+            // Configurar según el tipo
+            switch(tipo) {
+                case 'exito':
+                    header.className = 'modal-header bg-success text-white border-0 rounded-top-3';
+                    icono.className = 'fas fa-check-circle fs-4 me-2';
+                    iconoGrande.className = 'fas fa-check-circle text-success mb-3';
+                    boton.className = 'btn btn-success px-4 rounded-pill shadow-sm';
+                    botonIcono.className = 'fas fa-thumbs-up me-2';
+                    botonTexto.textContent = 'Aceptar';
+                    break;
+                case 'error':
+                    header.className = 'modal-header bg-danger text-white border-0 rounded-top-3';
+                    icono.className = 'fas fa-exclamation-circle fs-4 me-2';
+                    iconoGrande.className = 'fas fa-exclamation-circle text-danger mb-3';
+                    boton.className = 'btn btn-danger px-4 rounded-pill shadow-sm';
+                    botonIcono.className = 'fas fa-redo me-2';
+                    botonTexto.textContent = 'Reintentar';
+                    break;
+                case 'info':
+                    header.className = 'modal-header bg-info text-white border-0 rounded-top-3';
+                    icono.className = 'fas fa-info-circle fs-4 me-2';
+                    iconoGrande.className = 'fas fa-info-circle text-info mb-3';
+                    boton.className = 'btn btn-info px-4 rounded-pill shadow-sm';
+                    botonIcono.className = 'fas fa-check me-2';
+                    botonTexto.textContent = 'Entendido';
+                    break;
+            }
+        
+            // Asignar contenido
+            tituloEl.textContent = titulo;
+            mensajeEl.textContent = mensaje;
+            detalleEl.textContent = detalle;
+        
+            // Mostrar modal
+            modal.show();
+        
+            // Autocerrar si es éxito y está habilitado
+            if (tipo === 'exito' && autoCerrar) {
+                setTimeout(() => modal.hide(), 3000);
+            }
+        }
     }
     
 

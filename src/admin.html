@@ -50,18 +50,20 @@
                 <!-- Pestaña Mascotas -->
                 <div id="mascotas" class="tab-content active">
                     <div class="row">
-                        <div class="col-md-10 mx-auto mb-4">
-                            <h2 class="mb-4"><i class="fas fa-paw me-2"></i>Mascotas</h2>
+                        <div class="col-md-10 mx-auto">
+                            <h2 class="mb-4 d-inline-block position-relative pe-4" tabindex="0" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="hover focus"
+                                data-bs-placement="right"
+                                data-bs-content="<i class='fas fa-dog me-2'></i>Esta sección muestra la lista de mascotas registradas en el sistema.">
+                                Mascotas
+                            </h2>
                         </div>
-                        <div class="col-md-2 mx-auto mb-4">
+                        <div class="col-md-2 mx-auto">
                             <button class="btn btn-success btn-crear-registro" data-bs-toggle="modal" data-bs-target="#modalMascota">
                                 <i class="fas fa-plus-circle me-2"></i> Nueva Mascota
                             </button>
                         </div>
-                    </div>
-
-                    <div class="alert alert-warning mb-4">
-                        <i class="fas fa-bone me-2"></i>Esta sección muestra la lista de mascotas registradas en el sistema.
                     </div>
                     
                     <!-- Filtros -->
@@ -74,7 +76,6 @@
                                         <option value="all">Todos</option>
                                         <option value="disponible">Disponible</option>
                                         <option value="adoptado">Adoptado</option>
-                                        <option value="en proceso">En proceso</option>
                                         <option value="no disponible">No disponible</option>
                                     </select>
                                 </div>
@@ -117,10 +118,17 @@
     
                 <!-- Pestaña Solicitudes -->
                 <div id="solicitudes" class="tab-content">
-                    <h2 class="mb-4"><i class="fas fa-file-alt me-2"></i>Solicitudes</h2>
-
-                    <div class="alert alert-success mb-4">
-                        <i class="fas fa-pencil me-2"></i>Esta sección muestra la lista de solicitudes de adopción registradas en el sistema.
+                    <div class="row">
+                        <div class="col-md-12 mx-auto">
+                            <h2 class="mb-4 d-inline-block" tabindex="0" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="hover focus"
+                                data-bs-placement="right"
+                                data-bs-custom-class="popover-success"
+                                data-bs-content="<i class='fas fa-pencil me-2'></i>Esta sección muestra la lista de solicitudes de adopción registradas en el sistema.">
+                                Solicitudes
+                            </h2>
+                        </div>
                     </div>
                     
                     <!-- Filtros -->
@@ -176,10 +184,17 @@
 
                 <!-- Pestaña Reportes -->
                 <div id="reportes" class="tab-content">
-                    <h2 class="mb-4"><i class="fas fa-flag me-2"></i>Reportes</h2>
-
-                    <div class="alert alert-danger mb-4">
-                        <i class="fas fa-circle-exclamation me-2"></i>Esta sección muestra la lista de reportes de mascotas registrados en el sistema.
+                    <div class="row">
+                        <div class="col-md-12 mx-auto">
+                            <h2 class="mb-4 d-inline-block" tabindex="0" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="hover focus"
+                                data-bs-placement="right"
+                                data-bs-custom-class="popover-danger"
+                                data-bs-content="<i class='fas fa-circle-exclamation me-2'></i>Esta sección muestra la lista de reportes de mascotas registrados en el sistema.">
+                                Reportes
+                            </h2>
+                        </div>
                     </div>
                     
                     <!-- Filtros -->
@@ -235,10 +250,17 @@
 
                 <!-- Pestaña Donaciones -->
                 <div id="donaciones" class="tab-content">
-                    <h2 class="mb-4"><i class="fas fa-hand-holding-heart me-2"></i>Donaciones</h2>
-
-                    <div class="alert alert-primary mb-4">
-                        <i class="fas fa-wallet me-2"></i>Esta sección muestra la lista de donaciones registradas en el sistema.
+                    <div class="row">
+                        <div class="col-md-12 mx-auto">
+                            <h2 class="mb-4 d-inline-block" tabindex="0" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="hover focus"
+                                data-bs-placement="right"
+                                data-bs-custom-class="popover-primary"
+                                data-bs-content="<i class='fas fa-wallet me-2'></i>Esta sección muestra la lista de donaciones registradas en el sistema.">
+                                Donaciones
+                            </h2>
+                        </div>
                     </div>
                     
                     <!-- Filtros -->
@@ -319,18 +341,21 @@
                 <!-- Pestaña Administradores -->
                 <div id="administradores" class="tab-content">
                     <div class="row">
-                        <div class="col-md-10 mx-auto mb-4">
-                            <h2 class="mb-4"><i class="fas fa-paw me-2"></i>Administradores</h2>
+                        <div class="col-md-10 mx-auto">
+                            <h2 class="mb-4 d-inline-block" tabindex="0" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="hover focus"
+                                data-bs-placement="right"
+                                data-bs-custom-class="popover-info"
+                                data-bs-content="<i class='fas fa-info-circle me-2'></i>Esta sección muestra la lista de administradores del sistema.">
+                                Administradores
+                            </h2>
                         </div>
-                        <div class="col-md-2 mx-auto mb-4">
+                        <div class="col-md-2 mx-auto">
                             <button class="btn btn-success btn-crear-registro" data-bs-toggle="modal" data-bs-target="#modalAdmin">
                                 <i class="fas fa-plus-circle me-2"></i> Nuevo Administrador
                             </button>
                         </div>
-                    </div>
-                    
-                    <div class="alert alert-info mb-4">
-                        <i class="fas fa-info-circle me-2"></i>Esta sección muestra la lista de administradores del sistema.
                     </div>
 
                     <!-- Filtros -->
@@ -374,32 +399,7 @@
         </div>
     </main>
 
-    <!-- Modal para detalles -->
-    <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Detalles de Mascota</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenido dinámico -->
-                    <div id="modalContent">
-                        <div class="text-center py-4">
-                            <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
-                            <p>Cargando información detallada...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Editar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Administrador -->
+    <!-- Modal Nuevo Administrador -->
     <div class="modal fade" id="modalAdmin" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
@@ -453,7 +453,7 @@
         </div>
     </div>
 
-    <!-- Modal Mascota -->
+    <!-- Modal Nueva Mascota -->
     <div class="modal fade" id="modalMascota" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
@@ -467,7 +467,7 @@
                 
                 <!-- Cuerpo del modal -->
                 <div class="modal-body py-4">
-                    <form id="formMascota" class="needs-validation" novalidate>
+                    <form id="formMascota" enctype="multipart/form-data" class="needs-validation" novalidate>
                         <div class="row g-3">
                             <!-- Primera fila -->
                             <div class="col-md-12">
@@ -484,7 +484,6 @@
                                     <select class="form-select shadow-sm" name="estadoAdopcion" required>
                                         <option value="No disponible" selected>No disponible</option>
                                         <option value="Disponible">Disponible</option>
-                                        <option value="En proceso">En proceso</option>
                                         <option value="Adoptado">Adoptado</option>
                                     </select>
                                     <label><i class="fas fa-heart me-2"></i>Estado de Adopción</label>
@@ -584,7 +583,7 @@
                             <!-- Características Físicas -->
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control shadow-sm" name="caractFisica" placeholder=" ">
+                                    <textarea class="form-control shadow-sm" name="caractFisica" placeholder=" " style="height: 100px"></textarea>
                                     <label><i class="fas fa-paint-brush me-2"></i>Características Físicas</label>
                                 </div>
                             </div>
@@ -592,7 +591,7 @@
                             <!-- Estado de Salud -->
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control shadow-sm" name="estadoSalud" placeholder=" ">
+                                    <textarea class="form-control shadow-sm" name="estadoSalud" placeholder=" " style="height: 100px"></textarea>
                                     <label><i class="fas fa-heartbeat me-2"></i>Estado de Salud</label>
                                 </div>
                             </div>
@@ -610,7 +609,7 @@
                                 <div class="card border-0 shadow-sm">
                                     <div class="card-body">
                                         <h6 class="card-title"><i class="fas fa-images me-2"></i>Multimedia </h6>
-                                        <input type="file" class="form-control" name="imagenes[]" id="imagenesMascota" accept="image/*,video/*" multiple>
+                                        <input type="file" class="form-control" name="imagenes[]" id="imagenes" enctype="multipart/form-data" accept="image/*,video/*" multiple>
                                     </div>
                                 </div>
                             </div>
@@ -641,7 +640,7 @@
                         <p class="fs-5">¿Estás seguro de que deseas eliminar este registro?</p>
                         <div class="alert alert-warning mt-3 d-flex align-items-center">
                             <i class="fas fa-exclamation-circle me-3 fs-5"></i>
-                            <p class="mb-0 fw-semibold">Esta acción no se puede deshacer y todos los datos relacionados se perderán permanentemente.</p>
+                            <p class="mb-0 fw-semibold">Esta acción no se puede deshacer y todos los datos y archivos relacionados se perderán permanentemente.</p>
                         </div>
                     </div>
                 </div>
@@ -651,6 +650,32 @@
                     </button>
                     <button type="button" class="btn btn-danger px-4 rounded-pill shadow-sm" id="confirmDeleteBtn">
                         <i class="fas fa-trash-alt me-1"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de notificación -->
+    <div class="modal fade" id="modalNotificacion" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-0 rounded-top-3" id="modalNotificacionHeader">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fs-4 me-2" id="modalNotificacionIcon"></i>
+                        <h5 class="modal-title mb-0" id="modalNotificacionTitulo"></h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="fas mb-3" style="font-size: 3rem;" id="modalNotificacionIconoGrande"></i>
+                    <h4 class="mb-3" id="modalNotificacionMensaje"></h4>
+                    <p class="mb-0" id="modalNotificacionDetalle"></p>
+                </div>
+                <div class="modal-footer border-0 bg-light rounded-bottom-3 justify-content-center">
+                    <button type="button" class="btn px-4 rounded-pill shadow-sm" id="modalNotificacionBoton" data-bs-dismiss="modal">
+                        <i class="fas me-2" id="modalNotificacionBotonIcono"></i>
+                        <span id="modalNotificacionBotonTexto"></span>
                     </button>
                 </div>
             </div>

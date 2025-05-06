@@ -51,12 +51,8 @@
                 $razaNueva = trim($_POST['razaNueva']);
                 $especie = $_POST['especie'];
 
-                if ($razaNueva === "") {
-                    echo json_encode(["success" => false, "message" => "Debe especificar el nombre de la nueva raza"]);
-                    exit;
-                }
-                if ($especie === "") {
-                    echo json_encode(["success" => false, "message" => "Debe especificar la especie"]);
+                if ($razaNueva === "" || $especie === "") {
+                    echo json_encode(["success" => false, "message" => "Debe especificar nombre de la nueva raza y especie"]);
                     exit;
                 }
 
@@ -86,7 +82,7 @@
             if (!is_numeric($idRaza)) {
                 echo json_encode(["success" => false, "message" => "ID de raza inválido."]);
                 exit;
-            } 
+            }
 
             // Insertar en tabla mascota
             $queryMascota = "INSERT INTO mascota (nombre, fechaIngreso, estadoAdopcion, idEstacionEncontrado) VALUES (?, ?, ?, ?)";
@@ -99,39 +95,57 @@
             }
 
             $idMascota = $stmtMascota->insert_id;
-            $stmtMascota->close();           
+            file_put_contents("debug_id.txt", "ID: $idMascota\n");
+            $stmtMascota->close();
 
+            // Insertar detalles
             $queryDetalle = "INSERT INTO detallesmascota (idMascota, edad, sexo, tamaño, caractFisica, estadoSalud, descripcion, idRaza) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmtDetalle = $conn->prepare($queryDetalle);
             $stmtDetalle->bind_param("iisssssi", $idMascota, $edad, $sexo, $tamano, $caractFisica, $estadoSalud, $descripcion, $idRaza);
 
-            if ($stmtDetalle->execute()) {
-                echo json_encode(["success" => true, "message" => "Mascota registrada con éxito"]);
-            } else {
+            if (!$stmtDetalle->execute()) {
                 echo json_encode(["success" => false, "message" => "Error al insertar detalles de mascota: " . $stmtDetalle->error]);
+                exit;
             }
 
-            $targetDir = __DIR__ . "/../../mascotas/$idMascota";
-            if (!file_exists($targetDir)) {
-                mkdir($targetDir, 0777, true);
+            // Comprobar archivos recibidos
+            if (!isset($_FILES['imagenes'])) {
+                echo json_encode(["success" => false, "message" => "No se recibieron archivos"]);
+                exit;
             }
 
-            $imagenes = $_FILES['imagenes'];
-            $total = count($imagenes['name']);
+            if (!is_array($_FILES['imagenes']['name'])) {
+                echo json_encode(["success" => false, "message" => "Formato incorrecto de archivos"]);
+                exit;
+            }
 
-            for ($i = 0; $i < $total; $i++) {
-                $tmpName = $imagenes['tmp_name'][$i];
-                $fileName = basename($imagenes['name'][$i]);
-                $targetFilePath = $targetDir . "/" . $fileName;
+            file_put_contents("debug_files.txt", print_r($_FILES, true));
 
-                if (!move_uploaded_file($tmpName, $targetFilePath)) {
+            // Guardar imágenes
+            $uploadDir = realpath(__DIR__ . '/../../../') . "/mascotas/$idMascota";
+
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            foreach ($_FILES['imagenes']['name'] as $key => $name) {
+                $tmpName = $_FILES['imagenes']['tmp_name'][$key];
+                $fileName = basename($name);
+                $targetPath = "$uploadDir/$fileName";
+
+                $log = "TMP: $tmpName\nTARGET: $targetPath\n";
+                file_put_contents("debug_upload.txt", $log, FILE_APPEND);
+
+                if (!move_uploaded_file($tmpName, $targetPath)) {
+                    file_put_contents("debug_upload.txt", "ERROR al mover: $fileName\n", FILE_APPEND);
                     echo json_encode(["success" => false, "message" => "Error al subir imagen: $fileName"]);
                     exit;
                 }
             }
 
             $stmtDetalle->close();
+            echo json_encode(["success" => true, "message" => "Mascota registrada con éxito"]);
             break;
 
         default:

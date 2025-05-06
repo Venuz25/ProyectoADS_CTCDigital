@@ -14,6 +14,85 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Estilos base para todos los popovers */
+.popover {
+    max-width: 400px;
+    border-width: 2px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Popover success (Solicitudes) */
+.popover-success {
+    border-color: #198754;
+}
+
+.popover-success .popover-header {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-color: #198754;
+}
+
+/* Popover danger (Reportes) */
+.popover-danger {
+    border-color: #dc3545;
+}
+
+.popover-danger .popover-header {
+    background-color: #f8d7da;
+    color: #842029;
+    border-color: #dc3545;
+}
+
+/* Popover primary (Donaciones) */
+.popover-primary {
+    border-color: #0d6efd;
+}
+
+.popover-primary .popover-header {
+    background-color: #cfdff8;
+    color: #084298;
+    border-color: #0d6efd;
+}
+
+/* Popover info (Administradores) */
+.popover-info {
+    border-color: #0dcaf0;
+}
+
+.popover-info .popover-header {
+    background-color: #d1f0f8;
+    color: #087990;
+    border-color: #0dcaf0;
+}
+
+/* Estilo para los títulos con popover */
+h2[data-bs-toggle="popover"] {
+    cursor: help;
+    transition: all 0.2s;
+    position: relative;
+    padding-right: 20px;
+}
+
+h2[data-bs-toggle="popover"] {
+    cursor: help;
+    transition: all 0.2s;
+}
+
+h2[data-bs-toggle="popover"] .fa-info-circle {
+    color: #6c757d;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+h2[data-bs-toggle="popover"]:hover .fa-info-circle {
+    opacity: 1;
+    color: #0d6efd;
+}
+
+.popover {
+    z-index: 1060;
+}
+
 /* Estilos para los botones de crear */
 .btn-crear-registro {
     padding: 8px 16px;
@@ -353,4 +432,46 @@ body {
   
 #linea option {
     padding: 8px 12px;
+}
+
+/* Animación para el modal de confirmación */
+#modalConfirmacion .modal-content {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animaciones para el modal */
+#modalNotificacion .modal-content {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Efecto para iconos grandes */
+#modalNotificacionIconoGrande {
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s;
+}
+
+#modalNotificacion:hover #modalNotificacionIconoGrande {
+    transform: scale(1.1);
 }

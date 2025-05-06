@@ -9,31 +9,81 @@ window.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       const contenedor = document.getElementById('contenedorAdopciones');
       data.forEach(mascota => {
-        const imagen = `/ProyectoADS_CTCDigital/mascotas/${mascota.idMascota}/principal.jpeg`;
-        const tarjeta = document.createElement('div');
+        const extensiones = ['jpeg', 'jpg', 'png', 'webp'];
+        const id = mascota.idMascota;
+        let imagenCargada = false;
+        let tarjeta = document.createElement('div');
         tarjeta.classList.add('col');
-
-        //Contenido de la tarjeta
+      
+        const imagen = document.createElement('img');
+        imagen.className = "card-img-top rounded-top-4";
+        imagen.style = "height: 225px; object-fit: cover;";
+      
+        extensiones.forEach(ext => {
+          if (imagenCargada) return;
+          const url = `/ProyectoADS_CTCDigital/mascotas/${id}/principal.${ext}`;
+          const pruebaImg = new Image();
+          pruebaImg.src = url;
+      
+          pruebaImg.onload = () => {
+            if (!imagenCargada) {
+              imagen.src = url;
+              imagenCargada = true;
+            }
+          };
+        });
+      
         tarjeta.innerHTML = `
-          <div class="card shadow-sm border-0 rounded-4">
-              <img src="${imagen}" class="card-img-top rounded-top-4" style="height: 225px; object-fit: cover;">
-              <div class="card-body">
-                  <h5 class="card-title fw-bold mb-2">${mascota.nombre}</h5>
-                  <ul class="list-unstyled text-muted mb-3 small">
-                  <li><strong>Estación:</strong> ${mascota.estacionMetro}</li>
-                  <li><strong>Sexo:</strong> ${mascota.sexo}</li>
-                  <li><strong>Edad:</strong> ${mascota.edad}</li>
-                  <li><strong>Tamaño:</strong> ${mascota.tamaño}</li>
-                  </ul>
-                  <div class="d-grid">
-                      <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" onclick='mostrarModal(${JSON.stringify(mascota)})'>
-                          Ver más información
-                      </button>
-                  </div>
-              </div>
-          </div>
+            <div class="card shadow-sm border-0 rounded-4 h-100 transition-all hover-shadow">
+                <!-- Contenedor de imagen con overlay -->
+                <div id="img-container-${id}" class="card-img-top position-relative overflow-hidden" style="height: 200px;">
+                    <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.5));">
+                        <h5 class="text-white mb-0">${mascota.nombre}</h5>
+                        <span class="badge ${mascota.sexo === 'Macho' ? 'bg-primary' : 'bg-danger-subtle text-black'} bg-opacity-75 rounded-pill">
+                            <i class="fas ${mascota.sexo === 'Macho' ? 'fa-mars' : 'fa-venus'} me-1"></i> 
+                            ${mascota.sexo}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Cuerpo de la tarjeta -->
+                <div class="card-body d-flex flex-column pt-3 px-4">
+                    <!-- Lista de características -->
+                    <ul class="list-unstyled mb-3">
+                        <li class="d-flex align-items-center mb-2">
+                            <i class="fas fa-subway text-dark-subtle me-2" style="width: 20px;"></i>
+                            <span>${mascota.estacionMetro || 'No especificada'}</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-2">
+                            ${mascota.especie === 'Perro' ? '<i class="fas fa-dog text-dark-subtle me-2" style="width: 20px;"></i>' 
+                              : '<i class="fas fa-cat text-dark-subtle me-2" style="width: 20px;"></i>'}
+                            <span class="text-capitalize">${mascota.raza || 'Sin raza específica'}</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-2">
+                            <i class="fas fa-birthday-cake text-dark-subtle me-2" style="width: 20px;"></i>
+                            <span>${mascota.edad} años</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-2">
+                            <i class="fas fa-ruler-combined text-dark-subtle me-2" style="width: 20px;"></i>
+                            <span class="text-capitalize">${mascota.tamaño}</span>
+                        </li>
+                    </ul>
+                    
+                    <!-- Botón de acción -->
+                    <div class="mt-auto pt-2 align-self-end">
+                        <button type="button" 
+                                class="btn bg-info-subtle btn-sm rounded-pill w-80 py-2 d-flex align-items-center justify-content-center"
+                                onclick='mostrarModal(${JSON.stringify(mascota)})'>
+                            <i class="fas fa-info-circle me-2"></i>
+                            Más información
+                        </button>
+                    </div>
+                </div>
+            </div>
         `;
+      
         contenedor.appendChild(tarjeta);
+        tarjeta.querySelector(`#img-container-${id}`).appendChild(imagen);
       });
     })
   .catch(error => console.error('Error al cargar los datos:', error));

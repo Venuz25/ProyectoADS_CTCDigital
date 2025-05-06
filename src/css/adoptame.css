@@ -25,3 +25,22 @@
     position: relative;
     z-index: 1;
 }
+
+/* Estilos para las imágenes de mascotas */
+[id^="img-container-"] {
+    height: 200px;
+    overflow: hidden;
+}
+
+[id^="img-container-"] img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Estilo para el badge de adoptado */
+.badge.bg-success {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}

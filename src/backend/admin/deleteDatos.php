@@ -76,7 +76,7 @@
                 }
 
                 // Eliminar carpeta de imágenes
-                $rutaMascota = __DIR__ . '/../../mascotas/' . $id;
+                $rutaMascota = realpath(__DIR__ . '/../../../') . "/mascotas/$id";
                 eliminarCarpeta($rutaMascota);
 
                 // Eliminar mascota
@@ -97,11 +97,9 @@
                 $stmt->fetch();
                 $stmt->close();
 
-                // Eliminar PDF asociado
-                $rutaPDF = __DIR__ . '/../../solicitudes/' . $id . '.pdf';
-                if (file_exists($rutaPDF)) {
-                    unlink($rutaPDF);
-                }
+                // Eliminar documentos de la solicitud
+                $rutaSolicitudes = realpath(__DIR__ . '/../../../') . "/solicitudes/$id";
+                eliminarCarpeta($rutaSolicitudes);
 
                 // Eliminar solicitud
                 $stmt = $conn->prepare("DELETE FROM solicitud WHERE idSolicitud = ?");
@@ -128,7 +126,7 @@
                 $stmt->close();
 
                 // Eliminar carpeta de evidencia si existe
-                $rutaReporte = __DIR__ . '/../../reportes/' . $id;
+                $rutaReporte = realpath(__DIR__ . '/../../../') . "/reportes/$id";
                 eliminarCarpeta($rutaReporte);
 
                 // Eliminar reporte
