@@ -91,7 +91,8 @@ function mostrarModalMascota(mascota) {
         // Prellenar campos del formulario
         document.getElementById("nombre").value = mascota.nombre || "";
         document.getElementById("Ingreso").value = mascota.fechaIngreso || "";
-        document.getElementById("estadoAdopcion").value = mascota.estadoAdopcion || "No disponible";
+
+        document.querySelector("select[name='estadoObtenido']").value =  mascota.estadoAdopcion || "no disponible";
         document.getElementById("selectSolicitud").value = mascota.solicitudes || "Sin solicitud";
         
         document.getElementById("lineaMetro").value = mascota.linea || "";
@@ -121,7 +122,7 @@ function mostrarModalMascota(mascota) {
         // Datos básicos
         formData.append('idMascota', mascotaId);
         formData.append('datosMascota', JSON.stringify({
-            estadoAdopcion: document.getElementById('estadoAdopcion').value
+            estadoAdopcion: document.getElementById('estado').value
         }));
         
         formData.append('datosDetalles', JSON.stringify({
