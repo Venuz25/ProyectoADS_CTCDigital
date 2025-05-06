@@ -1,0 +1,174 @@
+<!-- Modal Mascota -->
+<div class="modal fade" id="modalMascotaDetalle" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+  
+        <div class="modal-header bg-primary text-white rounded-top-3">
+          <h5 class="modal-title"><i class="fas fa-paw me-2"></i> Editar Mascota</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body py-4">
+          <form id="formEditarMascota" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="row g-3">
+  
+              <!-- Nombre -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control shadow-sm" id="nombreMascota" name="nombre" placeholder=" " readonly>
+                  <label for="nombreMascota"><i class="fas fa-tag me-2"></i>Nombre</label>
+                  <div class="invalid-feedback">Por favor ingresa el nombre</div>
+                </div>
+              </div>
+  
+              <!-- Estado de Adopción + Solicitud -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select shadow-sm" name="estadoAdopcion" id="estadoAdopcion" required>
+                    <option value="No disponible">No disponible</option>
+                    <option value="Disponible">Disponible</option>
+                    <option value="Adoptado">Adoptado</option>
+                  </select>
+                  <label for="estadoAdopcion"><i class="fas fa-heart me-2"></i>Estado de Adopción</label>
+                </div>
+  
+                <div id="solicitudContainer">
+                  <div class="form-floating mt-2">
+                    <select class="form-select shadow-sm" name="solicitud" id="selectSolicitud" required>
+                      <option value="" disabled selected>Selecciona una solicitud</option>
+                    </select>
+                    <label for="selectSolicitud"><i class="fas fa-pencil me-2"></i>Solicitud Asociada</label>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Fecha Ingreso -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="date" class="form-control shadow-sm" id="fechaIngreso" name="fechaIngreso" readonly>
+                  <label for="fechaIngreso"><i class="far fa-calendar-alt me-2"></i>Fecha de Ingreso</label>
+                </div>
+              </div>
+  
+              <!-- Línea y Estación -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select shadow-sm" id="lineaMetro" name="lineaMetro" disabled>
+                    <option value="L1">Línea 1</option>
+                    <option value="L2">Línea 2</option>
+                    <option value="L3">Línea 3</option>
+                    <option value="L4">Línea 4</option>
+                    <option value="L5">Línea 5</option>
+                    <option value="L6">Línea 6</option>
+                    <option value="L7">Línea 7</option>
+                    <option value="L8">Línea 8</option>
+                    <option value="L9">Línea 9</option>
+                    <option value="LA">Línea A</option>
+                    <option value="LB">Línea B</option>
+                    <option value="L12">Línea 12</option>
+                  </select>
+                  <label for="lineaMetro"><i class="fas fa-subway me-2"></i>Línea</label>
+                </div>
+              </div>
+  
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select shadow-sm" id="estacion" name="estacion" disabled>
+                    <option value="" selected>Estación</option>
+                  </select>
+                  <label for="estacion"><i class="fas fa-map-marker-alt me-2"></i>Estación</label>
+                </div>
+              </div>
+  
+              <!-- Sexo y Edad -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select shadow-sm" name="sexo" readonly>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Hembra">Hembra</option>
+                  </select>
+                  <label><i class="fas fa-venus-mars me-2"></i>Sexo</label>
+                </div>
+              </div>
+  
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="number" class="form-control shadow-sm" name="edad" placeholder=" " required>
+                  <label><i class="fas fa-birthday-cake me-2"></i>Edad (años)</label>
+                </div>
+              </div>
+  
+              <!-- Tamaño y Raza -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select shadow-sm" name="tamano" required>
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="Pequeño">Pequeño</option>
+                    <option value="Mediano">Mediano</option>
+                    <option value="Grande">Grande</option>
+                  </select>
+                  <label><i class="fas fa-ruler-combined me-2"></i>Tamaño</label>
+                </div>
+              </div>
+  
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select shadow-sm" name="raza" id="selectRaza" readonly>
+                    <option value="" selected disabled>Selecciona una raza</option>
+                    <option value="nuevaRaza">Raza</option>
+                  </select>
+                  <label for="selectRaza"><i class="fas fa-dog me-2"></i>Raza</label>
+                </div>
+              </div>
+  
+              <!-- Características físicas -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <textarea class="form-control shadow-sm" name="caractFisica" placeholder=" " style="height: 100px"></textarea>
+                  <label><i class="fas fa-paint-brush me-2"></i>Características Físicas</label>
+                </div>
+              </div>
+  
+              <!-- Estado de Salud -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <textarea class="form-control shadow-sm" name="estadoSalud" placeholder=" " style="height: 100px"></textarea>
+                  <label><i class="fas fa-heartbeat me-2"></i>Estado de Salud</label>
+                </div>
+              </div>
+  
+              <!-- Descripción -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <textarea class="form-control shadow-sm" name="descripcion" placeholder=" " style="height: 100px"></textarea>
+                  <label><i class="fas fa-align-left me-2"></i>Descripción</label>
+                </div>
+              </div>
+  
+              <!-- Galería de imágenes -->
+              <div class="col-md-12 mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="mb-0"><i class="fas fa-images me-2"></i>Galería de imágenes</h6>
+                  <button type="button" class="btn btn-sm btn-success" id="btnAddFotoMascota">
+                    <i class="fas fa-plus me-1"></i> Añadir imágenes
+                  </button>
+                </div>
+                <div class="row g-2" id="galeriaMascota"></div>
+                <input type="file" id="inputFotosMascota" name="fotosMascota[]" multiple accept="image/*" style="display: none;">
+              </div>
+  
+            </div>
+  
+            <!-- Footer -->
+            <div class="modal-footer border-0 bg-light rounded-bottom-3 mt-4">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+          </form>
+        </div>
+  
+      </div>
+    </div>
+</div>
+  

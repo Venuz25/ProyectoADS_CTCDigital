@@ -273,10 +273,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${m.fechaIngreso}</td>
                         <td>${m.estacion || 'No registrada'}</td>
                         <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${m.idMascota}">
-                                <i class="fas fa-eye"></i>
+                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${m.idMascota}" data-type="mascota">
+                                <i class="fas fa-pencil"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${m.idMascota}">
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${m.idMascota}" data-type="mascota">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
@@ -299,10 +299,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${r.estadoReporte}</td>
                         <td>${r.fechaReporte}</td>
                         <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${r.idReporte}">
-                                <i class="fas fa-eye"></i>
+                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${r.idReporte}" data-type="reporte">
+                                <i class="fas fa-pencil"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${r.idReporte}">
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${r.idReporte}" data-type="reporte">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
@@ -326,10 +326,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${d.fechaDonacion}</td>
                         <td>${d.fechaPrevistaDon}</td>
                         <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${d.idDonacion}">
-                                <i class="fas fa-eye"></i>
+                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${d.idDonacion}" data-type="donacion">
+                                <i class="fas fa-pencil"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${d.idDonacion}">
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${d.idDonacion}" data-type="donacion">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
@@ -352,10 +352,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${s.estadoAdopcion}</td>
                         <td>${s.fechaSolicitud}</td>
                         <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${s.idSolicitud}">
-                                <i class="fas fa-eye"></i>
+                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${s.idSolicitud}" data-type="solicitud">
+                                <i class="fas fa-pencil"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${s.idSolicitud}">
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${s.idSolicitud}" data-type="solicitud">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
@@ -377,6 +377,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${a.contraseña}</td>
                         <td>${a.ultimaConn}</td>
                         <td>
+                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${a.id}" data-type="admin">
+                                <i class="fas fa-pencil"></i>
+                            </button>
                             <button class="btn btn-danger btn-sm delete-btn" data-id="${a.id}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
@@ -774,17 +777,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-    
-
-
-
-
-
-
-
-
-
-
-
-
 });
+
+

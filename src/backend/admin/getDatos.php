@@ -7,6 +7,7 @@
     SELECT 
         m.idMascota, m.nombre, m.fechaIngreso, m.estadoAdopcion,
         e.nombre AS estacion,
+        e.linea AS linea,
         dm.edad, dm.sexo, dm.tamaño, dm.caractFisica, dm.estadoSalud, dm.descripcion,
         GROUP_CONCAT(DISTINCT s.idSolicitud) AS solicitudes,
         GROUP_CONCAT(DISTINCT r.idReporte) AS reportes

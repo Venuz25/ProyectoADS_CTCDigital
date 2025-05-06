@@ -157,7 +157,7 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
 
 .folder-tab {
     padding: 10px 20px;
-    background: linear-gradient(to bottom, #e0e0e0, #c0c0c0);
+    background: #dbdbdb;
     border-radius: 8px 8px 0 0;
     margin-right: 5px;
     cursor: pointer;
@@ -474,4 +474,65 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
 
 #modalNotificacion:hover #modalNotificacionIconoGrande {
     transform: scale(1.1);
+}
+
+/* Estilos generales para los modales */
+.modal-content {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    padding: 1.2rem 1.5rem;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+/* Estilos para las tarjetas dentro de modales */
+.modal .card {
+    transition: transform 0.2s;
+}
+
+.modal .card:hover {
+    transform: translateY(-3px);
+}
+
+/* Estilos para las imágenes en galerías */
+.card-img-container {
+    overflow: hidden;
+    border-radius: 0.5rem !important;
+}
+
+.card-img-container img {
+    transition: transform 0.3s;
+    height: 120px;
+    object-fit: cover;
+}
+
+.card-img-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Estilos para los botones de eliminar */
+.btn-danger.position-absolute {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Estilos para los documentos PDF */
+.list-group-item {
+    border-left: 3px solid #dc3545;
+    transition: all 0.2s;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    border-left-width: 5px;
 }
