@@ -9,6 +9,9 @@
             m.nombre, 
             m.fechaIngreso, 
             m.estadoAdopcion,
+            m.adoptadoPor AS idSolicitudAdopcion,  
+            s.idAdoptante,       
+            a.nombre AS nombreAdoptante,
             e.nombre AS estacion,
             e.linea AS linea,
             dm.edad, 
@@ -19,16 +22,20 @@
             dm.descripcion,
             rza.nombre AS raza,
             esp.nombre AS especie,
-            GROUP_CONCAT(DISTINCT s.idSolicitud) AS solicitudes,
+            GROUP_CONCAT(DISTINCT s2.idSolicitud) AS todasSolicitudes,
             GROUP_CONCAT(DISTINCT r.idReporte) AS reportes
         FROM mascota m
         LEFT JOIN detallesmascota dm ON m.idMascota = dm.idMascota
         LEFT JOIN estaciones e ON m.idEstacionEncontrado = e.idEstacion
         LEFT JOIN raza rza ON dm.idRaza = rza.idRaza
         LEFT JOIN especie esp ON rza.idEspecie = esp.idEspecie
-        LEFT JOIN solicitud s ON m.idMascota = s.idMascota
         LEFT JOIN reporteMascota rm ON m.idMascota = rm.idMascota
         LEFT JOIN reporte r ON rm.idReporte = r.idReporte
+
+        LEFT JOIN solicitud s ON m.adoptadoPor = s.idSolicitud
+        LEFT JOIN adoptante a ON s.idAdoptante = a.idAdoptante
+        LEFT JOIN solicitud s2 ON m.idMascota = s2.idMascota
+
         GROUP BY m.idMascota
         ORDER BY m.idMascota
     ";
@@ -44,7 +51,7 @@
         if (is_dir($rutaDirectorio)) {
             $archivos = scandir($rutaDirectorio);
             foreach ($archivos as $archivo) {
-                if (in_array(strtolower(pathinfo($archivo, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp'])) {
+                if (in_array(strtolower(pathinfo($archivo, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4'])) {
                     $imagenes[] = "/ProyectoADS_CTCDigital/mascotas/$id/$archivo";
                 }
             }
@@ -54,7 +61,7 @@
     }
     unset($mascota);
     foreach ($mascotas as &$mascota) {
-        $mascota['solicitudes'] = $mascota['solicitudes'] ? explode(',', $mascota['solicitudes']) : [];
+        $mascota['todasSolicitudes'] = $mascota['todasSolicitudes'] ? explode(',', $mascota['todasSolicitudes']) : [];
         $mascota['reportes'] = $mascota['reportes'] ? explode(',', $mascota['reportes']) : [];
     }
     unset($mascota);    
@@ -71,6 +78,24 @@
     ORDER BY s.idSolicitud
     ";
     $solicitudes = $conn->query($solicitudesQuery)->fetch_all(MYSQLI_ASSOC);
+
+    //agregar documentos (pdf)
+    foreach ($solicitudes as &$solicitud) {
+        $id = $solicitud['idSolicitud'];
+        $rutaDirectorio = realpath(__DIR__ . '/../../../') . "/solicitudes/$id";
+    
+        $documentos = [];
+        if (is_dir($rutaDirectorio)) {
+            $archivos = scandir($rutaDirectorio);
+            foreach ($archivos as $archivo) {
+                if (in_array(strtolower(pathinfo($archivo, PATHINFO_EXTENSION)), ['pdf'])) {
+                    $documentos[] = "/ProyectoADS_CTCDigital/solicitudes/$id/$archivo";
+                }
+            }
+        }
+    
+        $solicitud['documentos'] = $documentos;
+    }
 
     // ---------- 3. Reportes ----------
     $reportesQuery = "

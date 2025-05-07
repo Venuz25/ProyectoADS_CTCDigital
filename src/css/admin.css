@@ -487,6 +487,7 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #000;
   }
   
   .gallery-item:hover {
@@ -539,32 +540,50 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
   /* Contenedor principal del scroll */
 .gallery-outer-container {
     width: 100%;
-    overflow-x: auto; /* Habilita el scroll horizontal */
-    padding-bottom: 10px; /* Espacio para el scroll */
+    overflow-x: auto; 
+    padding-bottom: 10px;
 }
 
 /* Contenedor flexible de imágenes */
 .gallery-scroll-container {
-    display: inline-flex; /* Fundamental para el scroll horizontal */
-    gap: 10px; /* Espacio entre imágenes */
+    display: inline-flex; 
+    gap: 10px; 
     padding: 5px;
-    min-height: 170px; /* Altura mínima para mantener espacio */
+    min-height: 170px; 
 }
 
 /* Estilos para cada item de imagen */
 .gallery-item {
     position: relative;
-    flex: 0 0 auto; /* Evita que las imágenes se estiren */
+    flex: 0 0 auto; 
     width: 150px;
     transition: all 0.3s ease;
 }
 
-.gallery-item img {
-    width: 150px;
-    height: 150px;
+.gallery-item img,
+.gallery-item video {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.gallery-item:hover .video-icon {
+    opacity: 1;
+}
+
+.deleteBoton {
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 3;
+}
+
+.gallery-item:hover .deleteBoton {
+    opacity: 1;
+}
+
+.badge {
+    z-index: 2;
 }
 
 /* Mensaje cuando no hay imágenes */

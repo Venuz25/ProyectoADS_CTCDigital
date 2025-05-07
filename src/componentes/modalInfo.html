@@ -22,13 +22,18 @@
 
             <!-- Estado de Adopción-->
             <div class="col-md-6">
-              <div class="form-floating">
+              <div class="form-floating" id="estadoObtenidoContainer">
                 <select class="form-select shadow-sm" name="estadoObtenido" required>
                   <option value="No Disponible">No disponible</option>
                   <option value="Disponible">Disponible</option>
-                  <option value="Adoptado">Adoptado</option>
                 </select>
                 <label for="estadoObtenido"><i class="fas fa-heart me-2"></i>Estado de Adopción</label>
+              </div>
+
+              <!-- Adoptado por -->
+              <div class="form-floating" id="adoptadoPorContainer" style="display: none;">
+                <input type="text" class="form-control shadow-sm" id="adoptadoPor" name="adoptadoPor" placeholder=" " readonly>
+                <label for="adoptadoPor"><i class="fas fa-user me-2"></i>Adoptado por</label>
               </div>
             </div>
 
@@ -56,6 +61,9 @@
               </div>
             </div>
 
+            <div class="col-md-12 mt-4">
+              <h6 class="border-bottom pb-2"><i class="fas fa-bone me-2"></i>Detalles de la Mascota</h6>
+            </div>
 
             <!-- Línea y Estación -->
             <div class="col-md-6">
@@ -150,10 +158,10 @@
 
               <!-- Sección de Galería de Imágenes -->
               <div class="col-md-12 mt-4">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                      <h6 class="mb-0"><i class="fas fa-images me-2"></i>Galería de imágenes</h6>
-                  </div>
+                <h6 class="border-bottom pb-2"><i class="fas fa-image me-2"></i>Galería de Imagenes</h6>
+              </div>
 
+              <div class="col-md-12 mt-4">
                   <label for="inputFotosMascota" class="btn btn-sm btn-success cursor-pointer">
                       <i class="fas fa-plus me-1"></i> Añadir imágenes
                       <input 
@@ -161,7 +169,7 @@
                           id="inputFotosMascota" 
                           name="fotosMascota[]" 
                           multiple 
-                          accept="image/*" 
+                          accept="image/*, video/*" 
                           style="display: none;"
                           onchange="procesarNuevasImagenes(this)"
                       >
@@ -193,6 +201,7 @@
                       </div>
                   </div>
               </div>
+          </div>
 
           <!-- Footer -->
           <div class="modal-footer border-0 bg-light rounded-bottom-3 mt-4">
@@ -200,6 +209,130 @@
             <button type="submit" class="btn btn-primary">Guardar cambios</button>
           </div>
         </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Solicitud -->
+<div class="modal fade" id="modalSolicitudDetalle" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+
+      <div class="modal-header bg-info text-white rounded-top-3">
+        <h5 class="modal-title"><i class="fas fa-file-signature me-2"></i> Detalles de Solicitud</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body py-4">
+        <div class="row g-3">
+
+          <!-- Información Básica -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control shadow-sm" id="solicitudId" readonly>
+              <label for="solicitudId"><i class="fas fa-hashtag me-2"></i>ID Solicitud</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="date" class="form-control shadow-sm" id="fechaSolicitud" readonly>
+              <label for="fechaSolicitud"><i class="far fa-calendar-alt me-2"></i>Fecha de Solicitud</label>
+            </div>
+          </div>
+
+          <!-- Estado -->
+          <div class="col-md-12">
+            <div class="form-floating">
+              <select class="form-select shadow-sm" id="estadoSolicitud">
+                <option value="Pendiente">Pendiente</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Aprobada">Aprobada</option>
+                <option value="Rechazada">Rechazada</option>
+              </select>
+              <label for="estadoSolicitud"><i class="fas fa-tasks me-2"></i>Estado</label>
+            </div>
+          </div>
+
+          <!-- Datos del Adoptante -->
+          <div class="col-md-12 mt-4">
+            <h6 class="border-bottom pb-2"><i class="fas fa-user-tie me-2"></i>Datos del Adoptante</h6>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control shadow-sm" id="nombreAdoptante" readonly>
+              <label for="nombreAdoptante"><i class="fas fa-user me-2"></i>Nombre</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="tel" class="form-control shadow-sm" id="telefonoAdoptante" readonly>
+              <label for="telefonoAdoptante"><i class="fas fa-phone me-2"></i>Teléfono</label>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-floating">
+              <input type="email" class="form-control shadow-sm" id="correoAdoptante" readonly>
+              <label for="correoAdoptante"><i class="fas fa-envelope me-2"></i>Correo Electrónico</label>
+            </div>
+          </div>
+
+          <!-- Datos de la Mascota -->
+          <div class="col-md-12 mt-4">
+            <h6 class="border-bottom pb-2"><i class="fas fa-paw me-2"></i>Mascota Solicitada</h6>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control shadow-sm" id="mascotaId" readonly>
+              <label for="mascotaId"><i class="fas fa-hashtag me-2"></i>ID Mascota</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control shadow-sm" id="nombreMasc" readonly>
+              <label for="nombreMasc"><i class="fas fa-tag me-2"></i>Nombre</label>
+            </div>
+          </div>
+
+          <!-- Comentarios -->
+          <div class="col-md-12 mt-3">
+            <div class="form-floating">
+              <textarea class="form-control shadow-sm" id="comentariosSolicitud" style="height: 100px" readonly></textarea>
+              <label for="comentariosSolicitud"><i class="fas fa-comment me-2"></i>Comentarios</label>
+            </div>
+          </div>
+
+          <!-- Documentos Adjuntos -->
+          <div class="col-md-12 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0"><i class="fas fa-file-pdf me-2"></i>Documentos Adjuntos</h6>
+            </div>
+            
+            <div class="gallery-container mb-3">
+              <div class="gallery-scroll" id="listaDocumentos">
+                <!-- Los documentos PDF se cargarán aquí dinámicamente -->
+                <div class="text-center py-3 text-muted documentos-placeholder">
+                  <i class="fas fa-file-pdf fa-2x mb-2"></i>
+                  <p>Cargando documentos...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 bg-light rounded-bottom-3">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="guardarEstadoSolicitud">Guardar Cambios</button>
       </div>
 
     </div>

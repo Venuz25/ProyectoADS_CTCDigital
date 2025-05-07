@@ -780,11 +780,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 //==================================================================================================
+// SECCIÓN DE EDITAR DATOS
+//==================================================================================================
 
 let datosGlobales = {};
 
+// Carga inicial de los modales y datos
 document.addEventListener('DOMContentLoaded', async () => {  
-    const res = await fetch("src/componentes/modalInfo.html");
+    const res = await fetch("componentes/modalInfo.html");
     const html = await res.text();
     document.getElementById("modalesInfo").innerHTML = html;
 
@@ -792,7 +795,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     datosGlobales = await response.json(); 
 });
 
-
+// Escucha el evento de clic en los botones de vista
 document.addEventListener("click", async function(e) {
     if (e.target.closest(".view-btn")) {
         const btn = e.target.closest(".view-btn");
@@ -821,65 +824,6 @@ document.addEventListener("click", async function(e) {
         }
     }
 });
-
-// Mostrar modal de mascota
-function mostrarModalMascota(mascota) {
-    const modal = document.getElementById("modalMascotaDetalle");
-    if (!modal) {
-      console.error("No se encontró el modal.");
-      return;
-    }
-  
-    // Prellenar campos básicos
-    document.getElementById("nombre").value = mascota.nombre || "";
-    document.getElementById("Ingreso").value = mascota.fechaIngreso || "";
-    document.getElementById("estadoAdopcion").value = mascota.estadoAdopcion || "No disponible";
-    document.getElementById("lineaMetro").value = mascota.linea || "";
-    document.getElementById("estacionMetro").value = mascota.estacion || "";
-    document.querySelector("select[name='sexoObtenido']").value = mascota.sexo || "";
-    document.querySelector("input[name='edadObtenido']").value = mascota.edad || "";
-    document.querySelector("select[name='tamanoObtenido']").value = mascota.tamaño || "";
-    document.getElementById("raza").value = mascota.raza || "";
-    document.querySelector("textarea[name='caractFisicaObtenido']").value = mascota.caractFisica || "";
-    document.querySelector("textarea[name='estadoSaludObtenido']").value = mascota.estadoSalud || "";
-    document.querySelector("textarea[name='descripcionObtenido']").value = mascota.descripcion || "";
-  
-    // ---- Solicitudes
-    const solicitudContenedor = document.getElementById("selectSolicitud");
-    solicitudContenedor.innerHTML = "";
-    if (Array.isArray(mascota.solicitudes) && mascota.solicitudes.length > 0) {
-      mascota.solicitudes.forEach(id => {
-        const btn = document.createElement("button");
-        btn.className = "btn btn-sm btn-outline-primary me-1 mb-1";
-        btn.dataset.id = id;
-        btn.textContent = `Solicitud #${id}`;
-        btn.onclick = () => abrirModalSolicitud(id); // función futura
-        solicitudContenedor.appendChild(btn);
-      });
-    } else {
-      solicitudContenedor.textContent = "Sin solicitudes";
-    }
-  
-    // ---- Reportes
-    const reporteContenedor = document.getElementById("selectReporte");
-    reporteContenedor.innerHTML = "";
-    if (Array.isArray(mascota.reportes) && mascota.reportes.length > 0) {
-      mascota.reportes.forEach(id => {
-        const btn = document.createElement("button");
-        btn.className = "btn btn-sm btn-outline-secondary me-1 mb-1";
-        btn.dataset.id = id;
-        btn.textContent = `Reporte #${id}`;
-        btn.onclick = () => abrirModalReporte(id); // función futura
-        reporteContenedor.appendChild(btn);
-      });
-    } else {
-      reporteContenedor.textContent = "Sin reportes";
-    }
-  
-    // ---- Mostrar modal
-    const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show();
-}
   
 
 // ========================== MODAL DE MASCOTA ==========================
@@ -887,24 +831,21 @@ function mostrarModalMascota(mascota) {
     let imagenesAEliminar = []; 
     let nuevasImagenes = [];
 
-    // Mostrar modal de mascota
+   // Mostrar modal de mascota
     function mostrarModalMascota(mascota) {
         const modal = document.getElementById("modalMascotaDetalle");
         if (!modal) {
-            console.error("No se encontró el modal.");
-            return;
+        console.error("No se encontró el modal.");
+        return;
         }
-
-        // Guardar el ID de la mascota
-        currentMascotaId = mascota.id;
-
-        // Prellenar campos del formulario
+    
+        // Prellenar campos básicos
         document.getElementById("nombre").value = mascota.nombre || "";
-        document.getElementById("Ingreso").value = mascota.fechaIngreso || "";
 
-        document.querySelector("select[name='estadoObtenido']").value =  mascota.estadoAdopcion || "no disponible";
-        document.getElementById("selectSolicitud").value = mascota.solicitudes || "Sin solicitud";
-        
+        document.getElementById("Ingreso").value = mascota.fechaIngreso || "";
+        document.querySelector("select[name='estadoObtenido']").value = mascota.estadoAdopcion || "No Disponible";
+        document.getElementById("adoptadoPor").value = `[${mascota.idAdoptante}] ${mascota.nombreAdoptante}`;
+
         document.getElementById("lineaMetro").value = mascota.linea || "";
         document.getElementById("estacionMetro").value = mascota.estacion || "";
 
@@ -917,166 +858,187 @@ function mostrarModalMascota(mascota) {
         document.querySelector("textarea[name='caractFisicaObtenido']").value = mascota.caractFisica || "";
         document.querySelector("textarea[name='estadoSaludObtenido']").value = mascota.estadoSalud || "";
         document.querySelector("textarea[name='descripcionObtenido']").value = mascota.descripcion || "";
-
+    
+        // ---- Solicitudes
+        const solicitudContenedor = document.getElementById("selectSolicitud");
+        solicitudContenedor.innerHTML = "";
+        if (Array.isArray(mascota.solicitudes) && mascota.solicitudes.length > 0) {
+        mascota.solicitudes.forEach(id => {
+            const btn = document.createElement("button");
+            btn.className = "btn btn-sm btn-outline-primary me-1 my-2";
+            btn.dataset.id = id;
+            btn.textContent = `Solicitud #${id}`;
+            btn.onclick = () => abrirModalSolicitud(id); // función futura
+            solicitudContenedor.appendChild(btn);
+        });
+        } else {
+        solicitudContenedor.textContent = "Sin solicitudes";
+        }
+    
+        // ---- Reportes
+        const reporteContenedor = document.getElementById("selectReporte");
+        reporteContenedor.innerHTML = "";
+        if (Array.isArray(mascota.reportes) && mascota.reportes.length > 0) {
+        mascota.reportes.forEach(id => {
+            const btn = document.createElement("button");
+            btn.className = "btn btn-sm btn-outline-secondary me-1 my-2";
+            btn.dataset.id = id;
+            btn.textContent = `Reporte #${id}`;
+            btn.onclick = () => abrirModalReporte(id); // función futura
+            reporteContenedor.appendChild(btn);
+        });
+        } else {
+        reporteContenedor.textContent = "Sin reportes";
+        }
+    
+        if (mascota.estadoAdopcion === "Adoptado") {
+            adoptadoPorContainer.style.display = 'block';
+            estadoObtenidoContainer.style.display = 'none';
+        } else {
+            adoptadoPorContainer.style.display = 'none';
+            estadoObtenidoContainer.style.display = 'block';
+        }
+        
         // Mostrar galería
         mostrarGaleria(mascota);
 
+        // Mostrar modal
         const modalInstance = new bootstrap.Modal(modal);
         modalInstance.show();
-    }
+    }         
 
-    // Guardar cambios
+    // Guardar cambios PENDIENTE
     async function guardarCambios() {
-        const formData = new FormData();
         
-        // Datos básicos
-        formData.append('idMascota', mascotaId);
-        formData.append('datosMascota', JSON.stringify({
-            estadoAdopcion: document.getElementById('estado').value
-        }));
-        
-        formData.append('datosDetalles', JSON.stringify({
-            edad: document.querySelector('input[name="edadObtenido"]').value,
-            sexo: document.querySelector('select[name="sexoObtenido"]').value,
-            tamaño: document.querySelector('select[name="tamanoObtenido"]').value,
-            caractFisica: document.querySelector('textarea[name="caractFisicaObtenido"]').value,
-            estadoSalud: document.querySelector('textarea[name="estadoSaludObtenido"]').value,
-            descripcion: document.querySelector('textarea[name="descripcionObtenido"]').value
-        }));
-        
-        // Imágenes a eliminar
-        formData.append('imagenesAEliminar', JSON.stringify(imagenesAEliminar));
-        
-        // Nuevas imágenes
-        const inputFiles = document.getElementById('inputFotosMascota').files;
-        for (let i = 0; i < inputFiles.length; i++) {
-            formData.append('nuevasImagenes[]', inputFiles[i]);
-        }
-    
-        try {
-            const response = await fetch('guardarCambios.php', {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (!result.success) {
-                throw new Error(result.message);
-            }
-            
-            alert('Cambios guardados exitosamente');
-            location.reload();
-            
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al guardar cambios: ' + error.message);
-        }
     }
 
-    // Mostrar galería de imágenes
+    // Mostrar galería de imágenes y videos
     function mostrarGaleria(mascota) {
         const galeria = document.getElementById("galeriaMascotaModal");
         if (!galeria) {
             console.error("No se encontró el elemento galeriaMascotaModal");
             return;
         }
-        
+
         galeria.innerHTML = "";
         imagenesAEliminar = [];
-    
+
         if (mascota.imagenes && mascota.imagenes.length > 0) {
             mascota.imagenes.forEach((ruta, index) => {
+                // Detectar tipo de archivo
+                const ext = ruta.split('.').pop().toLowerCase();
+                const isVideo = ['mp4', 'webm', 'ogg'].includes(ext);
+                const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
+
+                console.log(`Ruta: ${ruta}, Tipo: ${isImage ? 'Imagen' : isVideo ? 'Video' : 'Desconocido'}`);
+
+                const mediaSrc = ruta.startsWith('http') ? ruta 
+                    : `${window.location.origin}/ProyectoADS_CTCDigital/${ruta.replace('ProyectoADS_CTCDigital/', '')}`;
+
                 const galleryItem = document.createElement("div");
                 galleryItem.className = "gallery-item position-relative me-2";
                 galleryItem.style.flex = "0 0 auto";
                 galleryItem.style.width = "auto";
-                
-                const img = document.createElement("img");
-                img.src = ruta.startsWith('http') ? ruta : `http://localhost/ProyectoADS_CTCDigital/${ruta.replace('ProyectoADS_CTCDigital/', '')}`;
-                img.alt = `Imagen ${index + 1} de ${mascota.nombre || 'mascota'}`;
-                img.className = "img-fluid rounded h-100 w-100";
-                img.style.objectFit = "cover";
-                img.style.maxHeight = "150px";
-            
-                // Botón para eliminar
+                galleryItem.style.height = "150px";
+                galleryItem.style.overflow = "hidden";
+                galleryItem.style.position = "relative";
+
+                if (isImage) {
+                    const img = document.createElement("img");
+                    img.src = mediaSrc;
+                    img.className = "h-100 w-auto";
+                    img.style.objectFit = "cover";
+                    galleryItem.appendChild(img);
+                } else if (isVideo) {
+                    const video = document.createElement("video");
+                    video.src = mediaSrc;
+                    video.className = "h-100 w-auto";
+                    video.style.objectFit = "cover";
+                    video.controls = true;
+                    video.muted = true;
+                    video.loop = true;
+                    galleryItem.appendChild(video);
+                }
+
                 const deleteBtn = document.createElement("button");
                 deleteBtn.className = "btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0 deleteBoton";
-                deleteBtn.style.width = "24px";
-                deleteBtn.style.height = "24px";
                 deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
-                deleteBtn.title = "Eliminar imagen";
-                
-                // Evento para marcar la imagen para eliminación
-                deleteBtn.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Marcar visualmente
-                    galleryItem.style.opacity = "0.5";
-                    galleryItem.style.border = "2px dashed #dc3545";
-                    deleteBtn.disabled = true;
-                    
-                    // Agregar al array de eliminación
-                    if (!imagenesAEliminar.includes(ruta)) {
-                    imagenesAEliminar.push(ruta);
-                    console.log('Imágenes marcadas para eliminar:', imagenesAEliminar);
-                    }
-                });
-                
-                galleryItem.appendChild(img);
+                deleteBtn.onclick = () => galleryItem.remove();
+
                 galleryItem.appendChild(deleteBtn);
                 galeria.appendChild(galleryItem);
             });
         } else {
-            // Mostrar mensaje cuando no hay imágenes
-            const emptyMsg = document.createElement("div");
-            emptyMsg.className = "text-center py-4 w-100";
-            emptyMsg.innerHTML = `
-            <i class="fas fa-image fa-2x mb-2 text-muted"></i>
-            <p class="text-muted">No hay imágenes disponibles</p>
+            galeria.innerHTML = `
+            <div class="text-center py-4 w-100">
+                <i class="fas fa-image fa-2x mb-2 text-muted"></i>
+                <p class="text-muted">No hay archivos multimedia disponibles</p>
+            </div>
             `;
-            galeria.appendChild(emptyMsg);
         }
     }
-    
-    // Añadir imágenes
+
+    // Función para agregar nuevos archivos (imágenes o videos)
     function procesarNuevasImagenes(input) {
         const galeria = document.getElementById("galeriaMascotaModal");
         if (!input.files || !galeria) return;
-    
+
         const emptyMsg = galeria.querySelector(".text-center");
         if (emptyMsg) emptyMsg.remove();
-    
-        // Procesar cada archivo seleccionado
+
         Array.from(input.files).forEach(file => {
-            if (!file.type.startsWith('image/')) return;
-    
+            const fileType = file.type;
+            const isImage = fileType.startsWith('image/');
+            const isVideo = fileType.startsWith('video/');
+
+            if (!isImage && !isVideo) return;
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                const imgContainer = document.createElement("div");
-                imgContainer.className = "gallery-item position-relative me-2";
-                imgContainer.style.width = "150px";
-                
-                imgContainer.innerHTML = `
-                    <img src="${e.target.result}" class="img-fluid rounded" style="height:150px; object-fit:cover">
-                    <span class="badge bg-success position-absolute top-0 start-0">Nueva</span>
-                    <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0 deleteBoton" onclick="removerImagenNueva(this)">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                galeria.appendChild(imgContainer);
-                nuevasImagenes.push({
-                    file,
-                    element: imgContainer
-                });
+                const galleryItem = document.createElement("div");
+                galleryItem.className = "gallery-item position-relative me-2";
+                galleryItem.style.flex = "0 0 auto";
+                galleryItem.style.width = "auto";
+                galleryItem.style.height = "150px";
+                galleryItem.style.overflow = "hidden";
+                galleryItem.style.position = "relative";
+
+                if (isImage) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.className = "h-100 w-auto";
+                    img.style.objectFit = "cover";
+                    galleryItem.appendChild(img);
+                } else if (isVideo) {
+                    const video = document.createElement("video");
+                    video.src = e.target.result;
+                    video.className = "h-100 w-auto";
+                    video.style.objectFit = "cover";
+                    video.controls = true;
+                    video.muted = true;
+                    video.loop = true;
+                    galleryItem.appendChild(video);
+                }
+
+                const badge = document.createElement("span");
+                badge.className = "badge bg-success position-absolute top-0 start-0";
+                badge.textContent = "Nuevo";
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0 deleteBoton";
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                deleteBtn.onclick = () => galleryItem.remove();
+
+                galleryItem.appendChild(badge);
+                galleryItem.appendChild(deleteBtn);
+                galeria.appendChild(galleryItem);
             };
+
             reader.readAsDataURL(file);
         });
-    }
+    }    
     
-    // Eliminar imagen nueva
+    // Eliminar imagen nueva y videos
     function removerImagenNueva(button) {
         const imgContainer = button.closest('.gallery-item');
         const index = nuevasImagenes.findIndex(img => img.element === imgContainer);
@@ -1087,12 +1049,94 @@ function mostrarModalMascota(mascota) {
         }
     }
     
-    // Obtener imágenes procesadas
+    // Obtener imágenes y videos procesados
     function obtenerImagenesProcesadas() {
         return {
-            paraEliminar: [...imagenesAEliminar],  // Rutas de imágenes existentes a eliminar
-            nuevas: nuevasImagenes.map(img => img.file)  // Archivos de imágenes nuevas
+            paraEliminar: [...imagenesAEliminar],  
+            nuevas: nuevasImagenes.map(img => img.file) 
         };
     }
+
+}
+
+// ========================== MODAL DE SOLICITUD ==========================
+{
+    // Mostrar modal de solicitud
+    function mostrarModalSolicitud(solicitud) {
+        try {            
+            const modal = new bootstrap.Modal(document.getElementById('modalSolicitudDetalle'));
+            
+            if (!solicitud || typeof solicitud !== 'object') {
+                throw new Error('Datos de solicitud no válidos');
+            }
+    
+            const setValue = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = value || '';
+                } else {
+                    console.error(`Elemento con ID ${id} no encontrado`);
+                }
+            };
+    
+            // Llenar datos
+            setValue('solicitudId', solicitud.idSolicitud);
+            setValue('fechaSolicitud', solicitud.fechaSolicitud);
+            setValue('estadoSolicitud', solicitud.estadoAdopcion);
+            setValue('nombreAdoptante', solicitud.nombreAdoptante);
+            setValue('telefonoAdoptante', solicitud.telefono);
+            setValue('correoAdoptante', solicitud.correo);
+            setValue('mascotaId', solicitud.idMascota);
+            setValue('nombreMasc', solicitud.nombreMascota); 
+            setValue('comentariosSolicitud', solicitud.comentarios);
+
+            // Cargar documentos
+            cargarDocumentosSolicitud(solicitud);
+                
+            modal.show();
+            
+        } catch (error) {
+            console.error('Error al mostrar modal de solicitud:', error);
+            alert('Error al cargar los datos de la solicitud');
+        }
+    }
+
+    function cargarDocumentosSolicitud(solicitud) {
+        const contenedor = document.getElementById('listaDocumentos');
+    
+        if (!contenedor) {
+            console.error('Contenedor de documentos no encontrado');
+            return;
+        }
+    
+        contenedor.innerHTML = ''; // Limpiar contenido previo
+    
+        if (!Array.isArray(solicitud.documentos) || solicitud.documentos.length === 0) {
+            contenedor.innerHTML = '<p class="text-muted">No se encontraron documentos adjuntos.</p>';
+            return;
+        }
+    
+        solicitud.documentos.forEach((ruta, index) => {
+            const nombreArchivo = ruta.split('/').pop();
+    
+            const item = document.createElement('div');
+            item.className = 'mb-2';
+    
+            item.innerHTML = `
+                <a href="${ruta}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    📄 ${nombreArchivo}
+                </a>
+            `;
+    
+            contenedor.appendChild(item);
+        });
+    }
+    
+    
+    
+    
+
+
+
 
 }
