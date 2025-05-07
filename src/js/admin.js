@@ -826,45 +826,61 @@ document.addEventListener("click", async function(e) {
 function mostrarModalMascota(mascota) {
     const modal = document.getElementById("modalMascotaDetalle");
     if (!modal) {
-        console.error("No se encontró el modal.");
-        return;
+      console.error("No se encontró el modal.");
+      return;
     }
-
-    // Prellenar campos del formulario
+  
+    // Prellenar campos básicos
     document.getElementById("nombre").value = mascota.nombre || "";
-
-    document.getElementById("Ingreso").value = mascota.fechaIngreso || "";  
+    document.getElementById("Ingreso").value = mascota.fechaIngreso || "";
     document.getElementById("estadoAdopcion").value = mascota.estadoAdopcion || "No disponible";
-
-    document.getElementById("selectSolicitud").value = 
-    Array.isArray(mascota.solicitudes) && mascota.solicitudes.length > 0 
-        ? mascota.solicitudes.join(", ") 
-        : "Sin solicitudes";
-
-    document.getElementById("selectReporte").value = 
-    Array.isArray(mascota.reportes) && mascota.reportes.length > 0 
-        ? mascota.reportes.join(", ") 
-        : "Sin reportes";
-
-    
     document.getElementById("lineaMetro").value = mascota.linea || "";
     document.getElementById("estacionMetro").value = mascota.estacion || "";
-
     document.querySelector("select[name='sexoObtenido']").value = mascota.sexo || "";
     document.querySelector("input[name='edadObtenido']").value = mascota.edad || "";
-
     document.querySelector("select[name='tamanoObtenido']").value = mascota.tamaño || "";
     document.getElementById("raza").value = mascota.raza || "";
-
     document.querySelector("textarea[name='caractFisicaObtenido']").value = mascota.caractFisica || "";
     document.querySelector("textarea[name='estadoSaludObtenido']").value = mascota.estadoSalud || "";
     document.querySelector("textarea[name='descripcionObtenido']").value = mascota.descripcion || "";
-
-    mostrarGaleria(mascota);
-
+  
+    // ---- Solicitudes
+    const solicitudContenedor = document.getElementById("selectSolicitud");
+    solicitudContenedor.innerHTML = "";
+    if (Array.isArray(mascota.solicitudes) && mascota.solicitudes.length > 0) {
+      mascota.solicitudes.forEach(id => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-sm btn-outline-primary me-1 mb-1";
+        btn.dataset.id = id;
+        btn.textContent = `Solicitud #${id}`;
+        btn.onclick = () => abrirModalSolicitud(id); // función futura
+        solicitudContenedor.appendChild(btn);
+      });
+    } else {
+      solicitudContenedor.textContent = "Sin solicitudes";
+    }
+  
+    // ---- Reportes
+    const reporteContenedor = document.getElementById("selectReporte");
+    reporteContenedor.innerHTML = "";
+    if (Array.isArray(mascota.reportes) && mascota.reportes.length > 0) {
+      mascota.reportes.forEach(id => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-sm btn-outline-secondary me-1 mb-1";
+        btn.dataset.id = id;
+        btn.textContent = `Reporte #${id}`;
+        btn.onclick = () => abrirModalReporte(id); // función futura
+        reporteContenedor.appendChild(btn);
+      });
+    } else {
+      reporteContenedor.textContent = "Sin reportes";
+    }
+  
+    // ---- Mostrar modal
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show();
 }
+  
 
 // ========================== MODAL DE MASCOTA ==========================
 {
