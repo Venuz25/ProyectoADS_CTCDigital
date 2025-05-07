@@ -20,7 +20,7 @@
                 </div>
               </div>
   
-              <!-- Estado de Adopción + Solicitud -->
+              <!-- Estado de Adopción-->
               <div class="col-md-6">
                 <div class="form-floating">
                   <select class="form-select shadow-sm" name="estadoObtenido" required>
@@ -30,11 +30,6 @@
                   </select>
                   <label for="estadoObtenido"><i class="fas fa-heart me-2"></i>Estado de Adopción</label>
                 </div>
-  
-                <div class="form-floating">
-                    <input type="text" class="form-control shadow-sm" id="selectSolicitud" name="solicitud" placeholder=" " readonly>
-                    <label for="selectSolicitud"><i class="fas fa-tag me-2"></i>Solicitud Asociada</label>
-                </div>
               </div>
   
               <!-- Fecha Ingreso -->
@@ -42,6 +37,22 @@
                 <div class="form-floating">
                   <input type="date" class="form-control shadow-sm" id="Ingreso" name="Ingreso" readonly>
                   <label for="Ingreso"><i class="far fa-calendar-alt me-2"></i>Fecha de Ingreso</label>
+                </div>
+              </div>
+
+              <!-- Solicitud Asociada -->
+              <div class="col-md-6"> 
+                <div class="form-floating">
+                  <input type="text" class="form-control shadow-sm" id="selectSolicitud" name="solicitud" placeholder=" " readonly>
+                  <label for="selectSolicitud"><i class="fas fa-tag me-2"></i>Solicitudes Asociadas</label>
+                </div>
+              </div>
+
+              <!-- Reportes Asociados -->
+              <div class="col-md-6"> 
+                <div class="form-floating">
+                  <input type="text" class="form-control shadow-sm" id="selectReporte" name="reporte" placeholder=" " readonly>
+                  <label for="reporte"><i class="fas fa-tag me-2"></i>Reportes Asociados</label>
                 </div>
               </div>
   
