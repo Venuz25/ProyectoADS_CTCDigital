@@ -97,14 +97,16 @@
         $solicitud['documentos'] = $documentos;
     }
 
+
+
     // ---------- 3. Reportes ----------
     $reportesQuery = "
     SELECT 
         r.idReporte, r.estadoReporte, r.fechaReporte, r.descripcion,
         rep.idReportante, rep.nombre AS nombreReportante, rep.correo,
         GROUP_CONCAT(DISTINCT m.idMascota) AS mascotas,
-        GROUP_CONCAT(DISTINCT m.nombre) AS nombresMascotas,
-        e.nombre AS estacion
+        e.nombre AS estacion,
+        e.linea AS linea
     FROM reporte r
     LEFT JOIN reportante rep ON r.idReportante = rep.idReportante
     LEFT JOIN reporteMascota rm ON r.idReporte = rm.idReporte
@@ -117,20 +119,43 @@
 
     foreach ($reportes as &$reporte) {
         $reporte['mascotas'] = $reporte['mascotas'] ? explode(',', $reporte['mascotas']) : [];
-        $reporte['nombresMascotas'] = $reporte['nombresMascotas'] ? explode(',', $reporte['nombresMascotas']) : [];
     }
-    unset($reporte);    
+    unset($reporte);  
+    
+    // agregar las imagenes
+    foreach ($reportes as &$reporte) {
+        $id = $reporte['idReporte'];
+        $rutaDirectorio = realpath(__DIR__ . '/../../../') . "/reportes/$id";
+    
+        $imagenes = [];
+        if (is_dir($rutaDirectorio)) {
+            $archivos = scandir($rutaDirectorio);
+            foreach ($archivos as $archivo) {
+                if (in_array(strtolower(pathinfo($archivo, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4'])) {
+                    $imagenes[] = "/ProyectoADS_CTCDigital/reportes/$id/$archivo";
+                }
+            }
+        }
+    
+        $reporte['imagenes'] = $imagenes;
+    }
 
     // ---------- 4. Donaciones ----------
     $donacionesQuery = "
-    SELECT 
-        d.idDonacion, d.estadoDonacion, d.tipo, d.fechaDonacion, d.fechaPrevistaDon,
-        d.monto, d.descripcion,
-        dn.idDonante, dn.nombreDonante, dn.correo
-    FROM donacion d
-    LEFT JOIN donante dn ON d.idDonante = dn.idDonante
-    ORDER BY d.idDonacion
-    ";
+        SELECT 
+            d.idDonacion, d.estadoDonacion, d.tipo, d.fechaDonacion, d.fechaPrevistaDon,
+            d.monto, d.descripcion,
+            dn.idDonante, dn.nombreDonante, dn.correo,
+            CASE 
+                WHEN dv.idUser IS NOT NULL THEN 1
+                ELSE 0
+            END AS estadoVisible,
+            dv.usuario, dv.img, dv.color
+        FROM donacion d
+        LEFT JOIN donante dn ON d.idDonacion = dn.idDonante
+        LEFT JOIN donacionvisual dv ON d.idDonacion = dv.idUser
+        ORDER BY d.idDonacion
+        ";
     $donaciones = $conn->query($donacionesQuery)->fetch_all(MYSQLI_ASSOC);
 
     // ---------- 5. Administradores ----------

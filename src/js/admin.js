@@ -822,6 +822,10 @@ document.addEventListener("click", async function(e) {
             const donacion = datosGlobales.donaciones.find(d => d.idDonacion == id);
             mostrarModalDonacion(donacion);
         }
+        else if (type === "admin") {
+            const admin = datosGlobales.administradores.find(a => a.id == id);
+            mostrarModalAdmin(admin);
+        }
     }
 });
   
@@ -862,14 +866,12 @@ document.addEventListener("click", async function(e) {
         // ---- Solicitudes
         const solicitudContenedor = document.getElementById("selectSolicitud");
         solicitudContenedor.innerHTML = "";
-        if (Array.isArray(mascota.solicitudes) && mascota.solicitudes.length > 0) {
-        mascota.solicitudes.forEach(id => {
-            const btn = document.createElement("button");
-            btn.className = "btn btn-sm btn-outline-primary me-1 my-2";
-            btn.dataset.id = id;
-            btn.textContent = `Solicitud #${id}`;
-            btn.onclick = () => abrirModalSolicitud(id); // función futura
-            solicitudContenedor.appendChild(btn);
+        if (Array.isArray(mascota.todasSolicitudes) && mascota.todasSolicitudes.length > 0) {
+        mascota.todasSolicitudes.forEach(id => {
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item list-group-item-action my-2";
+            listItem.textContent = `Solicitud #${id}`;
+            solicitudContenedor.appendChild(listItem);
         });
         } else {
         solicitudContenedor.textContent = "Sin solicitudes";
@@ -880,12 +882,10 @@ document.addEventListener("click", async function(e) {
         reporteContenedor.innerHTML = "";
         if (Array.isArray(mascota.reportes) && mascota.reportes.length > 0) {
         mascota.reportes.forEach(id => {
-            const btn = document.createElement("button");
-            btn.className = "btn btn-sm btn-outline-secondary me-1 my-2";
-            btn.dataset.id = id;
-            btn.textContent = `Reporte #${id}`;
-            btn.onclick = () => abrirModalReporte(id); // función futura
-            reporteContenedor.appendChild(btn);
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item list-group-item-action my-2";
+            listItem.textContent = `Reporte #${id}`;
+            reporteContenedor.appendChild(listItem);
         });
         } else {
         reporteContenedor.textContent = "Sin reportes";
@@ -929,9 +929,6 @@ document.addEventListener("click", async function(e) {
                 const ext = ruta.split('.').pop().toLowerCase();
                 const isVideo = ['mp4', 'webm', 'ogg'].includes(ext);
                 const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
-
-                console.log(`Ruta: ${ruta}, Tipo: ${isImage ? 'Imagen' : isVideo ? 'Video' : 'Desconocido'}`);
-
                 const mediaSrc = ruta.startsWith('http') ? ruta 
                     : `${window.location.origin}/ProyectoADS_CTCDigital/${ruta.replace('ProyectoADS_CTCDigital/', '')}`;
 
@@ -1140,3 +1137,172 @@ document.addEventListener("click", async function(e) {
 
 
 }
+
+// ========================== MODAL DE REPORTE ==========================
+{
+    // Mostrar modal de reporte
+    function mostrarModalReporte(reporte, mascotasAsociadas = []) {
+        const modal = new bootstrap.Modal(document.getElementById('modalReporteDetalle'));
+        const form = document.getElementById('formDetalleReporte');
+        
+        // Llenar los campos del formulario con los datos del reporte
+        document.getElementById('nombreReportante').value = reporte.nombreReportante || '';
+        document.getElementById('correo').value = reporte.correo || '';
+        
+        const fechaReporte = reporte.fechaReporte ? new Date(reporte.fechaReporte) : new Date();
+        const fechaFormateada = fechaReporte.toISOString().slice(0, 16);
+        document.getElementById('fechaReporte').value = fechaFormateada;
+        
+        const estadoSelect = document.getElementById('estadoReporte');
+        estadoSelect.value = reporte.estadoReporte || 'Pendiente';
+        
+        document.getElementById('lineaRepo').value = reporte.linea || '';
+        document.getElementById('estacionRep').value = reporte.estacion || '';
+        
+        const mascotasContainer = document.getElementById('mascotasAsociadas');
+        if (reporte.mascotas && reporte.mascotas.length > 0) {
+            const mascotasHTML = reporte.mascotas.map(id => 
+            `<span class="badge bg-primary" style="padding: 10px">Mascota #${id}</span>`
+            ).join('');
+            mascotasContainer.innerHTML = mascotasHTML;
+        } else {
+            mascotasContainer.innerHTML = '<span class="text-muted">No hay mascotas asociadas</span>';
+        }
+        
+        // Descripción del reporte
+        document.getElementById('descripcionReporte').value = reporte.descripcion || '';
+        
+        // Cargar imágenes del reporte
+        cargarImagenesReporte(reporte);
+        
+        // Mostrar el modal
+        modal.show();
+    }
+      
+    // Función para ampliar imágenes/videos al hacer clic
+    function setupGalleryClickEvents() {
+        const galeria = document.getElementById("galeriaReporteModal");
+        if (!galeria) return;
+
+        galeria.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Evitar que se active el clic si se hizo en los controles del video
+                if (e.target.tagName === 'VIDEO' || e.target.closest('video')) {
+                    return;
+                }
+
+                const mediaElement = this.querySelector('img, video');
+                if (!mediaElement) return;
+
+                // Crear modal de visualización
+                const modalHTML = `
+                <div class="modal fade" id="mediaViewerModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content bg-transparent border-0">
+                            <div class="modal-header border-0">
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body d-flex justify-content-center align-items-center p-0">
+                                ${mediaElement.tagName === 'IMG' ? 
+                                    `<img src="${mediaElement.src}" class="img-fluid" style="max-height: 80vh;">` :
+                                    `<video controls autoplay class="w-100" style="max-height: 80vh;">
+                                        <source src="${mediaElement.src}" type="video/${mediaElement.src.split('.').pop()}">
+                                    </video>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                // Insertar el modal en el DOM
+                const modalContainer = document.createElement('div');
+                modalContainer.innerHTML = modalHTML;
+                document.body.appendChild(modalContainer);
+
+                // Mostrar el modal
+                const mediaModal = new bootstrap.Modal(modalContainer.querySelector('#mediaViewerModal'));
+                mediaModal.show();
+
+                // Eliminar el modal cuando se cierre
+                modalContainer.querySelector('#mediaViewerModal').addEventListener('hidden.bs.modal', () => {
+                    document.body.removeChild(modalContainer);
+                });
+            });
+        });
+    }
+
+    // Función modificada para incluir los eventos de clic
+    function cargarImagenesReporte(reporte) {
+        const galeria = document.getElementById("galeriaReporteModal");
+        if (!galeria) {
+            console.error("No se encontró el elemento galeriaReporteModal");
+            return;
+        }
+
+        galeria.innerHTML = "";
+
+        if (reporte.imagenes && reporte.imagenes.length > 0) {
+            reporte.imagenes.forEach((ruta, index) => {
+                // Detectar tipo de archivo
+                const ext = ruta.split('.').pop().toLowerCase();
+                const isVideo = ['mp4', 'webm', 'ogg'].includes(ext);
+                const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
+                const mediaSrc = ruta.startsWith('http') ? ruta 
+                    : `${window.location.origin}/ProyectoADS_CTCDigital/${ruta.replace('ProyectoADS_CTCDigital/', '')}`;
+
+                const galleryItem = document.createElement("div");
+                galleryItem.className = "gallery-item position-relative me-2 cursor-pointer";
+                galleryItem.style.flex = "0 0 auto";
+                galleryItem.style.width = "auto";
+                galleryItem.style.height = "150px";
+                galleryItem.style.overflow = "hidden";
+                galleryItem.style.position = "relative";
+
+                if (isImage) {
+                    const img = document.createElement("img");
+                    img.src = mediaSrc;
+                    img.className = "h-100 w-auto";
+                    img.style.objectFit = "cover";
+                    galleryItem.appendChild(img);
+                } else if (isVideo) {
+                    const video = document.createElement("video");
+                    video.src = mediaSrc;
+                    video.className = "h-100 w-auto";
+                    video.style.objectFit = "cover";
+                    video.controls = false; // Quitamos controles para la miniatura
+                    video.muted = true;
+                    video.loop = true;
+                    
+                    // Añadir icono de play para videos
+                    const playIcon = document.createElement("div");
+                    playIcon.className = "position-absolute top-50 start-50 translate-middle";
+                    playIcon.innerHTML = '<i class="fas fa-play-circle text-white fa-3x opacity-75"></i>';
+                    galleryItem.appendChild(video);
+                    galleryItem.appendChild(playIcon);
+                }
+                
+                galeria.appendChild(galleryItem);
+            });
+
+            // Configurar eventos de clic después de cargar los elementos
+            setTimeout(setupGalleryClickEvents, 100);
+        } else {
+            galeria.innerHTML = `
+            <div class="text-center py-4 w-100">
+                <i class="fas fa-image fa-2x mb-2 text-muted"></i>
+                <p class="text-muted">No hay archivos multimedia disponibles</p>
+            </div>
+            `;
+        }
+    }
+      
+
+
+}
+
+// ========================== MODAL DE DONACION ==========================
+{
+    
+}
+

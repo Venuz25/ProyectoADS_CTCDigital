@@ -148,7 +148,7 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
     position: absolute;
     top: -42px; 
     left: 0; 
-    z-index: 1000; 
+    z-index: 999; 
     flex-wrap: nowrap; 
     overflow-x: auto; 
     max-width: 100%; 
@@ -188,6 +188,8 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
 .tab-content {
     padding: 25px;
     display: none;
+    z-index: 1;
+    position: relative;
 }
 
 .tab-content.active {

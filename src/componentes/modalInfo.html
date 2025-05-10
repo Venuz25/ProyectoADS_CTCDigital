@@ -338,3 +338,252 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Reporte -->
+<div class="modal fade" id="modalReporteDetalle" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+
+      <div class="modal-header bg-primary text-white rounded-top-3">
+        <h5 class="modal-title"><i class="fas fa-exclamation-circle me-2"></i> Detalles del Reporte</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body py-4">
+        <form id="formDetalleReporte" class="needs-validation" novalidate>
+          <div class="row g-3">
+
+            <!-- Nombre del Reportante -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control shadow-sm" id="nombreReportante" name="nombreReportante" placeholder=" " readonly>
+                <label for="nombreReportante"><i class="fas fa-user me-2"></i>Nombre del Reportante</label>
+              </div>
+            </div>
+
+            <!-- Correo -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="email" class="form-control shadow-sm" id="correo" name="correo" placeholder=" " readonly>
+                <label for="correo"><i class="fas fa-envelope me-2"></i>Correo</label>
+              </div>
+            </div>
+
+            <!-- Fecha Reporte -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="datetime-local" class="form-control shadow-sm" id="fechaReporte" name="fechaReporte" readonly>
+                <label for="fechaReporte"><i class="far fa-calendar-alt me-2"></i>Fecha del Reporte</label>
+              </div>
+            </div>
+
+            <!-- Estado Reporte -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select shadow-sm" id="estadoReporte" name="estadoReporte">
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="En proceso">En Proceso</option>
+                  <option value="Localizada">Localizada</option>
+                  <option value="Descartado">Descartado</option>
+                </select>
+                <label for="estadoReporte"><i class="fas fa-info-circle me-2"></i>Estado del Reporte</label>
+              </div>
+            </div>
+
+            <!-- Línea y Estación -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select shadow-sm" id="lineaRepo" name="lineaMetro" disabled>
+                  <option value="L1">Línea 1</option>
+                  <option value="L2">Línea 2</option>
+                  <option value="L3">Línea 3</option>
+                  <option value="L4">Línea 4</option>
+                  <option value="L5">Línea 5</option>
+                  <option value="L6">Línea 6</option>
+                  <option value="L7">Línea 7</option>
+                  <option value="L8">Línea 8</option>
+                  <option value="L9">Línea 9</option>
+                  <option value="LA">Línea A</option>
+                  <option value="LB">Línea B</option>
+                  <option value="L12">Línea 12</option>
+                </select>
+                <label for="lineaMetro"><i class="fas fa-subway me-2"></i>Línea</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                  <input type="text" class="form-control shadow-sm" id="estacionRep" name="estacionRep" readonly>
+                  <label for="estacionRep"><i class="fas fa-map-marker-alt me-2"></i>Estación</label>
+              </div>
+            </div>
+
+            <!-- Mascotas asociadas -->
+            <div class="col-md-12">
+              <div class="form-floating">
+                <div class="form-control shadow-sm" id="mascotasAsociadas" style="height: auto; min-height: 58px; overflow-y: auto;" readonly>
+                  <!-- IDs de mascotas aparecerán aquí -->
+                </div>
+                <label for="mascotasAsociadas"><i class="fas fa-paw me-2"></i>Mascotas Asociadas</label>
+              </div>
+            </div>
+
+            <!-- Descripción del Reporte -->
+            <div class="col-md-12">
+              <div class="form-floating">
+                <textarea class="form-control shadow-sm" id="descripcionReporte" name="descripcionReporte" placeholder=" " style="height: 100px" readonly></textarea>
+                <label for="descripcionReporte"><i class="fas fa-align-left me-2"></i>Descripción del Reporte</label>
+              </div>
+            </div>
+
+            <!-- Sección de Galería de Imágenes -->
+            <div class="col-md-12 mt-4">
+              <h6 class="border-bottom pb-2"><i class="fas fa-image me-2"></i>Galería de Imágenes del Reporte</h6>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <!-- Contenedor principal de la galería (solo visualización) -->
+              <div class="gallery-container mb-3">
+                <div class="gallery-scroll" id="galeriaReporteModal">
+                  <!-- Las imágenes del reporte se insertarán aquí dinámicamente mediante JavaScript -->
+                  <!-- Nota: No se incluirán controles para eliminar o agregar imágenes -->
+                </div>
+              </div>
+              
+              <!-- Mensaje si no hay imágenes -->
+              <div id="sinImagenesReporte" class="text-muted text-center py-3" style="display: none;">
+                <i class="fas fa-image fa-2x mb-2"></i>
+                <p>No hay imágenes asociadas a este reporte</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="modal-footer border-0 bg-light rounded-bottom-3 mt-4">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardarEstadoReporte">Guardar estado</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Donación -->
+<div class="modal fade" id="modalDonacionDetalle" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+
+      <div class="modal-header bg-primary text-white rounded-top-3">
+        <h5 class="modal-title"><i class="fas fa-hand-holding-heart me-2"></i> Detalles de Donación</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body py-4">
+        <form id="formDonacion" class="needs-validation" novalidate>
+          <div class="row g-3">
+
+            <!-- Tipo de Donación -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select shadow-sm" id="tipoDonacion" name="tipo" disabled>
+                  <option value="Monetaria">Monetaria</option>
+                  <option value="En especie">En especie</option>
+                  <option value="Voluntariado">Voluntariado</option>
+                </select>
+                <label for="tipoDonacion"><i class="fas fa-tag me-2"></i>Tipo de Donación</label>
+              </div>
+            </div>
+
+            <!-- Estado de Donación -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select shadow-sm" id="estadoDonacion" name="estadoDonacion" required>
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="En proceso">En proceso</option>
+                  <option value="Finalizada">Finalizada</option>
+                  <option value="Cancelado">Cancelado</option>
+                </select>
+                <label for="estadoDonacion"><i class="fas fa-info-circle me-2"></i>Estado</label>
+              </div>
+            </div>
+
+            <!-- Fechas -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="date" class="form-control shadow-sm" id="fechaDonacion" name="fechaDonacion" readonly>
+                <label for="fechaDonacion"><i class="far fa-calendar-alt me-2"></i>Fecha de Donación</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="date" class="form-control shadow-sm" id="fechaPrevistaDon" name="fechaPrevistaDon">
+                <label for="fechaPrevistaDon"><i class="far fa-calendar-check me-2"></i>Fecha Prevista</label>
+              </div>
+            </div>
+
+            <!-- Monto (solo visible para donaciones monetarias) -->
+            <div class="col-md-6" id="montoContainer">
+              <div class="form-floating">
+                <input type="number" class="form-control shadow-sm" id="monto" name="monto" step="0.01" min="0" readonly>
+                <label for="monto"><i class="fas fa-dollar-sign me-2"></i>Monto</label>
+                <div class="invalid-feedback">Ingrese un monto válido</div>
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="col-md-12">
+              <div class="form-floating">
+                <textarea class="form-control shadow-sm" id="descripcion" name="descripcion" placeholder=" " style="height: 100px"></textarea>
+                <label for="descripcion"><i class="fas fa-align-left me-2"></i>Descripción</label>
+              </div>
+            </div>
+
+            <!-- Información del donante -->
+          <div class="mb-3">
+            <div class="col-md-12 mt-4">
+              <h6 class="border-bottom pb-2"><i class="fas fa-user-tie me-2"></i>Datos del Donador</h6>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombreDonante" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Correo</label>
+                <input type="text" class="form-control" id="correoDonante" readonly>
+              </div>
+            </div>
+            
+            <!-- Sección de perfil visual (solo visible si estadoVisible == 1) -->
+            <div class="col-md-12 mt-4">
+              <h6 class="border-bottom pb-2"><i class="fas fa-eye me-2"></i>Datos Visuales</h6>
+            </div>
+
+            <div id="donanteVisualContainer" style="display: none; margin-top: 15px;">
+              <div class="card">
+                <div class="card-body d-flex align-items-center">
+                  <img id="donanteImg" src="" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                  <div>
+                    <h6 id="donanteUsuario" class="mb-1"></h6>
+                    <span id="donanteColorBadge" class="badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Administrador -->
