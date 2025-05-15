@@ -256,6 +256,14 @@
             </div>
           </div>
 
+          <!-- Comentarios -->
+          <div class="col-md-12 mt-3">
+            <div class="form-floating">
+              <textarea class="form-control shadow-sm" id="comentariosSolicitud" style="height: 100px"></textarea>
+              <label for="comentariosSolicitud"><i class="fas fa-comment me-2"></i>Comentarios</label>
+            </div>
+          </div>
+
           <!-- Datos del Adoptante -->
           <div class="col-md-12 mt-4">
             <h6 class="border-bottom pb-2"><i class="fas fa-user-tie me-2"></i>Datos del Adoptante</h6>
@@ -282,6 +290,23 @@
             </div>
           </div>
 
+          <!-- Documentos Adjuntos -->
+          <div class="col-md-12 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0"><i class="fas fa-file-pdf me-2"></i>Documentos Adjuntos</h6>
+            </div>
+            
+            <div class="gallery-container">
+              <div class="gallery-scroll" id="listaDocumentos">
+                <!-- Los documentos PDF se cargarán aquí dinámicamente -->
+                <div class="text-center py-3 text-muted documentos-placeholder">
+                  <i class="fas fa-file-pdf fa-2x mb-2"></i>
+                  <p>Cargando documentos...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Datos de la Mascota -->
           <div class="col-md-12 mt-4">
             <h6 class="border-bottom pb-2"><i class="fas fa-paw me-2"></i>Mascota Solicitada</h6>
@@ -301,28 +326,56 @@
             </div>
           </div>
 
-          <!-- Comentarios -->
-          <div class="col-md-12 mt-3">
+          <!-- Visita Domiciliaria -->
+          <div class="col-md-12 mt-4">
+            <h6 class="border-bottom pb-2"><i class="fas fa-home me-2"></i>Visita Domiciliaria</h6>
+          </div>
+
+          <div class="col-md-6">
             <div class="form-floating">
-              <textarea class="form-control shadow-sm" id="comentariosSolicitud" style="height: 100px" readonly></textarea>
-              <label for="comentariosSolicitud"><i class="fas fa-comment me-2"></i>Comentarios</label>
+              <select class="form-select shadow-sm" id="estadoVisita">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Realizada">Realizada</option>
+                <option value="Cancelada">Cancelada</option>
+                <option value="Reprogramada">Reprogramada</option>
+              </select>
+              <label for="estadoVisita"><i class="fas fa-calendar-check me-2"></i>Estado de Visita</label>
             </div>
           </div>
 
-          <!-- Documentos Adjuntos -->
-          <div class="col-md-12 mt-4">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="mb-0"><i class="fas fa-file-pdf me-2"></i>Documentos Adjuntos</h6>
+          <!-- Fecha de Visita -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="datetime-local" class="form-control shadow-sm" id="fechaVisita">
+              <label for="fechaVisita"><i class="far fa-calendar-alt me-2"></i>Fecha de Visita</label>
             </div>
-            
-            <div class="gallery-container mb-3">
-              <div class="gallery-scroll" id="listaDocumentos">
-                <!-- Los documentos PDF se cargarán aquí dinámicamente -->
-                <div class="text-center py-3 text-muted documentos-placeholder">
-                  <i class="fas fa-file-pdf fa-2x mb-2"></i>
-                  <p>Cargando documentos...</p>
-                </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="col-md-12">
+            <div class="form-floating">
+              <input type="text" class="form-control shadow-sm" id="direccionVisita" readonly>
+              <label for="direccionVisita"><i class="fas fa-map-marker-alt me-2"></i>Dirección</label>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="col-md-12 mt-3">
+            <div class="card shadow-sm">
+              <div class="card-header bg-light">
+                <h6 class="mb-0"><i class="fas fa-map me-2"></i>Ubicación</h6>
               </div>
+              <div class="card-body p-0" style="height: 300px;">
+                <div id="mapaVisita" style="height: 100%; width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notas -->
+          <div class="col-md-12 mt-3">
+            <div class="form-floating">
+              <textarea class="form-control shadow-sm" id="notasVisita" style="height: 100px"></textarea>
+              <label for="notasVisita"><i class="fas fa-clipboard me-2"></i>Notas de la Visita</label>
             </div>
           </div>
 
@@ -587,3 +640,29 @@
 </div>
 
 <!-- Modal Administrador -->
+<div class="modal fade" id="modalAdminDetalle" tabindex="-1" aria-modal="true" role="dialog" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">Editar Administrador</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="formAdmin">
+                  <div class="mb-3">
+                      <label for="adminUsuario" class="form-label">Usuario</label>
+                      <input type="text" class="form-control" id="adminUsuario" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="adminPassword" class="form-label">Contraseña</label>
+                      <input type="password" class="form-control" id="adminPassword" required>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary">Guardar</button>
+          </div>
+      </div>
+  </div>
+</div>

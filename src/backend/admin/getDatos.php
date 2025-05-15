@@ -71,19 +71,22 @@
     SELECT 
         s.idSolicitud, s.fechaSolicitud, s.estadoAdopcion, s.comentarios,
         a.idAdoptante, a.nombre AS nombreAdoptante, a.telefono, a.correo,
-        m.idMascota, m.nombre AS nombreMascota
+        m.idMascota, m.nombre AS nombreMascota,
+        v.direccion, v.ubicacion, v.estadoVisita, v.fechaVisita, v.notas
     FROM solicitud s
     LEFT JOIN adoptante a ON s.idAdoptante = a.idAdoptante
     LEFT JOIN mascota m ON s.idMascota = m.idMascota
+    LEFT JOIN visitadom v ON s.idSolicitud = v.idSolicitud
     ORDER BY s.idSolicitud
     ";
+
     $solicitudes = $conn->query($solicitudesQuery)->fetch_all(MYSQLI_ASSOC);
 
-    //agregar documentos (pdf)
     foreach ($solicitudes as &$solicitud) {
         $id = $solicitud['idSolicitud'];
         $rutaDirectorio = realpath(__DIR__ . '/../../../') . "/solicitudes/$id";
-    
+
+        // Documentos
         $documentos = [];
         if (is_dir($rutaDirectorio)) {
             $archivos = scandir($rutaDirectorio);
@@ -93,11 +96,21 @@
                 }
             }
         }
-    
         $solicitud['documentos'] = $documentos;
+
+        // Datos de visita
+        if ($solicitud['direccion']) {
+            $solicitud['visita'] = [
+                'direccion' => $solicitud['direccion'],
+                'ubicacion' => $solicitud['ubicacion'],
+                'estadoVisita' => $solicitud['estadoVisita'],
+                'fechaVisita' => $solicitud['fechaVisita'],
+                'notas' => $solicitud['notas']
+            ];
+        }
+        // Eliminar campos duplicados
+        unset($solicitud['direccion'], $solicitud['ubicacion'], $solicitud['estadoVisita'], $solicitud['fechaVisita'], $solicitud['notas']);
     }
-
-
 
     // ---------- 3. Reportes ----------
     $reportesQuery = "

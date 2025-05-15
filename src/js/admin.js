@@ -1060,23 +1060,20 @@ document.addEventListener("click", async function(e) {
 {
     // Mostrar modal de solicitud
     function mostrarModalSolicitud(solicitud) {
-        try {            
+        try {
             const modal = new bootstrap.Modal(document.getElementById('modalSolicitudDetalle'));
             
             if (!solicitud || typeof solicitud !== 'object') {
                 throw new Error('Datos de solicitud no válidos');
             }
-    
+
+            // Función auxiliar para establecer valores
             const setValue = (id, value) => {
                 const element = document.getElementById(id);
-                if (element) {
-                    element.value = value || '';
-                } else {
-                    console.error(`Elemento con ID ${id} no encontrado`);
-                }
+                if (element) element.value = value || '';
             };
-    
-            // Llenar datos
+
+            // Llenar datos básicos de solicitud
             setValue('solicitudId', solicitud.idSolicitud);
             setValue('fechaSolicitud', solicitud.fechaSolicitud);
             setValue('estadoSolicitud', solicitud.estadoAdopcion);
@@ -1084,20 +1081,87 @@ document.addEventListener("click", async function(e) {
             setValue('telefonoAdoptante', solicitud.telefono);
             setValue('correoAdoptante', solicitud.correo);
             setValue('mascotaId', solicitud.idMascota);
-            setValue('nombreMasc', solicitud.nombreMascota); 
+            setValue('nombreMasc', solicitud.nombreMascota);
             setValue('comentariosSolicitud', solicitud.comentarios);
 
             // Cargar documentos
             cargarDocumentosSolicitud(solicitud);
+
+            // Cargar datos de visita domiciliaria (si existen)
+            if (solicitud.visita) {
+                setValue('estadoVisita', solicitud.visita.estadoVisita);
+                setValue('fechaVisita', formatDateTimeForInput(solicitud.visita.fechaVisita));
+                setValue('direccionVisita', solicitud.visita.direccion);
+                setValue('notasVisita', solicitud.visita.notas);
                 
-            modal.show();
-            
+                // Inicializar mapa si hay coordenadas
+                if (solicitud.visita.ubicacion) {
+                    // Esperar a que el modal se muestre completamente antes de inicializar el mapa
+                    const modalEl = document.getElementById('modalSolicitudDetalle');
+                    modalEl.addEventListener('shown.bs.modal', function onShown() {
+                        initMap(solicitud.visita.ubicacion);
+                        modalEl.removeEventListener('shown.bs.modal', onShown); // quitar el listener después
+                    });
+                }
+            } else {
+                // Resetear campos si no hay visita
+                setValue('estadoVisita', 'Pendiente');
+                setValue('fechaVisita', '');
+                setValue('direccionVisita', '');
+                setValue('notasVisita', '');
+            }
+
+            modal.show();            
         } catch (error) {
             console.error('Error al mostrar modal de solicitud:', error);
             alert('Error al cargar los datos de la solicitud');
         }
     }
 
+    // Función para formatear fecha para input datetime-local
+    function formatDateTimeForInput(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().slice(0, 16);
+    }
+
+    // Función para inicializar el mapa
+    let mapaVisitaInstance = null;
+
+    function initMap(coordenadas) {
+        if (!coordenadas) return;
+    
+        // Reemplazar símbolos de grado y letras, convertir a float
+        const cleanedCoords = coordenadas
+            .replace(/°/g, '') 
+            .replace(/N|E/g, '')  // Norte y Este = positivo
+            .replace(/S/g, '-')   // Sur = negativo
+            .replace(/W/g, '-')   // Oeste = negativo
+            .split(',')
+            .map(coord => parseFloat(coord.trim()));
+    
+        const [lat, lng] = cleanedCoords;
+    
+        // Eliminar instancia previa si existe
+        if (mapaVisitaInstance) {
+            mapaVisitaInstance.remove();
+            mapaVisitaInstance = null;
+        }
+
+        // Crear nuevo mapa
+        mapaVisitaInstance = new L.Map('mapaVisita').setView([lat, lng], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(mapaVisitaInstance);
+
+        L.marker([lat, lng]).addTo(mapaVisitaInstance)
+            .bindPopup('Ubicación de la visita domiciliaria')
+            .openPopup();
+    }
+    
+
+    // Cargar documentos de la solicitud
     function cargarDocumentosSolicitud(solicitud) {
         const contenedor = document.getElementById('listaDocumentos');
     
