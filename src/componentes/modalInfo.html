@@ -9,7 +9,7 @@
       </div>
 
       <div class="modal-body py-4">
-        <form id="formEditarMascota" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <form id="formEditarMascota" onsubmit="guardarCambiosMascota(event)" enctype="multipart/form-data" class="needs-validation" novalidate>
           <div class="row g-3">
 
             <!-- Nombre -->
@@ -96,7 +96,7 @@
             <!-- Sexo y Edad -->
             <div class="col-md-6">
               <div class="form-floating">
-                <select class="form-select shadow-sm" name="sexoObtenido" readonly>
+                <select class="form-select shadow-sm" name="sexoObtenido">
                   <option value="" disabled selected>Seleccionar</option>
                   <option value="Macho">Macho</option>
                   <option value="Hembra">Hembra</option>
@@ -181,25 +181,6 @@
                           <!-- Las imágenes se insertarán aquí dinámicamente mediante JavaScript -->
                       </div>
                   </div>
-                  
-                  <!-- Modal de confirmación para eliminar -->
-                  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                          <div class="modal-content">
-                              <div class="modal-header bg-danger text-white">
-                                  <h5 class="modal-title">Confirmar eliminación</h5>
-                                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                  ¿Estás seguro que deseas eliminar esta imagen? Esta acción no se puede deshacer.
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                  <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
               </div>
           </div>
 
@@ -208,6 +189,8 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Guardar cambios</button>
           </div>
+
+          <input type="hidden" id="idMascota" name="idMascota">
         </form>
       </div>
 
@@ -220,7 +203,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg">
 
-      <div class="modal-header bg-info text-white rounded-top-3">
+      <div class="modal-header bg-primary text-white rounded-top-3">
         <h5 class="modal-title"><i class="fas fa-file-signature me-2"></i> Detalles de Solicitud</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>

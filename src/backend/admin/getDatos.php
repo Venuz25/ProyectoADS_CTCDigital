@@ -3,68 +3,70 @@
     header('Content-Type: application/json');
 
     // ---------- 1. Mascotas ----------
+    // Consulta principal para mascotas
     $mascotasQuery = "
-        SELECT 
-            m.idMascota, 
-            m.nombre, 
-            m.fechaIngreso, 
-            m.estadoAdopcion,
-            m.adoptadoPor AS idSolicitudAdopcion,  
-            s.idAdoptante,       
-            a.nombre AS nombreAdoptante,
-            e.nombre AS estacion,
-            e.linea AS linea,
-            dm.edad, 
-            dm.sexo, 
-            dm.tamaño, 
-            dm.caractFisica, 
-            dm.estadoSalud, 
-            dm.descripcion,
-            rza.nombre AS raza,
-            esp.nombre AS especie,
-            GROUP_CONCAT(DISTINCT s2.idSolicitud) AS todasSolicitudes,
-            GROUP_CONCAT(DISTINCT r.idReporte) AS reportes
-        FROM mascota m
-        LEFT JOIN detallesmascota dm ON m.idMascota = dm.idMascota
-        LEFT JOIN estaciones e ON m.idEstacionEncontrado = e.idEstacion
-        LEFT JOIN raza rza ON dm.idRaza = rza.idRaza
-        LEFT JOIN especie esp ON rza.idEspecie = esp.idEspecie
-        LEFT JOIN reporteMascota rm ON m.idMascota = rm.idMascota
-        LEFT JOIN reporte r ON rm.idReporte = r.idReporte
-
-        LEFT JOIN solicitud s ON m.adoptadoPor = s.idSolicitud
-        LEFT JOIN adoptante a ON s.idAdoptante = a.idAdoptante
-        LEFT JOIN solicitud s2 ON m.idMascota = s2.idMascota
-
-        GROUP BY m.idMascota
-        ORDER BY m.idMascota
+    SELECT 
+        m.idMascota, 
+        m.nombre, 
+        m.fechaIngreso, 
+        m.estadoAdopcion,
+        m.adoptadoPor AS idSolicitudAdopcion,  
+        s.idAdoptante,       
+        a.nombre AS nombreAdoptante,
+        e.nombre AS estacion,
+        e.linea AS linea,
+        dm.edad, 
+        dm.sexo, 
+        dm.tamaño, 
+        dm.caractFisica, 
+        dm.estadoSalud, 
+        dm.descripcion,
+        rza.nombre AS raza,
+        esp.nombre AS especie,
+        GROUP_CONCAT(DISTINCT s2.idSolicitud) AS todasSolicitudes,
+        GROUP_CONCAT(DISTINCT r.idReporte) AS reportes
+    FROM mascota m
+    LEFT JOIN detallesmascota dm ON m.idMascota = dm.idMascota
+    LEFT JOIN estaciones e ON m.idEstacionEncontrado = e.idEstacion
+    LEFT JOIN raza rza ON dm.idRaza = rza.idRaza
+    LEFT JOIN especie esp ON rza.idEspecie = esp.idEspecie
+    LEFT JOIN reporteMascota rm ON m.idMascota = rm.idMascota
+    LEFT JOIN reporte r ON rm.idReporte = r.idReporte
+    LEFT JOIN solicitud s ON m.adoptadoPor = s.idSolicitud
+    LEFT JOIN adoptante a ON s.idAdoptante = a.idAdoptante
+    LEFT JOIN solicitud s2 ON m.idMascota = s2.idMascota
+    GROUP BY m.idMascota
+    ORDER BY m.idMascota
     ";
-    
+
     $mascotas = $conn->query($mascotasQuery)->fetch_all(MYSQLI_ASSOC);
 
-    // agregar las imagenes
+    // Agregar las imágenes reales desde la carpeta para cada mascota
     foreach ($mascotas as &$mascota) {
-        $id = $mascota['idMascota'];
-        $rutaDirectorio = realpath(__DIR__ . '/../../../') . "/mascotas/$id";
-    
-        $imagenes = [];
-        if (is_dir($rutaDirectorio)) {
-            $archivos = scandir($rutaDirectorio);
-            foreach ($archivos as $archivo) {
-                if (in_array(strtolower(pathinfo($archivo, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4'])) {
-                    $imagenes[] = "/ProyectoADS_CTCDigital/mascotas/$id/$archivo";
-                }
+    $id = $mascota['idMascota'];
+    // Ruta absoluta al directorio de imágenes de la mascota
+    $rutaDirectorio = realpath(__DIR__ . '/../../../') . "/mascotas/$id";
+
+    $imagenes = [];
+    if (is_dir($rutaDirectorio)) {
+        // Obtenemos solo archivos válidos (imágenes y videos)
+        $archivos = scandir($rutaDirectorio);
+        foreach ($archivos as $archivo) {
+            $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'webm'])) {
+                // Construimos ruta relativa accesible desde el navegador
+                $imagenes[] = "/ProyectoADS_CTCDigital/mascotas/$id/$archivo";
             }
         }
-    
-        $mascota['imagenes'] = $imagenes;
+    }
+
+    $mascota['imagenes'] = $imagenes;
+
+    // Convertir cadenas CSV a arrays
+    $mascota['todasSolicitudes'] = $mascota['todasSolicitudes'] ? explode(',', $mascota['todasSolicitudes']) : [];
+    $mascota['reportes'] = $mascota['reportes'] ? explode(',', $mascota['reportes']) : [];
     }
     unset($mascota);
-    foreach ($mascotas as &$mascota) {
-        $mascota['todasSolicitudes'] = $mascota['todasSolicitudes'] ? explode(',', $mascota['todasSolicitudes']) : [];
-        $mascota['reportes'] = $mascota['reportes'] ? explode(',', $mascota['reportes']) : [];
-    }
-    unset($mascota);    
 
     // ---------- 2. Solicitudes ----------
     $solicitudesQuery = "

@@ -1,181 +1,93 @@
 <?php
     header('Content-Type: application/json');
-    require_once '../conexion.php'; 
-    $response = ['success' => false, 'message' => ''];
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
-    try {
-        // Verificar método y recibir datos
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            throw new Exception('Método no permitido');
-        }
+    require_once "../conexion.php";
 
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (!$data) {
-            throw new Exception('Datos JSON inválidos');
-        }
+    $tipo = $_POST['tipo'] ?? '';
 
-        // Validar datos básicos
-        if (empty($data['tabla']) || empty($data['accion'])) {
-            throw new Exception('Tabla o acción no especificada');
-        }
-
-        // Iniciar transacción
-        $conn->autocommit(false);
-        $errorOccurred = false;
-
-        switch ($data['tabla']) {
-            case 'mascota':
-                // Validar ID de mascota
-                if (empty($data['idMascota'])) {
-                    throw new Exception('ID de mascota no especificado');
-                }
-
-                $idMascota = filter_var($data['idMascota'], FILTER_VALIDATE_INT);
-                if (!$idMascota) {
-                    throw new Exception('ID de mascota inválido');
-                }
-
-                // 1. Actualizar datos principales de la mascota
-                if (!empty($data['datosMascota'])) {
-                    $stmt = $conn->prepare("UPDATE mascota SET estadoAdopcion = ? WHERE idMascota = ?");
-                    $stmt->bind_param('si', $data['datosMascota']['estadoAdopcion'], $idMascota);
-                    
-                    if (!$stmt->execute()) {
-                        $errorOccurred = true;
-                        throw new Exception('Error al actualizar mascota: ' . $stmt->error);
-                    }
-                    $stmt->close();
-                }
-
-                // 2. Actualizar detalles de la mascota
-                if (!empty($data['datosDetalles']) && !$errorOccurred) {
-                    $stmt = $conn->prepare("
-                        UPDATE detallesmascota 
-                        SET edad = ?, sexo = ?, tamaño = ?, caractFisica = ?, estadoSalud = ?, descripcion = ?
-                        WHERE idMascota = ?
-                    ");
-                    
-                    $stmt->bind_param('isssssi', 
-                        $data['datosDetalles']['edad'],
-                        $data['datosDetalles']['sexo'],
-                        $data['datosDetalles']['tamaño'],
-                        $data['datosDetalles']['caractFisica'],
-                        $data['datosDetalles']['estadoSalud'],
-                        $data['datosDetalles']['descripcion'],
-                        $idMascota
-                    );
-                    
-                    if (!$stmt->execute()) {
-                        $errorOccurred = true;
-                        throw new Exception('Error al actualizar detalles: ' . $stmt->error);
-                    }
-                    $stmt->close();
-                }
-
-                // 3. Eliminar imágenes si se especificaron
-                if (!empty($data['imagenesAEliminar']) && !$errorOccurred) {
-                    $directorio = $_SERVER['DOCUMENT_ROOT'] . '/ProyectoADS_CTCDigital/mascotas/' . $idMascota . '/';
-                    
-                    foreach ($data['imagenesAEliminar'] as $imagen) {
-                        $rutaImagen = $directorio . basename($imagen);
-                        
-                        if (file_exists($rutaImagen)) {
-                            if (!unlink($rutaImagen)) {
-                                $errorOccurred = true;
-                                throw new Exception("Error al eliminar imagen: $imagen");
-                            }
-                        }
-                    }
-                }
-
-                // 4. Manejar nuevas imágenes
-                if (!empty($_FILES['nuevasImagenes']) && !$errorOccurred) {
-                    $directorio = $_SERVER['DOCUMENT_ROOT'] . '/ProyectoADS_CTCDigital/mascotas/' . $idMascota . '/';
-                    
-                    if (!file_exists($directorio)) {
-                        if (!mkdir($directorio, 0777, true)) {
-                            $errorOccurred = true;
-                            throw new Exception("Error al crear directorio para imágenes");
-                        }
-                    }
-
-                    foreach ($_FILES['nuevasImagenes']['tmp_name'] as $key => $tmp_name) {
-                        $nombreArchivo = uniqid() . '_' . basename($_FILES['nuevasImagenes']['name'][$key]);
-                        $rutaDestino = $directorio . $nombreArchivo;
-                        
-                        if (!move_uploaded_file($tmp_name, $rutaDestino)) {
-                            $errorOccurred = true;
-                            throw new Exception("Error al subir imagen: " . $_FILES['nuevasImagenes']['name'][$key]);
-                        }
-                    }
-                }
-
-                if (!$errorOccurred) {
-                    $response['success'] = true;
-                    $response['message'] = 'Cambios en mascota guardados exitosamente';
-                }
-                break;
-
-            case 'solicitud':
-                // Estructura base para implementación futura
-                if ($data['accion'] === 'actualizar') {
-                    // Aquí iría la lógica para actualizar solicitudes
-                    // $response['message'] = 'Actualización de solicitud no implementada aún';
-                }
-                break;
-
-            case 'reporte':
-                // Estructura base para implementación futura
-                if ($data['accion'] === 'actualizar') {
-                    // Aquí iría la lógica para actualizar reportes
-                    // $response['message'] = 'Actualización de reporte no implementada aún';
-                }
-                break;
-
-            case 'donacion':
-                // Estructura base para implementación futura
-                if ($data['accion'] === 'actualizar') {
-                    // Aquí iría la lógica para actualizar donaciones
-                    // $response['message'] = 'Actualización de donación no implementada aún';
-                }
-                break;
-
-            case 'admin':
-                // Estructura base para implementación futura
-                if ($data['accion'] === 'actualizar') {
-                    // Aquí iría la lógica para actualizar administradores
-                    // $response['message'] = 'Actualización de admin no implementada aún';
-                }
-                break;
-
-            default:
-                throw new Exception('Tabla no válida');
-        }
-
-        // Confirmar o revertir transacción
-        if ($errorOccurred) {
-            $conn->rollback();
-        } else {
-            $conn->commit();
-            if (empty($response['message'])) {
-                $response['success'] = true;
-                $response['message'] = 'Operación realizada con éxito';
-            }
-        }
-
-    } catch (Exception $e) {
-        if (isset($conn) && !$conn->connect_error) {
-            $conn->rollback();
-        }
+    switch ($tipo) {
+        case 'mascota':
+            $idMascota = $_POST["idMascota"];
+            $estadoAdopcion = $_POST["estadoObtenido"];
+            $sexo = $_POST["sexoObtenido"];
+            $edad = $_POST["edadObtenido"];
+            $tamaño = $_POST["tamanoObtenido"];
+            $caractFisica = $_POST["caractFisicaObtenido"];
+            $estadoSalud = $_POST["estadoSaludObtenido"];
+            $descripcion = $_POST["descripcionObtenido"];
+            $imagenesEliminar = json_decode($_POST["imagenesAEliminar"] ?? "[]");
         
-        $response['message'] = 'Error: ' . $e->getMessage();
-        http_response_code(500);
-    } finally {
-        // Restaurar autocommit
-        if (isset($conn) && !$conn->connect_error) {
-            $conn->autocommit(true);
-        }
+            // Actualizar tabla mascota
+            $sqlMascota = "UPDATE mascota SET estadoAdopcion = ? WHERE idMascota = ?";
+            $stmtMascota = $conn->prepare($sqlMascota);
+            $stmtMascota->bind_param("si", $estadoAdopcion, $idMascota);
+            $stmtMascota->execute();
+        
+            // Actualizar detallesmascota
+            $sqlDetalles = "UPDATE detallesmascota SET sexo = ?, edad = ?, tamaño = ?, caractFisica = ?, estadoSalud = ?, descripcion = ? WHERE idMascota = ?";
+            $stmtDetalles = $conn->prepare($sqlDetalles);
+            $stmtDetalles->bind_param("sissssi", $sexo, $edad, $tamaño, $caractFisica, $estadoSalud, $descripcion, $idMascota);
+            $stmtDetalles->execute();
+        
+            // Eliminar imágenes/videos
+            foreach ($imagenesEliminar as $ruta) {
+                $rutaCompleta = $_SERVER['DOCUMENT_ROOT'] . $ruta;
+                if (file_exists($rutaCompleta)) {
+                    unlink($rutaCompleta);
+                }
+            }
+        
+            $nuevasRutas = [];
+
+            if (!empty($_FILES["fotosMascota"]["name"][0])) {
+                $rutaBase = realpath(__DIR__ . '/../../../') . "/mascotas/$idMascota/";
+                if (!is_dir($rutaBase)) {
+                    mkdir($rutaBase, 0777, true);
+                }
+
+                foreach ($_FILES["fotosMascota"]["tmp_name"] as $index => $tmpName) {
+                    $nombreArchivo = basename($_FILES["fotosMascota"]["name"][$index]);
+                    $destino = $rutaBase . $nombreArchivo;
+
+                    move_uploaded_file($tmpName, $destino);
+
+                    // Guardar ruta relativa para devolver al frontend
+                    $rutaRelativa = "/ProyectoADS_CTCDigital/mascotas/$idMascota/$nombreArchivo";
+                    $nuevasRutas[] = $rutaRelativa;
+                }
+            }
+        
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Datos de la mascota actualizados correctamente.",
+                "archivosAgregados" => $nuevasRutas
+            ]);
+            
+            exit;
+            break;        
+
+        case 'solicitud':
+            // Lógica para actualizar una solicitud
+            break;
+
+        case 'reporte':
+            // Lógica para actualizar un reporte
+            break;
+
+        case 'donacion':
+            // Lógica para actualizar una donación
+            break;
+
+        case 'admin':
+            // Lógica para actualizar información del administrador
+            break;
+
+        default:
+            echo json_encode(["status" => "success", "mensaje" => "Tipo no válido."]);
+            break;
     }
 
-    echo json_encode($response);
+    $conn->close();
 ?>

@@ -254,142 +254,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(err => console.error('Error al cargar datos:', err));
 
-    // ========== CARGA DE LAS TABLAS ==========
-    {
-        //muestra la tabla de mascotas 
-        function cargarMascotas(mascotas) {
-            const tabla = document.getElementById('tablaMascotas');
-            tabla.innerHTML = '';
-            if (mascotas.length === 0) {
-                tabla.innerHTML = `<tr><td colspan="6" class="text-center py-4">No hay mascotas registradas.</td></tr>`;
-                return;
-            }
-            mascotas.forEach(m => {
-                tabla.innerHTML += `
-                    <tr>
-                        <td>${m.idMascota}</td>
-                        <td>${m.nombre}</td>
-                        <td>${m.estadoAdopcion}</td>
-                        <td>${m.fechaIngreso}</td>
-                        <td>${m.estacion || 'No registrada'}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${m.idMascota}" data-type="mascota">
-                                <i class="fas fa-pencil"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${m.idMascota}" data-type="mascota">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        //muestra la tabla de reportes 
-        function cargarReportes(reportes) {
-            const tabla = document.getElementById('tablaReportes');
-            if (!tabla) return;
-            tabla.innerHTML = '';
-            reportes.forEach(r => {
-                tabla.innerHTML += `
-                    <tr>
-                        <td>${r.idReporte}</td>
-                        <td>${r.nombreReportante}</td>
-                        <td>${r.estacion}</td>
-                        <td>${r.estadoReporte}</td>
-                        <td>${r.fechaReporte}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${r.idReporte}" data-type="reporte">
-                                <i class="fas fa-pencil"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${r.idReporte}" data-type="reporte">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        //muestra la tabla de donaciones 
-        function cargarDonaciones(donaciones) {
-            const tabla = document.getElementById('tablaDonaciones');
-            if (!tabla) return;
-            tabla.innerHTML = '';
-            donaciones.forEach(d => {
-                tabla.innerHTML += `
-                    <tr>
-                        <td>${d.idDonacion}</td>
-                        <td>${d.nombreDonante}</td>
-                        <td>${d.tipo}</td>
-                        <td>${d.estadoDonacion}</td>
-                        <td>${d.fechaDonacion}</td>
-                        <td>${d.fechaPrevistaDon}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${d.idDonacion}" data-type="donacion">
-                                <i class="fas fa-pencil"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${d.idDonacion}" data-type="donacion">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        //muestra la tabla de solicitudes 
-        function cargarSolicitudes(solicitudes) {
-            const tabla = document.getElementById('tablaSolicitudes');
-            if (!tabla) return;
-            tabla.innerHTML = '';
-            solicitudes.forEach(s => {
-                tabla.innerHTML += `
-                    <tr>
-                        <td>${s.idSolicitud}</td>
-                        <td>${s.nombreAdoptante}</td>
-                        <td>${s.nombreMascota}</td>
-                        <td>${s.estadoAdopcion}</td>
-                        <td>${s.fechaSolicitud}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${s.idSolicitud}" data-type="solicitud">
-                                <i class="fas fa-pencil"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${s.idSolicitud}" data-type="solicitud">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        //muestra la tabla de administradores 
-        function cargarAdmin(administradores) {
-            const tabla = document.getElementById('tablaAdmin');
-            if (!tabla) return;
-            tabla.innerHTML = '';
-            administradores.forEach(a => {
-                tabla.innerHTML += `
-                    <tr>
-                        <td>${a.id}</td>
-                        <td>${a.usuario}</td>
-                        <td>${a.contraseña}</td>
-                        <td>${a.ultimaConn}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm me-2 view-btn" data-id="${a.id}" data-type="admin">
-                                <i class="fas fa-pencil"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="${a.id}">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-    }
-
     // ========== FILTROS ==========
     {
         //filtros de mascotas
@@ -721,63 +585,199 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });            
         });
-        
-        //modal de notificacion
-        function mostrarNotificacion(tipo, titulo, mensaje, detalle = '', autoCerrar = true) {
-            const modal = new bootstrap.Modal(document.getElementById('modalNotificacion'));
-            const header = document.getElementById('modalNotificacionHeader');
-            const icono = document.getElementById('modalNotificacionIcon');
-            const iconoGrande = document.getElementById('modalNotificacionIconoGrande');
-            const tituloEl = document.getElementById('modalNotificacionTitulo');
-            const mensajeEl = document.getElementById('modalNotificacionMensaje');
-            const detalleEl = document.getElementById('modalNotificacionDetalle');
-            const boton = document.getElementById('modalNotificacionBoton');
-            const botonIcono = document.getElementById('modalNotificacionBotonIcono');
-            const botonTexto = document.getElementById('modalNotificacionBotonTexto');
-        
-            // Configurar según el tipo
-            switch(tipo) {
-                case 'exito':
-                    header.className = 'modal-header bg-success text-white border-0 rounded-top-3';
-                    icono.className = 'fas fa-check-circle fs-4 me-2';
-                    iconoGrande.className = 'fas fa-check-circle text-success mb-3';
-                    boton.className = 'btn btn-success px-4 rounded-pill shadow-sm';
-                    botonIcono.className = 'fas fa-thumbs-up me-2';
-                    botonTexto.textContent = 'Aceptar';
-                    break;
-                case 'error':
-                    header.className = 'modal-header bg-danger text-white border-0 rounded-top-3';
-                    icono.className = 'fas fa-exclamation-circle fs-4 me-2';
-                    iconoGrande.className = 'fas fa-exclamation-circle text-danger mb-3';
-                    boton.className = 'btn btn-danger px-4 rounded-pill shadow-sm';
-                    botonIcono.className = 'fas fa-redo me-2';
-                    botonTexto.textContent = 'Reintentar';
-                    break;
-                case 'info':
-                    header.className = 'modal-header bg-info text-white border-0 rounded-top-3';
-                    icono.className = 'fas fa-info-circle fs-4 me-2';
-                    iconoGrande.className = 'fas fa-info-circle text-info mb-3';
-                    boton.className = 'btn btn-info px-4 rounded-pill shadow-sm';
-                    botonIcono.className = 'fas fa-check me-2';
-                    botonTexto.textContent = 'Entendido';
-                    break;
-            }
-        
-            // Asignar contenido
-            tituloEl.textContent = titulo;
-            mensajeEl.textContent = mensaje;
-            detalleEl.textContent = detalle;
-        
-            // Mostrar modal
-            modal.show();
-        
-            // Autocerrar si es éxito y está habilitado
-            if (tipo === 'exito' && autoCerrar) {
-                setTimeout(() => modal.hide(), 3000);
-            }
-        }
     }
 });
+
+// ========== CARGA DE LAS TABLAS ==========
+{
+    //muestra la tabla de mascotas 
+    function cargarMascotas(mascotas) {
+        const tabla = document.getElementById('tablaMascotas');
+        tabla.innerHTML = '';
+        if (mascotas.length === 0) {
+            tabla.innerHTML = `<tr><td colspan="6" class="text-center py-4">No hay mascotas registradas.</td></tr>`;
+            return;
+        }
+        mascotas.forEach(m => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${m.idMascota}</td>
+                    <td>${m.nombre}</td>
+                    <td>${m.estadoAdopcion}</td>
+                    <td>${m.fechaIngreso}</td>
+                    <td>${m.estacion || 'No registrada'}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-2 view-btn" data-id="${m.idMascota}" data-type="mascota">
+                            <i class="fas fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${m.idMascota}" data-type="mascota">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    //muestra la tabla de reportes 
+    function cargarReportes(reportes) {
+        const tabla = document.getElementById('tablaReportes');
+        if (!tabla) return;
+        tabla.innerHTML = '';
+        reportes.forEach(r => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${r.idReporte}</td>
+                    <td>${r.nombreReportante}</td>
+                    <td>${r.estacion}</td>
+                    <td>${r.estadoReporte}</td>
+                    <td>${r.fechaReporte}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-2 view-btn" data-id="${r.idReporte}" data-type="reporte">
+                            <i class="fas fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${r.idReporte}" data-type="reporte">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    //muestra la tabla de donaciones 
+    function cargarDonaciones(donaciones) {
+        const tabla = document.getElementById('tablaDonaciones');
+        if (!tabla) return;
+        tabla.innerHTML = '';
+        donaciones.forEach(d => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${d.idDonacion}</td>
+                    <td>${d.nombreDonante}</td>
+                    <td>${d.tipo}</td>
+                    <td>${d.estadoDonacion}</td>
+                    <td>${d.fechaDonacion}</td>
+                    <td>${d.fechaPrevistaDon}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-2 view-btn" data-id="${d.idDonacion}" data-type="donacion">
+                            <i class="fas fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${d.idDonacion}" data-type="donacion">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    //muestra la tabla de solicitudes 
+    function cargarSolicitudes(solicitudes) {
+        const tabla = document.getElementById('tablaSolicitudes');
+        if (!tabla) return;
+        tabla.innerHTML = '';
+        solicitudes.forEach(s => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${s.idSolicitud}</td>
+                    <td>${s.nombreAdoptante}</td>
+                    <td>${s.nombreMascota}</td>
+                    <td>${s.estadoAdopcion}</td>
+                    <td>${s.fechaSolicitud}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-2 view-btn" data-id="${s.idSolicitud}" data-type="solicitud">
+                            <i class="fas fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${s.idSolicitud}" data-type="solicitud">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    //muestra la tabla de administradores 
+    function cargarAdmin(administradores) {
+        const tabla = document.getElementById('tablaAdmin');
+        if (!tabla) return;
+        tabla.innerHTML = '';
+        administradores.forEach(a => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>${a.usuario}</td>
+                    <td>${a.contraseña}</td>
+                    <td>${a.ultimaConn}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-2 view-btn" data-id="${a.id}" data-type="admin">
+                            <i class="fas fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${a.id}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+}
+
+//modal de notificacion
+function mostrarNotificacion(tipo, titulo, mensaje, detalle = '', autoCerrar = true) {
+    const modal = new bootstrap.Modal(document.getElementById('modalNotificacion'));
+    const header = document.getElementById('modalNotificacionHeader');
+    const icono = document.getElementById('modalNotificacionIcon');
+    const iconoGrande = document.getElementById('modalNotificacionIconoGrande');
+    const tituloEl = document.getElementById('modalNotificacionTitulo');
+    const mensajeEl = document.getElementById('modalNotificacionMensaje');
+    const detalleEl = document.getElementById('modalNotificacionDetalle');
+    const boton = document.getElementById('modalNotificacionBoton');
+    const botonIcono = document.getElementById('modalNotificacionBotonIcono');
+    const botonTexto = document.getElementById('modalNotificacionBotonTexto');
+
+    // Configurar según el tipo
+    switch(tipo) {
+        case 'exito':
+            header.className = 'modal-header bg-success text-white border-0 rounded-top-3';
+            icono.className = 'fas fa-check-circle fs-4 me-2';
+            iconoGrande.className = 'fas fa-check-circle text-success mb-3';
+            boton.className = 'btn btn-success px-4 rounded-pill shadow-sm';
+            botonIcono.className = 'fas fa-thumbs-up me-2';
+            botonTexto.textContent = 'Aceptar';
+            break;
+        case 'error':
+            header.className = 'modal-header bg-danger text-white border-0 rounded-top-3';
+            icono.className = 'fas fa-exclamation-circle fs-4 me-2';
+            iconoGrande.className = 'fas fa-exclamation-circle text-danger mb-3';
+            boton.className = 'btn btn-danger px-4 rounded-pill shadow-sm';
+            botonIcono.className = 'fas fa-redo me-2';
+            botonTexto.textContent = 'Reintentar';
+            break;
+        case 'info':
+            header.className = 'modal-header bg-info text-white border-0 rounded-top-3';
+            icono.className = 'fas fa-info-circle fs-4 me-2';
+            iconoGrande.className = 'fas fa-info-circle text-info mb-3';
+            boton.className = 'btn btn-info px-4 rounded-pill shadow-sm';
+            botonIcono.className = 'fas fa-check me-2';
+            botonTexto.textContent = 'Entendido';
+            break;
+    }
+
+    // Asignar contenido
+    tituloEl.textContent = titulo;
+    mensajeEl.textContent = mensaje;
+    detalleEl.textContent = detalle;
+
+    // Mostrar modal
+    modal.show();
+
+    // Autocerrar
+    if (autoCerrar) {
+        setTimeout(() => modal.hide(), 6000);
+    }
+}
 
 //==================================================================================================
 // SECCIÓN DE EDITAR DATOS
@@ -844,6 +844,7 @@ document.addEventListener("click", async function(e) {
     
         // Prellenar campos básicos
         document.getElementById("nombre").value = mascota.nombre || "";
+        document.getElementById("idMascota").value = mascota.idMascota || "";
 
         document.getElementById("Ingreso").value = mascota.fechaIngreso || "";
         document.querySelector("select[name='estadoObtenido']").value = mascota.estadoAdopcion || "No Disponible";
@@ -906,10 +907,119 @@ document.addEventListener("click", async function(e) {
         modalInstance.show();
     }         
 
-    // Guardar cambios PENDIENTE
-    async function guardarCambios() {
+    // Guardar cambios
+    function guardarCambiosMascota(event) {
+        if (event) event.preventDefault(); 
+    
+        const formData = new FormData();
+    
+        formData.append("tipo", "mascota");
+        formData.append("idMascota", document.getElementById("idMascota").value);
+        formData.append("estadoObtenido", document.querySelector("select[name='estadoObtenido']").value);
+        formData.append("sexoObtenido", document.querySelector("select[name='sexoObtenido']").value);
+        formData.append("edadObtenido", document.querySelector("input[name='edadObtenido']").value);
+        formData.append("tamanoObtenido", document.querySelector("select[name='tamanoObtenido']").value);
+        formData.append("caractFisicaObtenido", document.querySelector("textarea[name='caractFisicaObtenido']").value);
+        formData.append("estadoSaludObtenido", document.querySelector("textarea[name='estadoSaludObtenido']").value);
+        formData.append("descripcionObtenido", document.querySelector("textarea[name='descripcionObtenido']").value);
+    
+        // Archivos a eliminar
+        formData.append("imagenesAEliminar", JSON.stringify(imagenesAEliminar));
+    
+        // Archivos nuevos
+        const inputArchivos = document.getElementById("inputFotosMascota");
+        if (inputArchivos && inputArchivos.files.length > 0) {
+            for (let i = 0; i < inputArchivos.files.length; i++) {
+                formData.append("fotosMascota[]", inputArchivos.files[i]);
+            }
+        }
+
+        for (let i = 0; i < inputArchivos.files.length; i++) {
+            console.log("Archivo seleccionado:", inputArchivos.files[i].name);
+        }
         
-    }
+        console.log("🗑️ Imágenes marcadas para eliminar:", imagenesAEliminar);
+    
+        fetch("/ProyectoADS_CTCDigital/src/backend/admin/guardarCambios.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                if (data.status === "success") {
+                    bootstrap.Modal.getInstance(document.getElementById("modalMascotaDetalle")).hide();
+    
+                    mostrarNotificacion(
+                        'exito',
+                        '¡Actualización exitosa!',
+                        'La información de la mascota fue guardada correctamente.',
+                        '',
+                        true
+                    );
+    
+                    // Recargar datos
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            mascotasOriginal = data.mascotas;
+                            solicitudesOriginal = data.solicitudes;
+                            reportesOriginal = data.reportes;
+                            donacionesOriginal = data.donaciones;
+                            administradoresOriginal = data.administradores;
+    
+                            cargarMascotas(mascotasOriginal);
+                            cargarAdmin(administradoresOriginal);
+                            cargarReportes(reportesOriginal);
+                            cargarDonaciones(donacionesOriginal);
+                            cargarSolicitudes(solicitudesOriginal);
+
+                            const idMascotaActual = document.getElementById("idMascota").value;
+                            const mascotaActualizada = mascotasOriginal.find(m => m.idMascota == idMascotaActual);
+                            if (mascotaActualizada) {
+                                mostrarModalMascota(mascotaActualizada);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error al recargar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error al recargar',
+                                'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
+                                err.message
+                            );
+                        });
+    
+                } else {
+                    mostrarNotificacion(
+                        'error',
+                        'Error al guardar',
+                        'Hubo un problema al actualizar la información de la mascota.',
+                        data.mensaje
+                    );
+                }
+            } catch (e) {
+                console.error("No se pudo parsear como JSON:", e);
+                console.warn("Respuesta completa del servidor:\n", text);
+                mostrarNotificacion(
+                    'error',
+                    'Error inesperado',
+                    'La respuesta del servidor no fue válida.',
+                    e.message
+                );
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud:", error);
+            mostrarNotificacion(
+                'error',
+                'Fallo de conexión',
+                'No se pudo contactar con el servidor.',
+                error.message
+            );
+        });
+    }   
 
     // Mostrar galería de imágenes y videos
     function mostrarGaleria(mascota) {
@@ -959,7 +1069,13 @@ document.addEventListener("click", async function(e) {
                 const deleteBtn = document.createElement("button");
                 deleteBtn.className = "btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0 deleteBoton";
                 deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
-                deleteBtn.onclick = () => galleryItem.remove();
+                deleteBtn.onclick = () => {
+                    const isNueva = galleryItem.querySelector('.badge.bg-success') !== null;
+                    if (!isNueva) {
+                        imagenesAEliminar.push(ruta);
+                    }
+                    galleryItem.remove();
+                };
 
                 galleryItem.appendChild(deleteBtn);
                 galeria.appendChild(galleryItem);
@@ -1023,7 +1139,14 @@ document.addEventListener("click", async function(e) {
                 const deleteBtn = document.createElement("button");
                 deleteBtn.className = "btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0 deleteBoton";
                 deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
-                deleteBtn.onclick = () => galleryItem.remove();
+                deleteBtn.onclick = () => {
+                    const isNueva = galleryItem.querySelector('.badge.bg-success') !== null;
+                    if (!isNueva) {
+                        imagenesAEliminar.push(ruta);
+                    }
+                    galleryItem.remove();
+                };
+                
 
                 galleryItem.appendChild(badge);
                 galleryItem.appendChild(deleteBtn);
