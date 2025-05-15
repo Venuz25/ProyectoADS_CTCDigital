@@ -821,8 +821,7 @@ document.addEventListener("click", async function(e) {
         } else if (type === "donacion") {
             const donacion = datosGlobales.donaciones.find(d => d.idDonacion == id);
             mostrarModalDonacion(donacion);
-        }
-        else if (type === "admin") {
+        } else if (type === "admin") {
             const admin = datosGlobales.administradores.find(a => a.id == id);
             mostrarModalAdmin(admin);
         }
@@ -1367,6 +1366,97 @@ document.addEventListener("click", async function(e) {
 
 // ========================== MODAL DE DONACION ==========================
 {
+    function mostrarModalDonacion(donacion) {
+        try {
+            const modal = new bootstrap.Modal(document.getElementById('modalDonacionDetalle'));
+    
+            // Función para asignar valor seguro a campos
+            const setValue = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.value = value ?? '';
+            };
+    
+            // Asignar valores a los campos del formulario
+            setValue('tipoDonacion', donacion.tipo);
+            setValue('estadoDonacion', donacion.estadoDonacion);
+            setValue('fechaDonacion', donacion.fechaDonacion);
+            setValue('fechaPrevistaDon', donacion.fechaPrevistaDon);
+            setValue('monto', donacion.monto);
+            setValue('descripcion', donacion.descripcion);
+            setValue('nombreDonante', donacion.nombreDonante);
+            setValue('correoDonante', donacion.correo);
+    
+            // Mostrar u ocultar campo de monto según tipo de donación
+            const montoContainer = document.getElementById('montoContainer');
+            if (donacion.tipo === 'Monetaria') {
+                montoContainer.style.display = 'block';
+            } else {
+                montoContainer.style.display = 'none';
+            }
+    
+            // Mostrar sección visual si estadoVisible es 1
+            const visualContainer = document.getElementById('donanteVisualContainer');
+            if (donacion.estadoVisible == '1') {
+                document.getElementById('donanteImg').src = `/ProyectoADS_CTCDigital/recursos/index/donadores/${donacion.img}`;
+                document.getElementById('donanteImg').style.backgroundColor = donacion.color;
+                document.getElementById('donanteUsuario').textContent = donacion.usuario;
+                
+                
+    
+                visualContainer.style.display = 'block';
+            } else {
+                visualContainer.style.display = 'none';
+            }
+    
+            modal.show();
+    
+        } catch (error) {
+            console.error('Error al mostrar el modal de donación:', error);
+            alert('Hubo un problema al cargar los datos de la donación.');
+        }
+    }
+    
+}
+
+// ========================== MODAL DE ADMINISTRADOR ==========================
+{
+    // Mostrar modal de administrador
+    function mostrarModalAdmin(admin) {
+        try {
+            const modal = new bootstrap.Modal(document.getElementById('modalAdminDetalle'));
+    
+            // Asignar valores
+            document.getElementById('adminEditUsuario').value = admin.usuario || '';
+            document.getElementById('adminEditPassword').value = admin.contraseña || '';
+            document.getElementById('adminEditUltimaConn').value = admin.ultimaConn || 'Sin registros';
+    
+            modal.show();
+        } catch (error) {
+            console.error('Error al mostrar modal de administrador:', error);
+            alert('Hubo un error al cargar los datos del administrador.');
+        }
+    }
+
+    function togglePasswordVisibility() {
+        const input = document.getElementById('adminEditPassword');
+        const icon = document.getElementById('passwordToggleIcon');
+    
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+    
+
+    
+    
+
+
     
 }
 
