@@ -69,19 +69,174 @@
             break;        
 
         case 'solicitud':
-            // Lógica para actualizar una solicitud
+            $idSolicitud = $_POST["solicitudId"] ?? null;
+            $estadoAdopcion = $_POST["estadoSolicitud"] ?? null;
+            $comentarios = $_POST["comentariosSolicitud"] ?? null;
+            $estadoVisita = $_POST["estadoVisita"] ?? null;
+            $fechaVisita = $_POST["fechaVisita"] ?? null;
+            $notasVisita = $_POST["notasVisita"] ?? null;
+            $idMascota = $_POST["idMascotaSolicitud"] ?? null;
+        
+            // Validar que venga todo
+            if (!$idSolicitud || !$idMascota) {
+                echo json_encode(["status" => "error", "mensaje" => "Faltan datos obligatorios."]);
+                exit;
+            }
+        
+            // 1. Actualizar solicitud principal
+            $sqlSolicitud = "UPDATE solicitud SET estadoAdopcion = ?, comentarios = ? WHERE idSolicitud = ?";
+            $stmtSolicitud = $conn->prepare($sqlSolicitud);
+            $stmtSolicitud->bind_param("ssi", $estadoAdopcion, $comentarios, $idSolicitud);
+            $stmtSolicitud->execute();
+        
+            // 2. Actualizar visita domiciliaria
+            $sqlVisita = "UPDATE visitadom SET estadoVisita = ?, fechaVisita = ?, notas = ? WHERE idSolicitud = ?";
+            $stmtVisita = $conn->prepare($sqlVisita);
+            $stmtVisita->bind_param("sssi", $estadoVisita, $fechaVisita, $notasVisita, $idSolicitud);
+            $stmtVisita->execute();
+        
+            // 3. Lógica adicional si la solicitud fue Aprobada o se cambia a otro estado
+            if ($estadoAdopcion === "Aprobada") {
+                // Rechazar otras solicitudes para la misma mascota
+                $rechazarOtras = "
+                    UPDATE solicitud 
+                    SET estadoAdopcion = 'Rechazada', comentarios = 'Rechazado debido a que la mascota ya ha sido adoptada'
+                    WHERE idMascota = ? AND idSolicitud != ?";
+                $stmtRechazo = $conn->prepare($rechazarOtras);
+                $stmtRechazo->bind_param("ii", $idMascota, $idSolicitud);
+                $stmtRechazo->execute();
+        
+                // Marcar la mascota como adoptada
+                $sqlMascota = "UPDATE mascota SET estadoAdopcion = 'Adoptado', adoptadoPor = ? WHERE idMascota = ?";
+                $stmtMascota = $conn->prepare($sqlMascota);
+                $stmtMascota->bind_param("ii", $idSolicitud, $idMascota);
+                $stmtMascota->execute();
+            } else {
+                // Restaurar otras solicitudes a pendientes
+                $pendientesOtras = "
+                    UPDATE solicitud 
+                    SET estadoAdopcion = 'Pendiente', comentarios = NULL
+                    WHERE idMascota = ? AND idSolicitud != ?";
+                $stmtPendientes = $conn->prepare($pendientesOtras);
+                $stmtPendientes->bind_param("ii", $idMascota, $idSolicitud);
+                $stmtPendientes->execute();
+        
+                // Restaurar la mascota a disponible
+                $sqlMascota = "UPDATE mascota SET estadoAdopcion = 'Disponible', adoptadoPor = NULL WHERE idMascota = ?";
+                $stmtMascota = $conn->prepare($sqlMascota);
+                $stmtMascota->bind_param("i", $idMascota);
+                $stmtMascota->execute();
+            }
+        
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Solicitud actualizada correctamente con lógica de adopción aplicada."
+            ]);
+            exit;                       
             break;
 
         case 'reporte':
-            // Lógica para actualizar un reporte
+            $idReporte = $_POST["idReporte"] ?? null;
+            $estado = $_POST["estadoReporte"] ?? null;
+            $descripcion = $_POST["descripcionReporte"] ?? null;
+            $mascotasSeleccionadas = $_POST["mascotasAsociadas"] ?? [];
+
+            // Validar ID
+            if (!$idReporte) {
+                echo json_encode(["status" => "error", "mensaje" => "ID del reporte no proporcionado."]);
+                exit;
+            }
+
+            // 1. Actualizar estado y descripción del reporte
+            $sqlUpdate = "UPDATE reporte SET estadoReporte = ?, descripcion = ? WHERE idReporte = ?";
+            $stmt = $conn->prepare($sqlUpdate);
+            $stmt->bind_param("ssi", $estado, $descripcion, $idReporte);
+            $stmt->execute();
+
+            // 2. Obtener mascotas actualmente asociadas
+            $mascotasActuales = [];
+            $sqlActuales = "SELECT idMascota FROM reportemascota WHERE idReporte = ?";
+            $stmtActuales = $conn->prepare($sqlActuales);
+            $stmtActuales->bind_param("i", $idReporte);
+            $stmtActuales->execute();
+            $res = $stmtActuales->get_result();
+
+            while ($row = $res->fetch_assoc()) {
+                $mascotasActuales[] = $row['idMascota'];
+            }
+
+            // 3. Comparar y actualizar relaciones
+            $mascotasSeleccionadas = array_map('intval', $mascotasSeleccionadas);
+
+            // Agregar nuevas relaciones
+            $aInsertar = array_diff($mascotasSeleccionadas, $mascotasActuales);
+            foreach ($aInsertar as $idMascota) {
+                $sqlInsert = "INSERT INTO reportemascota (idReporte, idMascota) VALUES (?, ?)";
+                $stmtInsert = $conn->prepare($sqlInsert);
+                $stmtInsert->bind_param("ii", $idReporte, $idMascota);
+                $stmtInsert->execute();
+            }
+
+            // Eliminar relaciones deseleccionadas
+            $aEliminar = array_diff($mascotasActuales, $mascotasSeleccionadas);
+            foreach ($aEliminar as $idMascota) {
+                $sqlDelete = "DELETE FROM reportemascota WHERE idReporte = ? AND idMascota = ?";
+                $stmtDelete = $conn->prepare($sqlDelete);
+                $stmtDelete->bind_param("ii", $idReporte, $idMascota);
+                $stmtDelete->execute();
+            }
+
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Reporte actualizado correctamente."
+            ]);
+
+            exit;
             break;
 
         case 'donacion':
-            // Lógica para actualizar una donación
+            $idDonacion = $_POST["idDonacion"] ?? null;
+            $estado = $_POST["estadoDonacion"] ?? null;
+            $fechaPrevistaDon = $_POST["fechaPrevistaDon"] ?? null;
+            $descripcion = $_POST["descripcion"] ?? null;
+        
+            if (!$idDonacion) {
+                echo json_encode(["status" => "error", "mensaje" => "ID de donación no proporcionado."]);
+                exit;
+            }
+        
+            $sql = "UPDATE donacion SET estadoDonacion = ?, fechaPrevistaDon = ?, descripcion = ? WHERE idDonacion = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssi", $estado, $fechaPrevistaDon, $descripcion, $idDonacion);
+            $stmt->execute();
+        
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Donación actualizada correctamente."
+            ]);
+            exit;            
             break;
 
         case 'admin':
-            // Lógica para actualizar información del administrador
+            $idAdmin = $_POST["idAdmin"] ?? null;
+            $usuario = $_POST["usuario"] ?? null;
+            $password = $_POST["password"] ?? null;
+
+            if (!$idAdmin || !$usuario || !$password) {
+                echo json_encode(["status" => "error", "mensaje" => "Faltan datos para actualizar el administrador."]);
+                exit;
+            }
+
+            $sql = "UPDATE admin SET usuario = ?, contraseña = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssi", $usuario, $password, $idAdmin);
+            $stmt->execute();
+
+            echo json_encode([
+                "status" => "success",
+                "mensaje" => "Administrador actualizado correctamente."
+            ]);
+            exit;
             break;
 
         default:

@@ -604,4 +604,25 @@ h2[data-bs-toggle="popover"]:hover .fa-info-circle {
     height: 150px;
     color: #6c757d;
 }
+
+/* Estilos adicionales para las tarjetas */
+#mascotas-seleccionadas .card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  #mascotas-seleccionadas .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  #mascotas-seleccionadas .card-body {
+    padding: 1rem;
+  }
+  
+  #mascotas-seleccionadas .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   

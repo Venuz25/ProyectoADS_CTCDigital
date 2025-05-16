@@ -1,3 +1,9 @@
+let mascotasOriginal = [];
+let solicitudesOriginal = [];
+let reportesOriginal = [];
+let donacionesOriginal = [];
+let administradoresOriginal = [];
+
 //========== ESTILO LINEAS METRO==========
 {
     //colores de las líneas del metro
@@ -218,12 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const tabs = document.querySelectorAll('.folder-tab');
     const tabContents = document.querySelectorAll('.tab-content');
-
-    let mascotasOriginal = [];
-    let solicitudesOriginal = [];
-    let reportesOriginal = [];
-    let donacionesOriginal = [];
-    let administradoresOriginal = [];
 
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -933,13 +933,7 @@ document.addEventListener("click", async function(e) {
                 formData.append("fotosMascota[]", inputArchivos.files[i]);
             }
         }
-
-        for (let i = 0; i < inputArchivos.files.length; i++) {
-            console.log("Archivo seleccionado:", inputArchivos.files[i].name);
-        }
-        
-        console.log("🗑️ Imágenes marcadas para eliminar:", imagenesAEliminar);
-    
+           
         fetch("/ProyectoADS_CTCDigital/src/backend/admin/guardarCambios.php", {
             method: "POST",
             body: formData
@@ -981,15 +975,15 @@ document.addEventListener("click", async function(e) {
                                 mostrarModalMascota(mascotaActualizada);
                             }
                         })
-                        .catch(err => {
-                            console.error('Error al recargar datos:', err);
-                            mostrarNotificacion(
-                                'error',
-                                'Error al recargar',
-                                'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
-                                err.message
-                            );
-                        });
+                    .catch(err => {
+                        console.error('Error al recargar datos:', err);
+                        mostrarNotificacion(
+                            'error',
+                            'Error al recargar',
+                            'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
+                            err.message
+                        );
+                    });
     
                 } else {
                     mostrarNotificacion(
@@ -1184,7 +1178,8 @@ document.addEventListener("click", async function(e) {
     function mostrarModalSolicitud(solicitud) {
         try {
             const modal = new bootstrap.Modal(document.getElementById('modalSolicitudDetalle'));
-            
+            document.getElementById("estadoVisita").addEventListener("change", verificarEstadoVisitaParaAprobacion);
+
             if (!solicitud || typeof solicitud !== 'object') {
                 throw new Error('Datos de solicitud no válidos');
             }
@@ -1233,11 +1228,105 @@ document.addEventListener("click", async function(e) {
                 setValue('notasVisita', '');
             }
 
+            verificarEstadoVisitaParaAprobacion();
             modal.show();            
         } catch (error) {
             console.error('Error al mostrar modal de solicitud:', error);
             alert('Error al cargar los datos de la solicitud');
         }
+    }
+
+    // Función para guardar cambios en la solicitud
+    function guardarCambiosSolicitud(event) {
+        if (event) event.preventDefault();
+    
+        const formData = new FormData();
+        formData.append("tipo", "solicitud");
+        formData.append("solicitudId", document.getElementById("solicitudId").value);
+        formData.append("idMascotaSolicitud", document.getElementById("mascotaId").value);
+        formData.append("estadoSolicitud", document.getElementById("estadoSolicitud").value);
+        formData.append("comentariosSolicitud", document.getElementById("comentariosSolicitud").value);
+        formData.append("estadoVisita", document.getElementById("estadoVisita").value);
+        formData.append("fechaVisita", document.getElementById("fechaVisita").value);
+        formData.append("notasVisita", document.getElementById("notasVisita").value);
+    
+        fetch("/ProyectoADS_CTCDigital/src/backend/admin/guardarCambios.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                if (data.status === "success") {
+                    mostrarNotificacion(
+                        "exito",
+                        "Solicitud actualizada",
+                        "Los cambios se guardaron correctamente."
+                    );
+    
+                    bootstrap.Modal.getInstance(document.getElementById("modalSolicitudDetalle")).hide();
+    
+                    // Recargar datos
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            mascotasOriginal = data.mascotas;
+                            solicitudesOriginal = data.solicitudes;
+                            reportesOriginal = data.reportes;
+                            donacionesOriginal = data.donaciones;
+                            administradoresOriginal = data.administradores;
+    
+                            cargarMascotas(mascotasOriginal);
+                            cargarAdmin(administradoresOriginal);
+                            cargarReportes(reportesOriginal);
+                            cargarDonaciones(donacionesOriginal);
+                            cargarSolicitudes(solicitudesOriginal);
+                            
+                            const idSolicitudActual = document.getElementById("solicitudId").value;
+                            const solicitudActualizada = solicitudesOriginal.find(s => s.idSolicitud == idSolicitudActual);
+                            if (solicitudActualizada) {
+                                mostrarModalSolicitud(solicitudActualizada);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error al recargar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error al recargar',
+                                'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
+                                err.message
+                            );
+                        });
+    
+                } else {
+                    mostrarNotificacion(
+                        "error",
+                        "Error al guardar",
+                        "Hubo un problema al actualizar la solicitud.",
+                        data.mensaje
+                    );
+                }
+            } catch (e) {
+                console.error("No se pudo parsear como JSON:", e);
+                console.warn("Respuesta completa del servidor:\n", text);
+                mostrarNotificacion(
+                    "error",
+                    "Respuesta inválida del servidor",
+                    "No se pudo interpretar la respuesta del servidor.",
+                    e.message
+                );
+            }
+        })
+        .catch(err => {
+            console.error("Error en la solicitud:", err);
+            mostrarNotificacion(
+                "error",
+                "Fallo de conexión",
+                "No se pudo contactar con el servidor.",
+                err.message
+            );
+        });
     }
 
     // Función para formatear fecha para input datetime-local
@@ -1249,7 +1338,6 @@ document.addEventListener("click", async function(e) {
 
     // Función para inicializar el mapa
     let mapaVisitaInstance = null;
-
     function initMap(coordenadas) {
         if (!coordenadas) return;
     
@@ -1282,7 +1370,6 @@ document.addEventListener("click", async function(e) {
             .openPopup();
     }
     
-
     // Cargar documentos de la solicitud
     function cargarDocumentosSolicitud(solicitud) {
         const contenedor = document.getElementById('listaDocumentos');
@@ -1314,14 +1401,25 @@ document.addEventListener("click", async function(e) {
             contenedor.appendChild(item);
         });
     }
-    
-    
-    
-    
 
-
-
-
+    // Cambiar estado de visita para aprobación
+    function verificarEstadoVisitaParaAprobacion() {
+        const estadoVisita = document.getElementById("estadoVisita").value;
+        const estadoSolicitud = document.getElementById("estadoSolicitud");
+    
+        const opcionAprobada = Array.from(estadoSolicitud.options).find(opt => opt.value === "Aprobada");
+    
+        if (!opcionAprobada) return;
+    
+        if (estadoVisita === "Realizada") {
+            opcionAprobada.disabled = false;
+        } else {
+            if (estadoSolicitud.value === "Aprobada") {
+                estadoSolicitud.value = "Pendiente";
+            }
+            opcionAprobada.disabled = true;
+        }
+    }
 }
 
 // ========================== MODAL DE REPORTE ==========================
@@ -1329,41 +1427,156 @@ document.addEventListener("click", async function(e) {
     // Mostrar modal de reporte
     function mostrarModalReporte(reporte, mascotasAsociadas = []) {
         const modal = new bootstrap.Modal(document.getElementById('modalReporteDetalle'));
-        const form = document.getElementById('formDetalleReporte');
-        
-        // Llenar los campos del formulario con los datos del reporte
+    
+        // Llenar campos básicos
+        document.getElementById('idReporte').value = reporte.idReporte || '';
         document.getElementById('nombreReportante').value = reporte.nombreReportante || '';
         document.getElementById('correo').value = reporte.correo || '';
         
         const fechaReporte = reporte.fechaReporte ? new Date(reporte.fechaReporte) : new Date();
-        const fechaFormateada = fechaReporte.toISOString().slice(0, 16);
-        document.getElementById('fechaReporte').value = fechaFormateada;
-        
-        const estadoSelect = document.getElementById('estadoReporte');
-        estadoSelect.value = reporte.estadoReporte || 'Pendiente';
-        
+        document.getElementById('fechaReporte').value = fechaReporte.toISOString().slice(0, 16);
+    
+        document.getElementById('estadoReporte').value = reporte.estadoReporte || 'Pendiente';
         document.getElementById('lineaRepo').value = reporte.linea || '';
         document.getElementById('estacionRep').value = reporte.estacion || '';
+        document.getElementById('descripcionReporte').value = reporte.descripcion || '';
+    
+        // Cargar select de mascotas
+        const selectMascotas = document.getElementById('mascotasAsociadas');
+        const contador = document.getElementById('contadorMascotas');
+        const btnDeseleccionar = document.getElementById('btnDeseleccionar');
         
-        const mascotasContainer = document.getElementById('mascotasAsociadas');
-        if (reporte.mascotas && reporte.mascotas.length > 0) {
-            const mascotasHTML = reporte.mascotas.map(id => 
-            `<span class="badge bg-primary" style="padding: 10px">Mascota #${id}</span>`
-            ).join('');
-            mascotasContainer.innerHTML = mascotasHTML;
-        } else {
-            mascotasContainer.innerHTML = '<span class="text-muted">No hay mascotas asociadas</span>';
+        // Limpiar select
+        selectMascotas.innerHTML = '';
+        
+        // Generar opciones
+        mascotasOriginal.forEach(mascota => {
+            const option = document.createElement('option');
+            option.value = mascota.idMascota;
+            option.textContent = ` [${mascota.idMascota}] ${mascota.nombre}`;
+            
+            if (Array.isArray(reporte.mascotas) && reporte.mascotas.includes(String(mascota.idMascota))) {
+            option.selected = true;
+            }
+            
+            selectMascotas.appendChild(option);
+        });
+        
+        // Actualizar contador
+        function actualizarContador() {
+            const seleccionadas = Array.from(selectMascotas.selectedOptions).length;
+            contador.textContent = seleccionadas;
+            contador.className = seleccionadas > 0 ? 'text-primary fw-bold' : 'text-muted';
         }
         
-        // Descripción del reporte
-        document.getElementById('descripcionReporte').value = reporte.descripcion || '';
-        
-        // Cargar imágenes del reporte
+        // Eventos
+        selectMascotas.addEventListener('change', actualizarContador);
+        btnDeseleccionar.addEventListener('click', () => {
+            Array.from(selectMascotas.options).forEach(opt => opt.selected = false);
+            actualizarContador();
+        });
+  
+        // Inicializar contador
+        actualizarContador();
+    
         cargarImagenesReporte(reporte);
-        
-        // Mostrar el modal
         modal.show();
-    }
+    }    
+
+    // Función para guardar cambios en el reporte
+    function guardarCambiosReporte(event) {
+        if (event) event.preventDefault();
+    
+        const formData = new FormData();
+        formData.append("tipo", "reporte");
+        formData.append("idReporte", document.getElementById("idReporte").value);
+        formData.append("estadoReporte", document.getElementById("estadoReporte").value);
+        formData.append("descripcionReporte", document.getElementById("descripcionReporte").value);
+    
+        const selectMascotas = document.getElementById("mascotasAsociadas");
+        const mascotasSeleccionadas = Array.from(selectMascotas.selectedOptions).map(opt => opt.value);
+        mascotasSeleccionadas.forEach(id => formData.append("mascotasAsociadas[]", id));
+    
+        fetch("/ProyectoADS_CTCDigital/src/backend/admin/guardarCambios.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+    
+                if (data.status === "success") {
+                    mostrarNotificacion(
+                        "exito",
+                        "Reporte actualizado",
+                        "Los cambios se guardaron correctamente."
+                    );
+    
+                    // Cerrar modal
+                    bootstrap.Modal.getInstance(document.getElementById("modalReporteDetalle")).hide();
+    
+                    // Recargar datos
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            mascotasOriginal = data.mascotas;
+                            solicitudesOriginal = data.solicitudes;
+                            reportesOriginal = data.reportes;
+                            donacionesOriginal = data.donaciones;
+                            administradoresOriginal = data.administradores;
+    
+                            cargarMascotas(mascotasOriginal);
+                            cargarAdmin(administradoresOriginal);
+                            cargarReportes(reportesOriginal);
+                            cargarDonaciones(donacionesOriginal);
+                            cargarSolicitudes(solicitudesOriginal);
+    
+                            // Volver a abrir el modal actualizado
+                            const idReporteActual = document.getElementById("idReporte").value;
+                            const reporteActualizado = reportesOriginal.find(r => r.idReporte == idReporteActual);
+                            if (reporteActualizado) {
+                                mostrarModalReporte(reporteActualizado);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error al recargar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error al recargar',
+                                'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
+                                err.message
+                            );
+                        });
+                } else {
+                    mostrarNotificacion(
+                        "error",
+                        "Error al guardar",
+                        "Hubo un problema al actualizar el reporte.",
+                        data.mensaje
+                    );
+                }
+            } catch (e) {
+                console.error("No se pudo parsear como JSON:", e);
+                console.warn("Respuesta completa del servidor:\n", text);
+                mostrarNotificacion(
+                    "error",
+                    "Respuesta inválida del servidor",
+                    "No se pudo interpretar la respuesta del servidor.",
+                    e.message
+                );
+            }
+        })
+        .catch(err => {
+            console.error("Error en la solicitud:", err);
+            mostrarNotificacion(
+                "error",
+                "Fallo de conexión",
+                "No se pudo contactar con el servidor.",
+                err.message
+            );
+        });
+    }        
       
     // Función para ampliar imágenes/videos al hacer clic
     function setupGalleryClickEvents() {
@@ -1456,7 +1669,7 @@ document.addEventListener("click", async function(e) {
                     video.src = mediaSrc;
                     video.className = "h-100 w-auto";
                     video.style.objectFit = "cover";
-                    video.controls = false; // Quitamos controles para la miniatura
+                    video.controls = false; 
                     video.muted = true;
                     video.loop = true;
                     
@@ -1482,9 +1695,6 @@ document.addEventListener("click", async function(e) {
             `;
         }
     }
-      
-
-
 }
 
 // ========================== MODAL DE DONACION ==========================
@@ -1500,6 +1710,7 @@ document.addEventListener("click", async function(e) {
             };
     
             // Asignar valores a los campos del formulario
+            setValue('idDonacion', donacion.idDonacion);
             setValue('tipoDonacion', donacion.tipo);
             setValue('estadoDonacion', donacion.estadoDonacion);
             setValue('fechaDonacion', donacion.fechaDonacion);
@@ -1523,9 +1734,6 @@ document.addEventListener("click", async function(e) {
                 document.getElementById('donanteImg').src = `/ProyectoADS_CTCDigital/recursos/index/donadores/${donacion.img}`;
                 document.getElementById('donanteImg').style.backgroundColor = donacion.color;
                 document.getElementById('donanteUsuario').textContent = donacion.usuario;
-                
-                
-    
                 visualContainer.style.display = 'block';
             } else {
                 visualContainer.style.display = 'none';
@@ -1538,7 +1746,94 @@ document.addEventListener("click", async function(e) {
             alert('Hubo un problema al cargar los datos de la donación.');
         }
     }
+
+    // Función para guardar cambios en la donación
+    function guardarCambiosDonacion(event) {
+        if (event) event.preventDefault();
     
+        const formData = new FormData();
+        formData.append("tipo", "donacion");
+        formData.append("idDonacion", document.getElementById("idDonacion").value);
+        formData.append("estadoDonacion", document.getElementById("estadoDonacion").value);
+        formData.append("fechaPrevistaDon", document.getElementById("fechaPrevistaDon").value);
+        formData.append("descripcion", document.getElementById("descripcion").value);
+    
+        fetch("/ProyectoADS_CTCDigital/src/backend/admin/guardarCambios.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                if (data.status === "success") {
+                    mostrarNotificacion(
+                        "exito",
+                        "Donación actualizada",
+                        "Los cambios se guardaron correctamente."
+                    );
+    
+                    bootstrap.Modal.getInstance(document.getElementById("modalDonacionDetalle")).hide();
+    
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            mascotasOriginal = data.mascotas;
+                            solicitudesOriginal = data.solicitudes;
+                            reportesOriginal = data.reportes;
+                            donacionesOriginal = data.donaciones;
+                            administradoresOriginal = data.administradores;
+    
+                            cargarMascotas(mascotasOriginal);
+                            cargarAdmin(administradoresOriginal);
+                            cargarReportes(reportesOriginal);
+                            cargarDonaciones(donacionesOriginal);
+                            cargarSolicitudes(solicitudesOriginal);
+    
+                            const idDonacionActual = document.getElementById("idDonacion").value;
+                            const donacionActualizada = donacionesOriginal.find(d => d.idDonacion == idDonacionActual);
+                            if (donacionActualizada) {
+                                mostrarModalDonacion(donacionActualizada);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error al recargar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error al recargar',
+                                'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
+                                err.message
+                            );
+                        });
+                } else {
+                    mostrarNotificacion(
+                        "error",
+                        "Error al guardar",
+                        "Hubo un problema al actualizar la donación.",
+                        data.mensaje
+                    );
+                }
+            } catch (e) {
+                console.error("No se pudo parsear como JSON:", e);
+                console.warn("Respuesta completa del servidor:\n", text);
+                mostrarNotificacion(
+                    "error",
+                    "Respuesta inválida del servidor",
+                    "No se pudo interpretar la respuesta del servidor.",
+                    e.message
+                );
+            }
+        })
+        .catch(err => {
+            console.error("Error en la solicitud:", err);
+            mostrarNotificacion(
+                "error",
+                "Fallo de conexión",
+                "No se pudo contactar con el servidor.",
+                err.message
+            );
+        });
+    }     
 }
 
 // ========================== MODAL DE ADMINISTRADOR ==========================
@@ -1549,6 +1844,7 @@ document.addEventListener("click", async function(e) {
             const modal = new bootstrap.Modal(document.getElementById('modalAdminDetalle'));
     
             // Asignar valores
+            document.getElementById('idAdmin').value = admin.id || '';
             document.getElementById('adminEditUsuario').value = admin.usuario || '';
             document.getElementById('adminEditPassword').value = admin.contraseña || '';
             document.getElementById('adminEditUltimaConn').value = admin.ultimaConn || 'Sin registros';
@@ -1559,6 +1855,96 @@ document.addEventListener("click", async function(e) {
             alert('Hubo un error al cargar los datos del administrador.');
         }
     }
+
+    // Guardar cambios en el administrador
+    function guardarCambiosAdmin(event) {
+        if (event) event.preventDefault();
+    
+        const formData = new FormData();
+        formData.append("tipo", "admin");
+        formData.append("idAdmin", document.getElementById("idAdmin").value);
+        formData.append("usuario", document.getElementById("adminEditUsuario").value);
+        formData.append("password", document.getElementById("adminEditPassword").value);
+    
+        fetch("/ProyectoADS_CTCDigital/src/backend/admin/guardarCambios.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+    
+                if (data.status === "success") {
+                    mostrarNotificacion(
+                        "exito",
+                        "Administrador actualizado",
+                        "Los cambios se guardaron correctamente."
+                    );
+    
+                    bootstrap.Modal.getInstance(document.getElementById("modalAdminDetalle")).hide();
+    
+                    fetch('/ProyectoADS_CTCDigital/src/backend/admin/getDatos.php')
+                        .then(res => res.json())
+                        .then(data => {
+                            mascotasOriginal = data.mascotas;
+                            solicitudesOriginal = data.solicitudes;
+                            reportesOriginal = data.reportes;
+                            donacionesOriginal = data.donaciones;
+                            administradoresOriginal = data.administradores;
+    
+                            cargarMascotas(mascotasOriginal);
+                            cargarAdmin(administradoresOriginal);
+                            cargarReportes(reportesOriginal);
+                            cargarDonaciones(donacionesOriginal);
+                            cargarSolicitudes(solicitudesOriginal);
+    
+                            const idActual = document.getElementById("idAdmin").value;
+                            const adminActualizado = administradoresOriginal.find(a => a.id == idActual);
+                            if (adminActualizado) {
+                                mostrarModalAdmin(adminActualizado);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error al recargar datos:', err);
+                            mostrarNotificacion(
+                                'error',
+                                'Error al recargar',
+                                'Los datos se guardaron, pero no se pudieron recargar automáticamente.',
+                                err.message
+                            );
+                        });
+    
+                } else {
+                    mostrarNotificacion(
+                        "error",
+                        "Error al guardar",
+                        "Hubo un problema al actualizar el administrador.",
+                        data.mensaje
+                    );
+                }
+    
+            } catch (e) {
+                console.error("No se pudo parsear como JSON:", e);
+                console.warn("Respuesta completa del servidor:\n", text);
+                mostrarNotificacion(
+                    "error",
+                    "Respuesta inválida del servidor",
+                    "No se pudo interpretar la respuesta del servidor.",
+                    e.message
+                );
+            }
+        })
+        .catch(err => {
+            console.error("Error en la solicitud:", err);
+            mostrarNotificacion(
+                "error",
+                "Fallo de conexión",
+                "No se pudo contactar con el servidor.",
+                err.message
+            );
+        });
+    }    
 
     function togglePasswordVisibility() {
         const input = document.getElementById('adminEditPassword');
