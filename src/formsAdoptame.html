@@ -10,15 +10,14 @@
     <link rel="icon" href="/ProyectoADS_CTCDigital/recursos/Icono.jpg" type="image/png" sizes="32x32" />
 
     <!--========== ESTILOS ==========-->
-    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/index.css" />
+    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/formsAdoptame.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <!--Generales-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/style.css" />
-    <link rel="stylesheet" href="/ProyectoADS_CTCDigital/src/css/formsAdoptame.css">
   </head>
 
   <body class="bg-light">
@@ -27,168 +26,643 @@
     <header>
       <div id="header-container"></div>
     </header>
-  
-    <!-- ========== CONTENIDO PRINCIPAL ========== -->
-    <main class="container my-5">
-      <div class="card formulario-card animate__animated animate__fadeIn mx-auto" style="max-width: 800px;">
-  
-        <!-- Barra de progreso -->
-        <div class="progress mb-4" role="progressbar" aria-label="Progreso" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar" style="width: 30%;"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="form-container animate__animated animate__fadeIn">
+
+            <!-- Barra de progreso -->
+            <div class="progress-bar">
+              <div class="progress" id="form-progress" style="width: 20%;"></div>
+            </div>
+            
+            <!-- Sección 1: Introducción -->
+            <div class="form-section active" id="section-1">
+              <div class="text-center">
+                <i class="fas fa-paw animal-icon"></i>
+                <h2 class="mb-4">Formulario de Adopción Responsable</h2>
+              </div>
+              
+              <div class="intro-card animate__animated animate__fadeInUp">
+                <h4><i class="fas fa-info-circle me-2"></i>Adoptar es un compromiso de vida</h4>
+                <p>Este formulario nos ayuda a conocer mejor tu situación y expectativas para encontrar el compañero animal ideal para tu hogar.</p>
+                
+                <div class="alert alert-warning mt-3">
+                  <p><strong>Te solicitamos llenes este formato con veracidad y objetividad.</strong> Toda la información proporcionada será protegida de acuerdo a la Ley de Protección de Datos Personales.</p>
+                  <p class="mb-0"><strong>NOTA:</strong> Sólo pueden adoptar personas mayores de edad. Estos animalitos llegan a vivir entre 15-20 años, ellos dependerán de ti durante toda su vida.</p>
+                </div>
+              </div>
+              
+              <div class="text-center mt-4">
+                <button class="btn btn-primary btn-lg btn-next" onclick="nextSection(1)">
+                  <i class="fas fa-heart me-2"></i>Iniciar solicitud de adopción
+                </button>
+              </div>
+            </div>
+            
+            <!-- Sección 2: Datos del adoptante -->
+            <div class="form-section" id="section-2">
+              <h3 class="mb-4"><i class="fas fa-user me-2"></i>Datos del Adoptante</h3>
+              
+              <form id="adopter-form">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="nombreCompleto" class="form-label">Nombre completo *</label>
+                    <input type="text" class="form-control" id="nombreCompleto" required>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="edad" class="form-label">Edad *</label>
+                    <input type="number" class="form-control" id="edad" min="18" required>
+                    <div class="invalid-feedback">
+                      <i>Debes ser mayor de 18 años para adoptar.</i> 
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label for="fechaVisita" class="form-label">Visita domiciliaria *</label>
+                    <input type="datetime-local" class="form-control" id="fechaVisita" required>
+                    <div class="form-text">
+                      Selecciona una fecha y hora para la visita domiciliaria.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="direccion" class="form-label">Dirección *</label>
+                  <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="direccion" required>
+                      <button class="btn btn-outline-secondary" type="button" id="buscarDireccion">
+                          <i class="fas fa-map-marker-alt"></i> Buscar en mapa
+                      </button>
+                  </div>
+                  <div id="mapaDireccion" class="mb-2" style="height: 200px; display: none;"></div>
+                  <input type="hidden" id="coordenadas" name="coordenadas">
+                  <div class="form-text">Selecciona la ubicación exacta en el mapa</div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="ocupacion" class="form-label">Ocupación *</label>
+                    <input type="text" class="form-control" id="ocupacion" required>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="escolaridad" class="form-label">Escolaridad *</label>
+                    <select class="form-select" id="escolaridad" required>
+                      <option value="" selected disabled>Selecciona</option>
+                      <option value="primaria">Primaria</option>
+                      <option value="secundaria">Secundaria</option>
+                      <option value="preparatoria">Preparatoria/Bachillerato</option>
+                      <option value="universidad">Universidad</option>
+                      <option value="posgrado">Posgrado</option>
+                      <option value="otro">Otro</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="telefono" class="form-label">Teléfono *</label>
+                    <input type="tel" class="form-control" id="telefono" 
+                          pattern="[0-9]{10}" 
+                          title="Ingresa un número de 10 dígitos" 
+                          required>
+                    <div class="invalid-feedback">
+                      Ingresa un número de teléfono válido.
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="correo" class="form-label">Correo electrónico *</label>
+                    <input type="email" class="form-control" id="correo" 
+                          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
+                          required>
+                    <div class="invalid-feedback">
+                      Por favor ingresa un correo electrónico válido.
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="mascotaAdoptar" class="form-label">Animalito que deseas adoptar *</label>
+                    <select class="form-select" id="mascotaAdoptar" required>
+                        <option value="" selected disabled>Selecciona una mascota</option>
+                        <!-- Opciones se llenarán dinámicamente -->
+                    </select>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(2)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary btn-next" onclick="nextSection(2)">
+                    Siguiente<i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 3: Motivación y Experiencia -->
+            <div class="form-section" id="section-3">
+              <h3 class="mb-4"><i class="fas fa-question-circle me-2"></i>Motivación y Experiencia</h3>
+              
+              <form id="motivation-form">
+                <div class="mb-3">
+                  <label for="razonAdopcion" class="form-label">¿Por qué deseas adoptar? *</label>
+                  <textarea class="form-control" id="razonAdopcion" rows="3" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Actualmente tienes otros animales? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="otrosAnimales" id="otrosAnimalesSi" value="si" required>
+                    <label class="form-check-label" for="otrosAnimalesSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="otrosAnimales" id="otrosAnimalesNo" value="no">
+                    <label class="form-check-label" for="otrosAnimalesNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="mascotasPrevias" class="form-label">¿Anteriormente has tenido mascotas y cuáles? *</label>
+                  <textarea class="form-control" id="mascotasPrevias" rows="3" 
+                            placeholder="En caso de que ya no las tengas, explica qué sucedió con ellas" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="mascotasAccidentes" class="form-label">¿Alguna de tus mascotas ha muerto por algún accidente o se han escapado de tu hogar? *</label>
+                  <textarea class="form-control" id="mascotasAccidentes" rows="2" placeholder="En caso de ser cierto, explique la situación" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Anteriormente has adoptado algún perrito sin hogar? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="adopcionPrevia" id="adopcionPreviaSi" value="si" required>
+                    <label class="form-check-label" for="adopcionPreviaSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="adopcionPrevia" id="adopcionPreviaNo" value="no">
+                    <label class="form-check-label" for="adopcionPreviaNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="medioConocimiento" class="form-label">¿Por qué medio te enteraste de esta adopción? *</label>
+                  <textarea class="form-control" id="medioConocimiento" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="razonEspecial" class="form-label">¿Por qué deseas adoptar a este animalito en especial? *</label>
+                  <textarea class="form-control" id="razonEspecial" rows="3" required></textarea>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(3)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary btn-next" onclick="nextSection(3)">
+                    Siguiente<i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 4: Situación Familiar y Hogar -->
+            <div class="form-section" id="section-4">
+              <h3 class="mb-4"><i class="fas fa-home me-2"></i>Situación Familiar y Hogar</h3>
+              
+              <form id="family-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Estás de acuerdo en recibir visitas periódicas para verificar el estado del adoptado? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="visitas" id="visitasSi" value="si" required>
+                    <label class="form-check-label" for="visitasSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="visitas" id="visitasNo" value="no">
+                    <label class="form-check-label" for="visitasNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="opinionVisitas" class="form-label">¿Qué opinas de estas visitas?</label>
+                  <textarea class="form-control" id="opinionVisitas" rows="2"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Todas las personas que viven en tu casa están de acuerdo en adoptar? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="acuerdoFamilia" id="acuerdoFamiliaSi" value="si" required>
+                    <label class="form-check-label" for="acuerdoFamiliaSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="acuerdoFamilia" id="acuerdoFamiliaNo" value="no">
+                    <label class="form-check-label" for="acuerdoFamiliaNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Alguien en casa es alérgico a los animales? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="alergias" id="alergiasSi" value="si" required>
+                    <label class="form-check-label" for="alergiasSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="alergias" id="alergiasNo" value="no">
+                    <label class="form-check-label" for="alergiasNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Hay niños en casa? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="niniosCasa" id="niniosCasaSi" value="si" required>
+                    <label class="form-check-label" for="niniosCasaSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="niniosCasa" id="niniosCasaNo" value="no">
+                    <label class="form-check-label" for="niniosCasaNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div id="edadesNinios" class="mb-3" style="display: none;">
+                  <label for="edades" class="form-label">¿Qué edades tienen?</label>
+                  <input type="text" class="form-control" id="edades">
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">En caso de vivir en un lugar rentado, ¿tus arrendadores permiten animales? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="permisoArrendador" id="permisoSi" value="si" required>
+                    <label class="form-check-label" for="permisoSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="permisoArrendador" id="permisoNo" value="no">
+                    <label class="form-check-label" for="permisoNo">
+                      No
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="permisoArrendador" id="permisoPropietario" value="propietario">
+                    <label class="form-check-label" for="permisoPropietario">
+                      Soy propietario
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="cambioDomicilio" class="form-label">Si por algún motivo tuvieras que cambiar de domicilio, ¿qué pasaría con el animalito? *</label>
+                  <textarea class="form-control" id="cambioDomicilio" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="visionFuturo" class="form-label">¿Cómo te ves con tu adoptado dentro de 10 años o todo el tiempo que el animalito viva? *</label>
+                  <textarea class="form-control" id="visionFuturo" rows="3" required></textarea>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(4)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary btn-next" onclick="nextSection(4)">
+                    Siguiente<i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 5: Cuidados y Condiciones -->
+            <div class="form-section" id="section-5">
+              <h3 class="mb-4"><i class="fas fa-heartbeat me-2"></i>Cuidados y Condiciones</h3>
+              
+              <form id="care-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Tu vivienda cuenta con algún espacio al aire libre? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="espacioExterior" id="espacioExteriorSi" value="si" required>
+                    <label class="form-check-label" for="espacioExteriorSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="espacioExterior" id="espacioExteriorNo" value="no">
+                    <label class="form-check-label" for="espacioExteriorNo">
+                      No
+                    </label>
+                  </div>
+                </div>
+                
+                <div id="tipoEspacio" class="mb-3" style="display: none;">
+                  <label for="descripcionEspacio" class="form-label">¿Cuál?</label>
+                  <input type="text" class="form-control" id="descripcionEspacio">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="tiempoSolo" class="form-label">¿Cuánto tiempo pasará solo el adoptado? *</label>
+                  <textarea class="form-control" id="tiempoSolo" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="lugarDormir" class="form-label">¿Dónde dormiría? *</label>
+                  <textarea class="form-control" id="lugarDormir" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="accesoAreas" class="form-label">¿Permitirás que el animalito acceda a diferentes áreas de tu hogar? (No es requisito)</label>
+                  <textarea class="form-control" id="accesoAreas" rows="2"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="cuidadoViajes" class="form-label">Cuando tengas que viajar, ¿con quién se quedará el adoptado? *</label>
+                  <textarea class="form-control" id="cuidadoViajes" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Estás consciente de que necesitarás paciencia durante el periodo de adaptación? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paciencia" id="pacienciaSi" value="si" required>
+                    <label class="form-check-label" for="pacienciaSi">
+                      Sí, completamente
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paciencia" id="pacienciaNo" value="no">
+                    <label class="form-check-label" for="pacienciaNo">
+                      No estoy seguro
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="gastoMensual" class="form-label">¿Qué cantidad crees que se gasta en un perro/gato al mes? *</label>
+                  <input type="text" class="form-control" id="gastoMensual" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="responsableGastos" class="form-label">¿Quién será el responsable de cubrir los gastos del adoptado? *</label>
+                  <input type="text" class="form-control" id="responsableGastos" required>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(5)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary btn-next" onclick="nextSection(5)">
+                    Siguiente<i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 6: Compromisos de Cuidado -->
+            <div class="form-section" id="section-6">
+              <h3 class="mb-4"><i class="fas fa-shield-alt me-2"></i>Compromisos de Cuidado</h3>
+              
+              <form id="commitment-form">
+                <div class="mb-3">
+                  <h5>Cuidados básicos que requerirá el adoptado:</h5>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <ul class="care-list">
+                        <li>Visitas periódicas al veterinario</li>
+                        <li>Desparasitación (cada 6 meses)</li>
+                        <li>Vacunación Anual</li>
+                        <li>Plato con agua limpia todos los días</li>
+                        <li>Alimentación adecuada diariamente</li>
+                        <li>Limpieza diaria de sus recipientes</li>
+                      </ul>
+                    </div>
+                    <div class="col-md-6">
+                      <ul class="care-list">
+                        <li>Cepillado de pelo</li>
+                        <li>Baños, corte de uñas</li>
+                        <li>Paseos con correa</li>
+                        <li>Uso de collar con placa</li>
+                        <li>Juguetes y motivación</li>
+                        <li>Tiempo de convivencia</li>
+                        <li>Cama y refugio del clima</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Estás dispuesto a darle todos estos cuidados? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="dispuestoCuidados" id="dispuestoCuidadosSi" value="si" required>
+                    <label class="form-check-label" for="dispuestoCuidadosSi">
+                      Sí, completamente
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="dispuestoCuidados" id="dispuestoCuidadosNo" value="no">
+                    <label class="form-check-label" for="dispuestoCuidadosNo">
+                      No estoy seguro de todos
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Tienes un Médico Veterinario de cabecera? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="veterinario" id="veterinarioSi" value="si" required>
+                    <label class="form-check-label" for="veterinarioSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="veterinario" id="veterinarioNo" value="no">
+                    <label class="form-check-label" for="veterinarioNo">
+                      No, pero buscaré uno
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Cuentas con recursos para cubrir gastos veterinarios? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="recursosVeterinarios" id="recursosSi" value="si" required>
+                    <label class="form-check-label" for="recursosSi">
+                      Sí
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="recursosVeterinarios" id="recursosNo" value="no">
+                    <label class="form-check-label" for="recursosNo">
+                      No completamente
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="opinionAzotea" class="form-label">¿Qué piensas de que una mascota viva en la azotea? *</label>
+                  <textarea class="form-control" id="opinionAzotea" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="conceptoMascota" class="form-label">¿Para ti qué es una mascota? *</label>
+                  <textarea class="form-control" id="conceptoMascota" rows="2" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">¿Te comprometes a no modificar su apariencia física (corte de orejas, cola, etc)? *</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="modificacionFisica" id="modificacionNo" value="no" required>
+                    <label class="form-check-label" for="modificacionNo">
+                      Sí, me comprometo
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="modificacionFisica" id="modificacionSi" value="si">
+                    <label class="form-check-label" for="modificacionSi">
+                      No estoy seguro
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="planContingencia" class="form-label">En caso que no puedas conservar al adoptado, ¿qué harías? *</label>
+                  <textarea class="form-control" id="planContingencia" rows="3" required></textarea>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(6)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary btn-next" onclick="nextSection(6)">
+                    Siguiente<i class="fas fa-arrow-right ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 7: Documentación y Acuerdos -->
+            <div class="form-section" id="section-7">
+              <h3 class="mb-4"><i class="fas fa-file-signature me-2"></i>Documentación y Acuerdos</h3>
+              
+              <form id="agreement-form">
+                <div class="mb-4">
+                  <h5>CONDICIONES AL CONCRETARSE LA ADOPCIÓN</h5>
+                  <ol>
+                    <li>Copia de identificación oficial y comprobante de domicilio de la persona responsable sólo para corroborar donde vivirá el animalito.</li>
+                    <li>Estar de acuerdo en recibir visitas (con previa cita) o llamadas telefónicas para verificar el estado del adoptado.</li>
+                  </ol>
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="identificacion" class="form-label">Identificación oficial (PDF) *</label>
+                    <input type="file" class="form-control" id="identificacion" accept=".pdf" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="comprobanteDomicilio" class="form-label">Comprobante de domicilio (PDF) *</label>
+                    <input type="file" class="form-control" id="comprobanteDomicilio" accept=".pdf" required>
+                  </div>
+                </div>
+                
+                <div class="mb-4">
+                  <h5>AL FIRMAR ESTE ACUERDO EL ADOPTANTE SE COMPROMETE A:</h5>
+                  <ul class="agreement-list">
+                    <li>El adoptado tendrá una vida digna, con respeto y amor.</li>
+                    <li>Por ningún motivo será golpeado, maltratado o humillado, abandonado, regalado, vendido, o condenado a una vida de soledad.</li>
+                    <li>El adoptado usará siempre un collar con su placa de identificación.</li>
+                    <li>Siempre se le sacará a pasear con correa, nunca suelto.</li>
+                    <li>Aceptar las visitas o llamadas para dar seguimiento a la vida del adoptado.</li>
+                  </ul>
+                </div>
+                
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="aceptoTerminos" required>
+                    <label class="form-check-label fw-bold" for="aceptoTerminos">
+                        Acepto las condiciones y me comprometo a cumplir con todos los puntos mencionados. *
+                    </label>
+                    <div class="invalid-feedback" id="terminosFeedback" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i> Debes aceptar los términos y condiciones para continuar.
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" onclick="prevSection(7)">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                  </button>
+                  <button type="button" class="btn btn-primary" onclick="finalizarSolicitud(7)">
+                    <i class="fas fa-paper-plane me-2"></i>Finalizar adopción
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Sección 8: Confirmación y agradecimiento -->
+            <div class="form-section" id="section-8">
+              <div class="thank-you animate__animated animate__fadeIn text-center">
+                  <div class="heart-image-container">
+                      <img id="mascotaImagen" src="" alt="Mascota adoptada" class="heart-image">
+                  </div>
+                  <h2 class="mb-3">¡Gracias por tu solicitud de adopción!</h2>
+                  <p class="lead">Estás dando un hogar a <span id="mascotaNombre" class="fw-bold"></span></p>
+                  
+                  <div class="pet-details">
+                      <div class="row justify-content-center">
+                          <div class="col-md-4">
+                              <p><i class="fas fa-paw"></i> <span id="mascotaEspecie"></span></p>
+                          </div>
+                          <div class="col-md-4">
+                              <p><i class="fas fa-birthday-cake"></i> <span id="mascotaEdad"></span></p>
+                          </div>
+                          <div class="col-md-4">
+                              <p><i class="fas fa-venus-mars"></i> <span id="mascotaSexo"></span></p>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="mt-4">
+                      <p>Hemos recibido tu información y nos pondremos en contacto contigo en los próximos días.</p>
+                      <p>Mientras tanto, puedes preparar todo para la llegada de tu nuevo compañero.</p>
+                      <p>¡Gracias por elegir adoptar!</p>
+                  </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-  
-        <!-- Título del formulario -->
-        <div class="text-center mb-4">
-          <i class="fa-solid fa-paw icono-formulario"></i>
-          <h3 class="titulo-formulario mt-2">Formato de Adopción Canino</h3>
-        </div>
-  
-        <!-- Formulario -->
-        <form>
-  
-          <div class="row mb-3">
-            <div class="col">
-              <label class="form-label">Nombre:</label>
-              <input type="text" class="form-control">
-            </div>
-            <div class="col">
-              <label class="form-label">Edad:</label>
-              <input type="number" class="form-control">
-            </div>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">Dirección:</label>
-            <input type="text" class="form-control">
-          </div>
-  
-          <div class="row mb-3">
-            <div class="col">
-              <label class="form-label">Ocupación y Escolaridad:</label>
-              <input type="text" class="form-control">
-            </div>
-            <div class="col">
-              <label class="form-label">Delegación:</label>
-              <input type="text" class="form-control">
-            </div>
-          </div>
-  
-          <div class="row mb-3">
-            <div class="col">
-              <label class="form-label">Celular / Teléfonos:</label>
-              <input type="text" class="form-control">
-            </div>
-            <div class="col">
-              <label class="form-label">E-mail:</label>
-              <input type="email" class="form-control">
-            </div>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">Nombre del animalito que deseas adoptar:</label>
-            <input type="text" class="form-control">
-          </div>
-  
-          <!-- Preguntas abiertas -->
-          <div class="mb-3">
-            <label class="form-label">¿Por qué deseas adoptar?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Actualmente tienes otros animales?</label>
-            <input type="text" class="form-control">
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Anteriormente has tenido mascotas? ¿Cuáles?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Alguna mascota ha muerto por accidente o escapado?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Has adoptado antes algún perrito sin hogar?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Cómo te enteraste de la adopción del perrito?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Por qué deseas adoptar a este perrito en especial?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <!-- Opiniones y condiciones -->
-          <div class="row mb-3">
-            <div class="col">
-              <label class="form-label">¿Estás de acuerdo en que se haga una visita domiciliaria?</label>
-              <input type="text" class="form-control">
-            </div>
-            <div class="col">
-              <label class="form-label">¿Qué opinas de estas visitas?</label>
-              <input type="text" class="form-control">
-            </div>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Todas las personas en tu casa están de acuerdo en adoptar?</label>
-            <input type="text" class="form-control">
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">¿Alguien en casa es alérgico a los animales?</label>
-            <input type="text" class="form-control">
-          </div>
-  
-          <div class="row mb-3">
-            <div class="col">
-              <label class="form-label">¿Hay niños en casa?</label>
-              <input type="text" class="form-control">
-            </div>
-            <div class="col">
-              <label class="form-label">¿Qué edades tienen?</label>
-              <input type="text" class="form-control">
-            </div>
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">En caso de vivir en lugar rentado, ¿tus arrendadores permiten animales?</label>
-            <input type="text" class="form-control">
-          </div>
-  
-          <div class="mb-3">
-            <label class="form-label">Si cambias de domicilio, ¿qué pasaría con el animalito?</label>
-            <textarea class="form-control" rows="2"></textarea>
-          </div>
-  
-          <!-- Botones -->
-          <div class="text-end mt-4">
-            <a href="/ProyectoADS_CTCDigital/src/adoptame.html" class="btn btn-outline-secondary">
-              <i class="fas fa-arrow-left"></i> Regresar
-            </a>
-            <button type="submit" class="btn btn-primary">
-              Siguiente <i class="fas fa-arrow-right"></i>
-            </button>
-          </div>
-  
-        </form>
-  
       </div>
     </main>
-  
-
-
 
     <!-- ========== SCRIPTS ========== -->
-    
-
+    <script src="/ProyectoADS_CTCDigital/src/js/formsAdoptame.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <!-- Generales-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

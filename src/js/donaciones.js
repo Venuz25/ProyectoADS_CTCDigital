@@ -137,16 +137,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para seleccionar avatar
 function selectAvatar(img) {
-    // Remover selección previa
     document.querySelectorAll('.avatar-img').forEach(i => {
       i.classList.remove('selected');
     });
     
-    // Seleccionar nuevo avatar
     img.classList.add('selected');
     selectedAvatar = img.src;
     
-    // Ocultar mensaje de error
     document.getElementById('avatar-error').classList.add('d-none');
 }
   
@@ -209,7 +206,7 @@ function validateDonationData() {
     return isValid;
 }
 
-// Validación de fecha (se ejecuta al cambiar fecha)
+// Validación de fecha
 document.addEventListener('change', function(e) {
     if (e.target.id === 'fechaDonacion') {
         const fechaInput = e.target;
@@ -227,7 +224,6 @@ document.addEventListener('change', function(e) {
 
 // Función para enviar donación
 async function submitDonation() {
-    // Función segura para obtener elementos
     const getElement = (id) => document.getElementById(id) || { value: null };
     
     // Recopilar todos los datos del formulario de manera segura

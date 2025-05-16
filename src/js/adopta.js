@@ -144,9 +144,9 @@ function mostrarModal(mascota) {
       </ul>
     </div>
   `;
-
   
-  document.getElementById('btnAdoptar').href = "/ProyectoADS_CTCDigital/src/formsAdoptame.html";
+  document.getElementById('btnAdoptar').href = 
+      `/ProyectoADS_CTCDigital/src/formsAdoptame.html?idMascota=${mascota.idMascota}`;
   new bootstrap.Modal(document.getElementById('modalInfoMascota')).show();
 }
 
