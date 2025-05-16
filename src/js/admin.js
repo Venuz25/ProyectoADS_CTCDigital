@@ -4,6 +4,37 @@ let reportesOriginal = [];
 let donacionesOriginal = [];
 let administradoresOriginal = [];
 
+// Validar sesión al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("/ProyectoADS_CTCDigital/src/backend/verificaSesion.php")
+        .then(res => res.json())
+        .then(data => {
+            if (!data.logged) {
+                window.location.href = "/ProyectoADS_CTCDigital/src/componentes/loginAdmin.html";
+            }
+        })
+        .catch(err => {
+            console.error("Error al verificar sesión:", err);
+            window.location.href = "/ProyectoADS_CTCDigital/src/componentes/loginAdmin.html";
+        });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("/ProyectoADS_CTCDigital/src/backend/verificaSesion.php")
+        .then(res => res.json())
+        .then(data => {
+            if (!data.logged) {
+                if (data.expired) {
+                    alert("Tu sesión ha expirado por inactividad.");
+                }
+                window.location.href = "/ProyectoADS_CTCDigital/src/componentes/loginAdmin.html";
+            }
+        })
+        .catch(() => {
+            window.location.href = "/ProyectoADS_CTCDigital/src/componentes/loginAdmin.html";
+        });
+});
+
 //========== ESTILO LINEAS METRO==========
 {
     //colores de las líneas del metro
