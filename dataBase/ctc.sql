@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-05-2025 a las 09:56:19
+-- Tiempo de generación: 17-05-2025 a las 08:04:52
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,9 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `usuario`, `contraseña`, `ultimaConn`) VALUES
-(1, 'admin', 'admin1234', '2025-05-04 03:28:17'),
-(2, 'admin2', 'admin5678', '2025-05-04 02:07:12'),
-(4, 'venuz', 'aagb2574', NULL);
+(1, 'admin', '12345678', NULL);
 
 -- --------------------------------------------------------
 
@@ -53,22 +51,8 @@ CREATE TABLE `adoptante` (
   `idAdoptante` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `telefono` varchar(20) NOT NULL,
-  `correo` varchar(100) NOT NULL,
-  `documentos` text DEFAULT NULL
+  `correo` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `adoptante`
---
-
-INSERT INTO `adoptante` (`idAdoptante`, `nombre`, `telefono`, `correo`, `documentos`) VALUES
-(1, 'Ana López García', '5551234567', 'ana.lopez@mail.com', ''),
-(2, 'Carlos Martínez Ruiz', '5559876543', 'carlos.mtz@correo.com', ''),
-(3, 'María Hernández Sánchez', '5553344556', 'maria.hdz@outlook.com', ''),
-(4, 'Jorge Ramírez Pérez', '5556677889', 'jorge.ramirez@empresa.com', ''),
-(5, 'Laura González Díaz', '5551122334', 'laura.gonzalez@mail.com', ''),
-(7, 'Sofía Castro Reyes', '5557766558', 'sofia.castro@outlook.com', ''),
-(9, 'Valeria Silva Cruz', '5554433221', 'valeria.sc@correo.com', '');
 
 -- --------------------------------------------------------
 
@@ -87,30 +71,6 @@ CREATE TABLE `detallesmascota` (
   `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `detallesmascota`
---
-
-INSERT INTO `detallesmascota` (`idMascota`, `edad`, `sexo`, `idRaza`, `tamaño`, `caractFisica`, `estadoSalud`, `descripcion`) VALUES
-(1, 2, 'Macho', 1, 'Mediano', 'Mancha blanca en el pecho', 'Saludable', 'Juguetón y bueno con niños'),
-(2, 3, 'Hembra', 19, 'Pequeño', 'Ojos azules intensos', 'Alergia al polen', 'Gata tranquila y cariñosa'),
-(3, 1, 'Macho', 18, 'Pequeño', 'Pelaje atigrado', 'Vacunado completo', 'Energético y curioso'),
-(4, 4, 'Hembra', 2, 'Pequeño', 'Pelaje blanco y largo', 'Artritis leve', 'Adora pasear y nadar'),
-(5, 2, 'Macho', 3, 'Grande', 'Orejas erguidas', 'Saludable', 'Excelente guardián'),
-(6, 5, 'Hembra', 4, 'Pequeño', 'Cabeza en forma de manzana', 'Problemas dentales', 'Le encanta estar en brazos'),
-(7, 4, 'Macho', 5, 'Mediano', 'Mandíbula cuadrada', 'Saludable', 'Amigable con otros perros'),
-(8, 2, 'Hembra', 6, 'Pequeño', 'Pelaje blanco largo', 'Ojos sensibles', 'Dócil y tranquila'),
-(9, 1, 'Macho', 7, 'Pequeño', 'Cara arrugada', 'Ronca al dormir', 'Compañero ideal para departamentos'),
-(10, 3, 'Hembra', 8, 'Mediano', 'Orejas largas y sedosas', 'Otitis crónica', 'Adora jugar con pelotas'),
-(11, 4, 'Hembra', 9, 'Grande', 'Manchas negras', 'Problemas de piel', 'Necesita ejercicio diario'),
-(12, 2, 'Hembra', 10, 'Grande', 'Ojos heterocromos', 'Resistente al frío', 'Aullador profesional'),
-(13, 5, 'Macho', 11, 'Mediano', 'Cola siempre en movimiento', 'Sobrepeso leve', 'Expert en seguir olores'),
-(14, 6, 'Macho', 1, 'Mediano', 'Patas cortas y orejas largas', 'Artritis', 'Tranquilo y dormilón'),
-(15, 1, 'Hembra', 12, 'Grande', 'Pelaje sedoso', 'Saludable', 'Apta para terapia emocional'),
-(16, 7, 'Macho', 1, 'Grande', 'Pelo amarillento, orejas puntiagudas y ojos claros.', 'Heridas pequeñas y peso bajo.', 'Perrito tranquilo y cariñoso, le gusta dormir mucho.'),
-(17, 3, 'Hembra', NULL, 'Mediano', 'Gato pelo corto, color negro con ojos amarillos', 'Completamente sano', 'Gata tranquila y distante.'),
-(21, 10, 'Hembra', 22, 'Mediano', 'Color mostaza, con grandes orejas y patas largas.', 'Rasguños causados por peleas con otros gatos.', 'Gata mayor que le gustan los espacios tranquilos y con poca gente. Se suele estresar facil.');
-
 -- --------------------------------------------------------
 
 --
@@ -128,31 +88,6 @@ CREATE TABLE `donacion` (
   `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `donacion`
---
-
-INSERT INTO `donacion` (`idDonacion`, `idDonante`, `estadoDonacion`, `tipo`, `fechaDonacion`, `fechaPrevistaDon`, `monto`, `descripcion`) VALUES
-(1, 1, 'Finalizada', 'Monetaria', '2024-01-15', '2025-04-25', 5000.00, 'Donación para vacunación masiva'),
-(2, 2, 'Finalizada', 'Monetaria', '2024-02-02', '2024-04-02', 1500.50, 'Apoyo para esterilizaciones'),
-(3, 3, 'Finalizada', 'Monetaria', '2024-04-10', '2024-04-11', 200.00, 'Donación recurrente mensual'),
-(4, 4, 'Finalizada', 'Monetaria', '2024-03-18', '2024-03-25', 750.00, 'En memoria de su mascota'),
-(5, 5, 'Finalizada', 'En especie', '2024-01-25', '2024-02-29', NULL, '100 kg de croquetas premium'),
-(6, 6, 'Finalizada', 'En especie', '2024-02-14', '2024-04-30', NULL, 'Servicios médicos por 3 meses'),
-(7, 7, 'Finalizada', 'En especie', '2024-04-22', '2024-04-30', NULL, '30 camas térmicas'),
-(8, 8, 'Cancelado', 'Voluntariado', '2024-03-05', '2024-04-05', NULL, '20 horas de limpieza de jaulas'),
-(9, 9, 'Finalizada', 'Voluntariado', '2024-04-01', '2025-04-01', NULL, 'Equipo de 10 estudiantes'),
-(10, 10, 'Finalizada', 'Voluntariado', '2024-05-01', '2025-04-25', NULL, 'Transporte de mascotas'),
-(11, 11, 'Finalizada', 'En especie', '2024-03-30', '2025-04-25', NULL, 'Juguetes y collares'),
-(12, 12, 'Cancelado', 'Monetaria', '2024-02-28', '2025-04-25', 3000.00, 'Fondo de emergencias'),
-(13, 13, 'Finalizada', 'Voluntariado', '2024-04-05', '2025-04-25', NULL, 'Actividades educativas'),
-(14, 14, 'Finalizada', 'Monetaria', '2024-04-25', '2025-04-25', 800.00, 'Donación por transmisión en vivo'),
-(15, 15, 'Cancelado', 'Monetaria', '2024-01-10', '2025-04-25', 100.00, 'Donación express'),
-(16, 16, 'Pendiente', 'Monetaria', '2025-04-26', '2025-04-27', NULL, 'Donación para alimentar a los animalitos del centro.'),
-(17, 17, 'Pendiente', 'En especie', '2025-04-26', '2025-04-27', NULL, 'Donación de muchos juguetes para que el respeto al derecho ajeno de los perritos sea la paz.'),
-(18, 18, 'Pendiente', 'Voluntariado', '2025-04-26', '2025-04-28', NULL, 'Ir a entretener a los perritos por que es un nye.'),
-(19, 19, 'Pendiente', 'En especie', '2025-04-26', '2025-04-30', NULL, '90000kg de croquetas para que mis plebes no pasen hambre');
-
 -- --------------------------------------------------------
 
 --
@@ -166,24 +101,6 @@ CREATE TABLE `donacionvisual` (
   `color` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `donacionvisual`
---
-
-INSERT INTO `donacionvisual` (`idUser`, `usuario`, `img`, `color`) VALUES
-(1, 'fundacion.patitas', '1.png', '#FF5733'),
-(2, 'ricardo.fdz', '1.png', '#33FF57'),
-(4, 'mariana.s', '5.png', '#3357FF'),
-(5, 'happydog.mx', '11.png', '#F9A602'),
-(8, 'ana.lopez', '6.png', '#FFC300'),
-(9, 'uni.canina', '8.png', '#00C853'),
-(12, 'dr.alejandro', '10.png', '#9C27B0'),
-(13, 'escuela.sol', '4.png', '#FF0000'),
-(14, 'petfriend', '6.png', '#00BCD4'),
-(15, 'anon.donor', '5.png', '#607D8B'),
-(16, 'Venuz', '18.png', '#b094ff'),
-(19, 'Mariposa de Barrio', '19.png', '#003975');
-
 -- --------------------------------------------------------
 
 --
@@ -195,31 +112,6 @@ CREATE TABLE `donante` (
   `nombreDonante` varchar(255) NOT NULL,
   `correo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `donante`
---
-
-INSERT INTO `donante` (`idDonante`, `nombreDonante`, `correo`) VALUES
-(1, 'Fundación Patitas Felices', 'contacto@patitasfelices.org'),
-(2, 'Ricardo Fernández', 'ricardo.fdz@correo.com'),
-(3, 'Antonio', 'anonimo@gmail.com'),
-(4, 'Mariana Sánchez', 'mariana.s@mail.com'),
-(5, 'Alimentos HappyDog', 'ventas@happydog.mx'),
-(6, 'Clínica Veterinaria Central', 'clinica@vetcentral.com'),
-(7, 'PetLovers CDMX', 'donaciones@petlovers.mx'),
-(8, 'Ana López García', 'ana.lopez@mail.com'),
-(9, 'Universidad Canina', 'voluntarios@uc.edu.mx'),
-(10, 'Carlos Martínez', 'carlos.mtz@correo.com'),
-(11, 'Tienda Mascotín', 'tienda@mascotin.com'),
-(12, 'Dr. Alejandro Pérez', 'dr.perez@vet.com'),
-(13, 'Escuela Primaria Sol', 'contacto@escuelasol.edu'),
-(14, 'Influencer PetFriend', 'petfriend@influencer.com'),
-(15, 'Antonia', 'antonia@gmail.com'),
-(16, 'Areli Guevara', 'arealeguevadillo@gmail.com'),
-(17, 'Benito Juarez', 'el.viento.a.juarez@gmail.com'),
-(18, 'Cepillin', 'nye@gmail.com'),
-(19, 'Jenny Rivera', 'mariposa.barrio@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -460,34 +352,10 @@ CREATE TABLE `mascota` (
   `idMascota` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `fechaIngreso` date NOT NULL,
-  `estadoAdopcion` enum('Disponible','Adoptado','En proceso','No Disponible') NOT NULL,
+  `estadoAdopcion` enum('Disponible','Adoptado','No Disponible') NOT NULL,
+  `adoptadoPor` int(11) DEFAULT NULL,
   `idEstacionEncontrado` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `mascota`
---
-
-INSERT INTO `mascota` (`idMascota`, `nombre`, `fechaIngreso`, `estadoAdopcion`, `idEstacionEncontrado`) VALUES
-(1, 'Panchito', '2023-01-05', 'Disponible', 1301),
-(2, 'Tacubaya', '2023-02-04', 'Disponible', 710),
-(3, 'Mixco', '2023-02-18', 'Adoptado', 1201),
-(4, 'Chapulín', '2023-05-17', 'Disponible', 104),
-(5, 'Aragón', '2023-07-23', 'Disponible', 509),
-(6, 'Candy', '2023-10-02', 'Adoptado', 407),
-(7, 'Balderas', '2023-12-24', 'Disponible', 108),
-(8, 'Tasquita', '2024-03-24', 'No Disponible', 220),
-(9, 'Zarago', '2024-03-25', 'Disponible', 119),
-(10, 'Rosita', '2024-07-09', 'Disponible', 701),
-(11, 'Vicky', '2024-09-26', 'No Disponible', 808),
-(12, 'Luna', '2024-11-23', 'Disponible', 608),
-(13, 'Chabacano', '2024-12-30', 'Disponible', 216),
-(14, 'Morel', '2024-12-31', 'Disponible', 1406),
-(15, 'Güera', '2024-12-31', 'En proceso', 1305),
-(16, 'Zapato', '2025-05-04', 'No Disponible', 316),
-(17, 'Óleo', '2025-05-13', 'No Disponible', 802),
-(18, 'Don Porfirio', '2025-05-12', 'No Disponible', 209),
-(21, 'Consuelo', '2025-05-11', 'No Disponible', 404);
 
 -- --------------------------------------------------------
 
@@ -527,7 +395,11 @@ INSERT INTO `raza` (`idRaza`, `nombre`, `idEspecie`) VALUES
 (19, 'Siamés', 2),
 (20, 'Bombay', 2),
 (21, 'Beauceron', 1),
-(22, 'Abisinio', 2);
+(22, 'Abisinio', 2),
+(23, 'Pelo corto americano', 2),
+(24, 'Toyger', 2),
+(25, 'Dachshund', 1),
+(26, 'Labrador', 1);
 
 -- --------------------------------------------------------
 
@@ -540,23 +412,6 @@ CREATE TABLE `reportante` (
   `nombre` varchar(100) NOT NULL,
   `correo` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `reportante`
---
-
-INSERT INTO `reportante` (`idReportante`, `nombre`, `correo`) VALUES
-(1, 'Roberto Jiménez', 'roberto.j@correo.com'),
-(2, 'Lucía Mendoza', 'lucia.m@mail.com'),
-(3, 'Gerardo Ruiz', 'gerardo@gmail.com'),
-(4, 'Estación Pantitlán', 'atencion@metro.cdmx'),
-(5, 'María del Carmen', 'maricarm@correo.com'),
-(6, 'Luis Miguel', 'sol_de_Mexico@gmail.com'),
-(7, 'Frida Khalo', 'frida.khalo@gmail.com'),
-(8, 'Vox', 'veez@hellmail.com'),
-(9, 'Angel', 'angel@gmail.com'),
-(10, 'hola', 'hola@gmail.com'),
-(11, 'Batman', 'sr.Noche@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -573,23 +428,6 @@ CREATE TABLE `reporte` (
   `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `reporte`
---
-
-INSERT INTO `reporte` (`idReporte`, `idReportante`, `idEstacionRep`, `estadoReporte`, `fechaReporte`, `descripcion`) VALUES
-(1, 1, 710, 'Localizada', '2024-03-10 00:00:00', 'Gata siamesa con collar azul, asustada cerca de torniquetes'),
-(2, 2, 214, 'En proceso', '2024-04-15 00:00:00', 'Perro mestizo café con manchas blancas, buscando comida en andén'),
-(3, 3, 104, 'Localizada', '2024-02-28 00:00:00', 'Perro atrapado en vias'),
-(4, 4, 120, 'En proceso', '2024-04-20 00:00:00', '3 cachorros mestizos en zona de taquillas'),
-(5, 5, 407, 'Localizada', '2024-01-05 00:00:00', 'Chihuahua con pata lastimada, resguardado en oficinas'),
-(6, 6, 1406, 'Descartado', '2024-12-09 00:00:00', 'Confundió una estatua con perro dorado - falso positivo'),
-(7, 7, 504, 'En proceso', '2025-04-25 23:45:03', 'Una gata con sus crías merodeando por la parte superior de los andenes.'),
-(8, 8, 513, 'En proceso', '2025-04-28 23:03:21', 'Perrito en vías'),
-(9, 9, 120, 'En proceso', '2025-04-28 23:05:40', 'Perrito en vías'),
-(10, 10, 1410, 'En proceso', '2025-04-28 23:24:26', 'Gato atrapado en una cañería'),
-(11, 11, 302, 'En proceso', '2025-05-01 23:06:40', 'Perro pequeño paseando por los pasillos del trasborde.');
-
 -- --------------------------------------------------------
 
 --
@@ -601,16 +439,6 @@ CREATE TABLE `reportemascota` (
   `idMascota` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `reportemascota`
---
-
-INSERT INTO `reportemascota` (`idReporte`, `idMascota`) VALUES
-(1, 2),
-(3, 4),
-(5, 6),
-(6, 14);
-
 -- --------------------------------------------------------
 
 --
@@ -621,23 +449,10 @@ CREATE TABLE `solicitud` (
   `idSolicitud` int(11) NOT NULL,
   `idMascota` int(11) NOT NULL,
   `idAdoptante` int(11) NOT NULL,
-  `fechaSolicitud` date NOT NULL,
+  `fechaSolicitud` date NOT NULL DEFAULT current_timestamp(),
   `estadoAdopcion` enum('En proceso','Pendiente','Aprobada','Rechazada') NOT NULL DEFAULT 'Pendiente',
   `comentarios` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `solicitud`
---
-
-INSERT INTO `solicitud` (`idSolicitud`, `idMascota`, `idAdoptante`, `fechaSolicitud`, `estadoAdopcion`, `comentarios`) VALUES
-(1, 1, 1, '2024-03-15', 'Aprobada', 'Hogar con patio grande y experiencia previa'),
-(2, 7, 3, '2024-04-01', 'Aprobada', 'Familia comprometida con entrenamiento'),
-(3, 15, 2, '2024-02-20', 'Aprobada', 'Adopción para terapia asistida'),
-(4, 5, 4, '2024-01-25', 'Rechazada', 'Espacio insuficiente para perro grande'),
-(5, 9, 5, '2024-03-10', 'Rechazada', 'Alergias a perros de pelo corto'),
-(7, 12, 7, '2024-04-18', 'Pendiente', 'En revisión de documentación'),
-(9, 3, 9, '2024-04-22', 'Pendiente', 'Esperando respuesta del adoptante');
 
 -- --------------------------------------------------------
 
@@ -653,19 +468,6 @@ CREATE TABLE `visitadom` (
   `fechaVisita` datetime NOT NULL,
   `notas` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `visitadom`
---
-
-INSERT INTO `visitadom` (`idSolicitud`, `direccion`, `ubicacion`, `estadoVisita`, `fechaVisita`, `notas`) VALUES
-(1, 'Calle Fuego 123, Col. Pantitlán', '19.4135° N, 99.0331° W', 'Realizada', '2024-03-20 11:00:00', 'Hogar adecuado con patio cercado'),
-(2, 'Calle Luna 78, Lindavista', '19.4912° N, 99.1355° W', 'Realizada', '2024-04-10 10:00:00', 'Departamento amplio y seguro'),
-(3, 'Av. Hidalgo 45, Centro Histórico', '19.4326° N, 99.1332° W', 'Realizada', '2024-02-25 16:30:00', 'Familia con experiencia en terapia asistida'),
-(4, 'Calle Jardín 89, Coyoacán', '19.3467° N, 99.1612° W', 'Realizada', '2024-04-05 17:00:00', 'Casa con área verde ideal'),
-(5, 'Av. Universidad 999, Copilco', '19.3278° N, 99.1802° W', 'Pendiente', '2024-05-02 11:30:00', 'Primera visita programada'),
-(7, 'Calle Sol 22, Aragón', '19.4714° N, 99.0754° W', 'Reprogramada', '2024-05-05 12:00:00', 'Se pospuso por lluvia'),
-(9, 'Av. Reforma 1500, Juárez', '19.4285° N, 99.1608° W', 'Pendiente', '2024-04-30 15:00:00', 'Esperando confirmación');
 
 --
 -- Índices para tablas volcadas
@@ -728,7 +530,8 @@ ALTER TABLE `estaciones`
 --
 ALTER TABLE `mascota`
   ADD PRIMARY KEY (`idMascota`),
-  ADD KEY `fk_mascota_estacion` (`idEstacionEncontrado`);
+  ADD KEY `fk_mascota_estacion` (`idEstacionEncontrado`),
+  ADD KEY `adoptadoPor` (`adoptadoPor`);
 
 --
 -- Indices de la tabla `raza`
@@ -781,25 +584,25 @@ ALTER TABLE `visitadom`
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `adoptante`
 --
 ALTER TABLE `adoptante`
-  MODIFY `idAdoptante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idAdoptante` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `donacion`
 --
 ALTER TABLE `donacion`
-  MODIFY `idDonacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idDonacion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `donante`
 --
 ALTER TABLE `donante`
-  MODIFY `idDonante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idDonante` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `especie`
@@ -817,31 +620,31 @@ ALTER TABLE `estaciones`
 -- AUTO_INCREMENT de la tabla `mascota`
 --
 ALTER TABLE `mascota`
-  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `raza`
 --
 ALTER TABLE `raza`
-  MODIFY `idRaza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `idRaza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `reportante`
 --
 ALTER TABLE `reportante`
-  MODIFY `idReportante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idReportante` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `reporte`
 --
 ALTER TABLE `reporte`
-  MODIFY `idReporte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idReporte` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `idSolicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idSolicitud` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -870,7 +673,8 @@ ALTER TABLE `donacionvisual`
 -- Filtros para la tabla `mascota`
 --
 ALTER TABLE `mascota`
-  ADD CONSTRAINT `fk_mascota_estacion` FOREIGN KEY (`idEstacionEncontrado`) REFERENCES `estaciones` (`idEstacion`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_mascota_estacion` FOREIGN KEY (`idEstacionEncontrado`) REFERENCES `estaciones` (`idEstacion`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `mascota_ibfk_1` FOREIGN KEY (`adoptadoPor`) REFERENCES `solicitud` (`idSolicitud`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `raza`
