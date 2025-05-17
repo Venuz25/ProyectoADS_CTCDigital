@@ -397,8 +397,10 @@ async function enviarSolicitud() {
         });
 
         const resultado = await response.json();
+        console.log(resultado.idSolicitud);
         
         if (resultado.success) {
+            generarPDF(resultado.idSolicitud);
             nextSection(7);
         } else {
             alert('Error: ' + (resultado.error || 'Desconocido'));
@@ -406,4 +408,82 @@ async function enviarSolicitud() {
     } catch (error) {
         console.log('Error de conexión: ' + error.message);
     }
+}
+
+function generarPDF(idSolicitud) {
+    const formData = {
+        idSolicitud: idSolicitud,
+        // Datos del adoptante
+        nombreCompleto: document.getElementById('nombreCompleto').value,
+        edad: document.getElementById('edad').value,
+        fechaVisita: document.getElementById('fechaVisita').value,
+        direccion: document.getElementById('direccion').value,
+        ocupacion: document.getElementById('ocupacion').value,
+        escolaridad: document.getElementById('escolaridad').value,
+        telefono: document.getElementById('telefono').value,
+        correo: document.getElementById('correo').value,
+        mascotaAdoptar: document.getElementById('mascotaAdoptar').value,
+        
+        // Motivación y experiencia
+        razonAdopcion: document.getElementById('razonAdopcion').value,
+        otrosAnimales: document.querySelector('input[name="otrosAnimales"]:checked')?.value || '',
+        mascotasPrevias: document.getElementById('mascotasPrevias').value,
+        mascotasAccidentes: document.getElementById('mascotasAccidentes').value,
+        adopcionPrevia: document.querySelector('input[name="adopcionPrevia"]:checked')?.value || '',
+        medioConocimiento: document.getElementById('medioConocimiento').value,
+        razonEspecial: document.getElementById('razonEspecial').value,
+        
+        // Situación familiar y hogar
+        visitas: document.querySelector('input[name="visitas"]:checked')?.value || '',
+        opinionVisitas: document.getElementById('opinionVisitas').value,
+        acuerdoFamilia: document.querySelector('input[name="acuerdoFamilia"]:checked')?.value || '',
+        alergias: document.querySelector('input[name="alergias"]:checked')?.value || '',
+        niniosCasa: document.querySelector('input[name="niniosCasa"]:checked')?.value || '',
+        edades: document.getElementById('edades')?.value || '',
+        permisoArrendador: document.querySelector('input[name="permisoArrendador"]:checked')?.value || '',
+        cambioDomicilio: document.getElementById('cambioDomicilio').value,
+        visionFuturo: document.getElementById('visionFuturo').value,
+        
+        // Cuidados y condiciones
+        espacioExterior: document.querySelector('input[name="espacioExterior"]:checked')?.value || '',
+        descripcionEspacio: document.getElementById('descripcionEspacio')?.value || '',
+        tiempoSolo: document.getElementById('tiempoSolo').value,
+        lugarDormir: document.getElementById('lugarDormir').value,
+        accesoAreas: document.getElementById('accesoAreas').value,
+        cuidadoViajes: document.getElementById('cuidadoViajes').value,
+        paciencia: document.querySelector('input[name="paciencia"]:checked')?.value || '',
+        gastoMensual: document.getElementById('gastoMensual').value,
+        responsableGastos: document.getElementById('responsableGastos').value,
+        
+        // Compromisos de cuidado
+        dispuestoCuidados: document.querySelector('input[name="dispuestoCuidados"]:checked')?.value || '',
+        veterinario: document.querySelector('input[name="veterinario"]:checked')?.value || '',
+        recursosVeterinarios: document.querySelector('input[name="recursosVeterinarios"]:checked')?.value || '',
+        opinionAzotea: document.getElementById('opinionAzotea').value,
+        conceptoMascota: document.getElementById('conceptoMascota').value,
+        modificacionFisica: document.querySelector('input[name="modificacionFisica"]:checked')?.value || '',
+        planContingencia: document.getElementById('planContingencia').value
+    };
+
+    // Enviar datos al servidor para generar PDF
+    return fetch('/ProyectoADS_CTCDigital/src/backend/generarPDF.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            return data;
+        } else {
+            throw new Error(data.message || 'Error al generar PDF');
+        }
+    });
 }

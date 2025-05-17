@@ -1,11 +1,9 @@
 <?php
 require_once 'conexion.php';
 
-// Activar transacción
 $conn->begin_transaction();
 
 try {
-    // Validar y decodificar los datos JSON enviados en el campo "datos"
     if (!isset($_POST['datos'])) {
         throw new Exception("No se recibieron datos");
     }
@@ -74,7 +72,11 @@ try {
     }
 
     $conn->commit();
-    echo json_encode(["success" => true, "message" => "Solicitud registrada con éxito"]);
+    echo json_encode([
+        "success" => true, 
+        "message" => "Solicitud registrada con éxito",
+        "idSolicitud" => $idSolicitud
+    ]);
 
 } catch (Exception $e) {
     $conn->rollback();
