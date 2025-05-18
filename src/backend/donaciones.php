@@ -27,12 +27,10 @@
     $stmtDonante->close();
 
     // 2. Insertar donación
-    $sqlDonacion = "INSERT INTO donacion (idDonante, estadoDonacion, tipo, fechaDonacion, descripcion, monto)
+    $sqlDonacion = "INSERT INTO donacion (idDonante, estadoDonacion, tipo, fechaPrevistaDon, descripcion, monto)
                     VALUES (?, ?, ?, ?, ?, ?)";
 
     $stmtDonacion = $conn->prepare($sqlDonacion);
-
-    $monto = ($data['tipo'] === 'Monetaria') ? $data['monto'] : NULL;
     $estado = 'Pendiente';
 
     $stmtDonacion->bind_param("issssd",
@@ -41,7 +39,7 @@
         $data['tipo'],
         $data['fechaDonacion'],
         $data['descripcion'],
-        $monto
+        $data['monto'],
     );
 
     if (!$stmtDonacion->execute()) {

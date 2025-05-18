@@ -118,7 +118,6 @@ function validateDonationForm() {
       }
     } else {
       form.classList.add('was-validated');
-      // Mostrar todos los mensajes de error
       Array.from(form.elements).forEach(element => {
         if (!element.checkValidity()) {
           const feedback = element.nextElementSibling;
@@ -231,6 +230,7 @@ async function submitDonation() {
       nombreDonante: getElement('nombreDonante').value,
       correo: getElement('correo').value,
       tipo: getElement('tipoDonacion').value,
+      monto: null,
       fechaDonacion: getElement('fechaDonacion').value,
       descripcion: getElement('descripcion').value,
       publicar: getElement('publicarDonacion').checked,
@@ -252,7 +252,7 @@ async function submitDonation() {
     }
   
     // Si es donación monetaria, agregar el monto
-    if (donationData.tipo === 'Monetaria') {
+    if (donationData.tipo === 'monetaria') {
       donationData.monto = getElement('monto').value;
     }
   
