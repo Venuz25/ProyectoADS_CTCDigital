@@ -37,13 +37,13 @@ Este repositorio contiene el código fuente, la base de datos y el backend de CT
 │   ├── componentes/          # Componentes HTML dinamicos
 │   │
 │   ├── css/                  # Hojas de estilo
-│   │   └── style.css  	      	# Estilos generales
+│   │   └── style.css									# Estilos generales
 │   │
 │   ├── js/                   # Scripts básicos de frontend
-│   │   └── script.js         # Funciones de funcionalidad básicas
+│   │   └── script.js									# Funciones de funcionalidad básicas
 │   │
 │   └── backend/              # Lógica del servidor en PHP
-│       └── admin/    	  	# Controladores y consultas para el admin
+│       └── admin/												# Controladores y consultas para el admin
 │
 ├── database/                 
 │   └── ctc.sql               # Base de datos
