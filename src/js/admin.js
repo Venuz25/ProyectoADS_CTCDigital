@@ -858,7 +858,6 @@ document.addEventListener("click", async function(e) {
         }
     }
 });
-  
 
 // ========================== MODAL DE MASCOTA ==========================
 {

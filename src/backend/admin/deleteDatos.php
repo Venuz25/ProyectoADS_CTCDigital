@@ -97,6 +97,33 @@
                 $stmt->fetch();
                 $stmt->close();
 
+                // Obtener idMascota
+                $stmt = $conn->prepare("SELECT idMascota FROM mascota WHERE adoptadoPor = ?");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $stmt->bind_result($idMascota);
+                $stmt->fetch();
+                $stmt->close();
+
+                // Verificar si la mascota existe y está adoptada
+                if ($idMascota) {
+                    $stmt = $conn->prepare("SELECT estadoAdopcion FROM mascota WHERE idMascota = ?");
+                    $stmt->bind_param("i", $idMascota);
+                    $stmt->execute();
+                    $stmt->bind_result($estadoMascota);
+                    $stmt->fetch();
+                    $stmt->close();
+
+                    if (strtolower($estadoMascota) === 'adoptado') {
+                        // Cambiar estado a "No disponible"
+                        $nuevoEstado = "Disponible";
+                        $stmt = $conn->prepare("UPDATE mascota SET estadoAdopcion = ? WHERE idMascota = ?");
+                        $stmt->bind_param("si", $nuevoEstado, $idMascota);
+                        $stmt->execute();
+                        $stmt->close();
+                    }
+                }
+
                 // Eliminar documentos de la solicitud
                 $rutaSolicitudes = realpath(__DIR__ . '/../../../') . "/solicitudes/$id";
                 eliminarCarpeta($rutaSolicitudes);
