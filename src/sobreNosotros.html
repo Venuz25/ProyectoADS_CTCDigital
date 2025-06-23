@@ -305,6 +305,14 @@
     <div id="testimonios" class="my-5">
       <div class="container"> 
         <section class="quotes"></section> 
+
+        <div class="text-align my-5">
+          <h2 class="fw-bold">¿Adoptaste y quieres enviar tu testimonio?</h2>
+          <p>Comparte tu experiencia con nosotros y ayúdanos a inspirar a otros a adoptar.</p>
+
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTestimonio">
+            Enviar mi testimonio
+          </button>
       </div>
     </div>
 
@@ -358,6 +366,41 @@
           </div>
         </li>
       </ul>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalTestimonio" tabindex="-1" aria-labelledby="modalTestimonioLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="formTestimonio">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTestimonioLabel">Enviar testimonio de adopción</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" id="nombre" required>
+              </div>
+              <div class="mb-3">
+                <label for="correo" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" id="correo" required>
+              </div>
+              <div class="mb-3">
+                <label for="mascota" class="form-label">Mascota adoptada</label>
+                <select id="mascota" class="form-select" required></select>
+              </div>
+              <div class="mb-3">
+                <label for="testimonio" class="form-label">Tu testimonio</label>
+                <textarea class="form-control" id="testimonio" rows="4" required></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Enviar testimonio</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <!-- ========== SCRIPTS ========== -->

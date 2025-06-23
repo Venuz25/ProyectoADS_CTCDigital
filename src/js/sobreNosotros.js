@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(detectarImagenCentral, 1000);
   });
 
-
 //testimonios
 (function($) {
   $.fn.foldscroll = function(options) {
@@ -63,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (!$item.data('_shading')) {
               $shading = $shading.clone();
-             
+
               $item.css('position', 'relative');
               $item.data('_shading', $shading);
               $item.append($shading);
@@ -226,3 +225,40 @@ $(function() {
     margin: '220px'
   });
 });
+
+//Testimonios
+document.addEventListener('DOMContentLoaded', async () => {
+  const selectMascota = document.getElementById('mascota');
+  const response = await fetch('/ProyectoADS_CTCDigital/src/backend/adoptados.php'); 
+  const mascotas = await response.json();
+
+  mascotas.forEach(m => {
+    const option = document.createElement('option');
+    option.value = m.idMascota;
+    option.textContent = m.nombre;
+    selectMascota.appendChild(option);
+  });
+
+  document.getElementById('formTestimonio').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const idMascota = document.getElementById('mascota').value;
+    const nombreMascota = selectMascota.options[selectMascota.selectedIndex].textContent;
+    const testimonio = document.getElementById('testimonio').value.trim();
+
+    const res = await fetch('/ProyectoADS_CTCDigital/src/backend/verificarAdopcion.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({nombre, correo, idMascota, nombreMascota, testimonio})
+    });
+
+    const result = await res.json();
+    alert(result.mensaje);
+    if (result.ok) {
+      bootstrap.Modal.getInstance(document.getElementById('modalTestimonio')).hide();
+    }
+  });
+});
+
