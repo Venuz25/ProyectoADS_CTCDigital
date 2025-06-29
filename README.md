@@ -1,14 +1,19 @@
-# CTC Digital - Backend
+# CTC Digital
 ## Sistema de Gestión Digital para el Centro de Transferencia Canina
 
 Este repositorio contiene el código fuente, la base de datos y el backend de CTC Digital, una plataforma web que moderniza la gestión de adopciones, donaciones y reportes de rescate de mascotas en el Centro de Transferencia Canina (CTC) del Metro de la CDMX.
 
 ### Funcionalidades
-- Gestión de solicitudes de adopción
-- Programación de visitas domiciliarias
-- Registro y control de donaciones
-- Administración de voluntarios
-- Reporte y seguimiento de avistamientos de perros en el metro
+- Envío de solicitudes para adoptar mascotas.
+- Gestión del estado de adopciones y comunicación con adoptantes.
+- Envío de reportes sobre mascotas vistas en el metro.
+- Recepción y publicación de solicitudes de donación.
+- Envío de testimonios de usuarios.
+- Visualización de información
+- Galería de mascotas disponibles.
+- Noticias, información institucional y logros del centro.
+- Gestión de mascotas, solicitudes, reportes y donaciones.
+- Registro y control de administradores autorizados.
 
 ### Estructura
 ```
